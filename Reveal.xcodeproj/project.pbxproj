@@ -14,6 +14,8 @@
 		7A90967D194CF3CC00010F38 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A90967B194CF3CC00010F38 /* Main.storyboard */; };
 		7A90967F194CF3CC00010F38 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A90967E194CF3CC00010F38 /* Images.xcassets */; };
 		7A90968B194CF3CC00010F38 /* RevealTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A90968A194CF3CC00010F38 /* RevealTests.m */; };
+		7A909696194CF63C00010F38 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A909695194CF63C00010F38 /* TableViewController.m */; };
+		7A90969C194CFEEF00010F38 /* DetailedPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A90969B194CFEEF00010F38 /* DetailedPostViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +43,10 @@
 		7A909684194CF3CC00010F38 /* RevealTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RevealTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A909689194CF3CC00010F38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7A90968A194CF3CC00010F38 /* RevealTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RevealTests.m; sourceTree = "<group>"; };
+		7A909694194CF63C00010F38 /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableViewController.h; path = ../TableViewController.h; sourceTree = "<group>"; };
+		7A909695194CF63C00010F38 /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableViewController.m; path = ../TableViewController.m; sourceTree = "<group>"; };
+		7A90969A194CFEEF00010F38 /* DetailedPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailedPostViewController.h; path = ../DetailedPostViewController.h; sourceTree = "<group>"; };
+		7A90969B194CFEEF00010F38 /* DetailedPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailedPostViewController.m; path = ../DetailedPostViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +88,10 @@
 		7A90966D194CF3CC00010F38 /* Reveal */ = {
 			isa = PBXGroup;
 			children = (
+				7A90969A194CFEEF00010F38 /* DetailedPostViewController.h */,
+				7A90969B194CFEEF00010F38 /* DetailedPostViewController.m */,
+				7A909694194CF63C00010F38 /* TableViewController.h */,
+				7A909695194CF63C00010F38 /* TableViewController.m */,
 				7A909672194CF3CC00010F38 /* AppDelegate.h */,
 				7A909673194CF3CC00010F38 /* AppDelegate.m */,
 				7A909675194CF3CC00010F38 /* FirstViewController.h */,
@@ -170,6 +180,7 @@
 				TargetAttributes = {
 					7A90966A194CF3CC00010F38 = {
 						CreatedOnToolsVersion = 6.0;
+						DevelopmentTeam = 89JRG4TE28;
 					};
 					7A909683194CF3CC00010F38 = {
 						CreatedOnToolsVersion = 6.0;
@@ -222,7 +233,9 @@
 			files = (
 				7A90967A194CF3CC00010F38 /* SecondViewController.m in Sources */,
 				7A909674194CF3CC00010F38 /* AppDelegate.m in Sources */,
+				7A90969C194CFEEF00010F38 /* DetailedPostViewController.m in Sources */,
 				7A909677194CF3CC00010F38 /* FirstViewController.m in Sources */,
+				7A909696194CF63C00010F38 /* TableViewController.m in Sources */,
 				7A909671194CF3CC00010F38 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -338,9 +351,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Reveal/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -349,9 +366,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Reveal/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

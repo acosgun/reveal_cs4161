@@ -16,6 +16,7 @@
 		7A90968B194CF3CC00010F38 /* RevealTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A90968A194CF3CC00010F38 /* RevealTests.m */; };
 		7A909696194CF63C00010F38 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A909695194CF63C00010F38 /* TableViewController.m */; };
 		7A90969C194CFEEF00010F38 /* DetailedPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A90969B194CFEEF00010F38 /* DetailedPostViewController.m */; };
+		D801DA81194D891200CB9B00 /* RevealPost.m in Sources */ = {isa = PBXBuildFile; fileRef = D801DA80194D891200CB9B00 /* RevealPost.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,8 @@
 		7A909695194CF63C00010F38 /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableViewController.m; path = ../TableViewController.m; sourceTree = "<group>"; };
 		7A90969A194CFEEF00010F38 /* DetailedPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailedPostViewController.h; path = ../DetailedPostViewController.h; sourceTree = "<group>"; };
 		7A90969B194CFEEF00010F38 /* DetailedPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailedPostViewController.m; path = ../DetailedPostViewController.m; sourceTree = "<group>"; };
+		D801DA7F194D891200CB9B00 /* RevealPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RevealPost.h; sourceTree = "<group>"; };
+		D801DA80194D891200CB9B00 /* RevealPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RevealPost.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +104,8 @@
 				7A90967B194CF3CC00010F38 /* Main.storyboard */,
 				7A90967E194CF3CC00010F38 /* Images.xcassets */,
 				7A90966E194CF3CC00010F38 /* Supporting Files */,
+				D801DA7F194D891200CB9B00 /* RevealPost.h */,
+				D801DA80194D891200CB9B00 /* RevealPost.m */,
 			);
 			path = Reveal;
 			sourceTree = "<group>";
@@ -237,6 +242,7 @@
 				7A909677194CF3CC00010F38 /* FirstViewController.m in Sources */,
 				7A909696194CF63C00010F38 /* TableViewController.m in Sources */,
 				7A909671194CF3CC00010F38 /* main.m in Sources */,
+				D801DA81194D891200CB9B00 /* RevealPost.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -431,6 +437,7 @@
 				7A909690194CF3CC00010F38 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		7A909691194CF3CC00010F38 /* Build configuration list for PBXNativeTarget "RevealTests" */ = {
 			isa = XCConfigurationList;
@@ -439,6 +446,7 @@
 				7A909693194CF3CC00010F38 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

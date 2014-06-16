@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@class RevealPost;
+
 @interface TableViewController : UITableViewController
 
-@property (nonatomic, strong) NSMutableArray *titles;
+@property (nonatomic, strong) NSMutableArray *feed;
+@property (nonatomic, strong) NSMutableArray *titles; //default, will delete later
+@property (nonatomic, strong) RevealPost *revealPost;
 
 @end

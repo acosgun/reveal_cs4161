@@ -8,6 +8,9 @@
 
 #import "TableViewController.h"
 #import "DetailedPostViewController.h"
+#import "RevealPost.h"
+#import "DummyPosts.h"
+#import "EntryCell.h"
 
 @interface TableViewController ()
 
@@ -27,7 +30,38 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    RevealPost *post1 = [RevealPost postWithIDNumber:@1];
+    post1.userName = @"Travis";
+    post1.votes = @50;
+    post1.thumbnail = @"https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/t1.0-1/p320x320/10176093_10201958858788756_229269747_n.jpg";
+    post1.date = [NSDate dateWithTimeIntervalSinceNow:-60*2];
+    post1.body = @"Ohhhh I'm going to Escambia County tomorrow to inspect bridges, now whenever you visit home you'll be driving over bridges Murray inspected.";
+    post1.revealed = true;
+    
+    RevealPost *post2 = [RevealPost postWithIDNumber:@2];
+    post2.userName = @"Margarett";
+    post2.votes = @3;
+    post2.thumbnail = @"https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/t1.0-1/p320x320/9438_10201644950541120_1028851633_n.jpg";
+    post2.date = [NSDate dateWithTimeIntervalSinceNow:-60*5];
+    post2.body = @"blue skies and delicious drinks at a rooftop bar in Philly? yes, please!";
+    
+    RevealPost *post3 = [RevealPost postWithIDNumber:@3];
+    post3.userName = @"Matt";
+    post3.votes = @-4;
+    post3.thumbnail = @"https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/t1.0-1/p320x320/10462502_10152444987365266_1812757493745827010_n.jpg";
+    post3.date = [NSDate dateWithTimeIntervalSinceNow:-60*20];
+    post3.body = @"Brand New tickets for Orlando in October go on sale today at noon. They will sell out extremely fast, probably before half an hour.";
+    
+    self.feed = [NSMutableArray arrayWithObjects:post1, post2, post3, nil];
+    //DummyPosts *feed = [DummyPosts arrayWithDummyData];
+    NSLog(@"dummy data: %@", self.feed);
     self.titles = [NSMutableArray arrayWithObjects:@"item1",@"item2",@"item3",nil];
+    
+    NSLog(@"post1 body: %@", post1.body);
+    NSLog(@"post2 body: %@", post2.body);
+    NSLog(@"post3 body: %@", post3.body);
+    
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -53,18 +87,31 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [self.titles count];
+    NSLog(@"COUNT: %d", [self.feed count]);
+    return [self.feed count];
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"mainCell" forIndexPath:indexPath];
+    static NSString *cellIdentifier = @"mainCell";
+    //UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
+    EntryCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     
     // Configure the cell...
-    cell.textLabel.text = [self.titles objectAtIndex:indexPath.row];
+    //cell.textLabel.text = [self.titles objectAtIndex:indexPath.row];
+    RevealPost *revealPost = [self.feed objectAtIndex:indexPath.row];
     
+    
+    //cell.textLabel.text = revealPost.body; replaced because of custom cell configuration method
+    [cell configureCellForPost:revealPost];
+    NSLog(@"text label: %@", cell.textLabel.text);
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    RevealPost *revealPost = [self.feed objectAtIndex:indexPath.row];
+    return [EntryCell heightForPost:revealPost];
 }
 
 
@@ -117,7 +164,10 @@
     {
         NSLog(@"inside showDetailedPost");
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        NSString *str = [self.titles objectAtIndex:indexPath.row];
+        
+        RevealPost *revealPost = [self.feed objectAtIndex:indexPath.row];
+        NSString *str = revealPost.body;
+        //NSString *str = [self.titles objectAtIndex:indexPath.row];
         [segue.destinationViewController setTempString:str];
     }
     

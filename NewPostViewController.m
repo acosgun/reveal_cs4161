@@ -23,12 +23,12 @@
     return self;
 }
 
-- (IBAction)postButtonPressed:(id)sender {
+
+
+- (IBAction)postEntryButton:(id)sender {
     NSLog(@"Post Was Pressed");
     [self dismissSelf];
-
 }
-
 
 
 - (void) dismissSelf

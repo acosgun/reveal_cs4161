@@ -81,7 +81,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -169,6 +169,19 @@
         NSString *str = revealPost.body;
         //NSString *str = [self.titles objectAtIndex:indexPath.row];
         [segue.destinationViewController setTempString:str];
+    }
+    
+    if ([segue.identifier isEqualToString:@"meFeed"])
+    {
+                
+        
+        /*
+        UITableViewCell *cell = sender;
+        NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+        UINavigationController *navigationController = segue.destinationViewController;
+        EntryViewController *entryViewController = (EntryViewController *)navigationController.topViewController;
+        entryViewController.entry = [self.fetchedResultsController objectAtIndexPath:indexPath];
+         */
     }
     
     // Get the new view controller using [segue destinationViewController].

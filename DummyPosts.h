@@ -12,7 +12,7 @@
 
 @property (strong, nonatomic) NSMutableArray *dummyPosts;
 
-- (id) initWithDummyData;
-+ (id) arrayWithDummyData;
+//- (id) initWithDummyData;
+//+ (id) arrayWithDummyData;
 
 @end

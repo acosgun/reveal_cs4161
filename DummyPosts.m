@@ -11,8 +11,9 @@
 
 @implementation DummyPosts
 
+/*
 - (id) initWithDummyData {
-    
+
     RevealPost *post1 = [RevealPost postWithIDNumber:@1];
     post1.userName = @"Travis";
     post1.votes = @50;
@@ -42,5 +43,5 @@
 + (id) arrayWithDummyData {
     return [[self alloc] initWithDummyData];
 }
-
+*/
 @end

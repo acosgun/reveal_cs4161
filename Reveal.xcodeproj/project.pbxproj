@@ -16,6 +16,7 @@
 		7A90968B194CF3CC00010F38 /* RevealTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A90968A194CF3CC00010F38 /* RevealTests.m */; };
 		7A909696194CF63C00010F38 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A909695194CF63C00010F38 /* TableViewController.m */; };
 		7A90969C194CFEEF00010F38 /* DetailedPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A90969B194CFEEF00010F38 /* DetailedPostViewController.m */; };
+		7ACCEECF194EF6B10099CF96 /* NewPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ACCEECE194EF6B10099CF96 /* NewPostViewController.m */; };
 		D801DA81194D891200CB9B00 /* RevealPost.m in Sources */ = {isa = PBXBuildFile; fileRef = D801DA80194D891200CB9B00 /* RevealPost.m */; };
 		D801DA87194E0B0400CB9B00 /* DummyPosts.m in Sources */ = {isa = PBXBuildFile; fileRef = D801DA86194E0B0400CB9B00 /* DummyPosts.m */; };
 		D801DA8D194E528100CB9B00 /* EntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D801DA8C194E528100CB9B00 /* EntryCell.m */; };
@@ -50,6 +51,8 @@
 		7A909695194CF63C00010F38 /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableViewController.m; path = ../TableViewController.m; sourceTree = "<group>"; };
 		7A90969A194CFEEF00010F38 /* DetailedPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailedPostViewController.h; path = ../DetailedPostViewController.h; sourceTree = "<group>"; };
 		7A90969B194CFEEF00010F38 /* DetailedPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailedPostViewController.m; path = ../DetailedPostViewController.m; sourceTree = "<group>"; };
+		7ACCEECD194EF6B10099CF96 /* NewPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NewPostViewController.h; path = ../NewPostViewController.h; sourceTree = "<group>"; };
+		7ACCEECE194EF6B10099CF96 /* NewPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NewPostViewController.m; path = ../NewPostViewController.m; sourceTree = "<group>"; };
 		D801DA7F194D891200CB9B00 /* RevealPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RevealPost.h; sourceTree = "<group>"; };
 		D801DA80194D891200CB9B00 /* RevealPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RevealPost.m; sourceTree = "<group>"; };
 		D801DA85194E0B0400CB9B00 /* DummyPosts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DummyPosts.h; sourceTree = "<group>"; };
@@ -100,6 +103,8 @@
 			isa = PBXGroup;
 			children = (
 				7A90967B194CF3CC00010F38 /* Main.storyboard */,
+				7ACCEECD194EF6B10099CF96 /* NewPostViewController.h */,
+				7ACCEECE194EF6B10099CF96 /* NewPostViewController.m */,
 				D801DA8B194E528100CB9B00 /* EntryCell.h */,
 				D801DA8C194E528100CB9B00 /* EntryCell.m */,
 				7A90969A194CFEEF00010F38 /* DetailedPostViewController.h */,
@@ -247,6 +252,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A90967A194CF3CC00010F38 /* SecondViewController.m in Sources */,
+				7ACCEECF194EF6B10099CF96 /* NewPostViewController.m in Sources */,
 				7A909674194CF3CC00010F38 /* AppDelegate.m in Sources */,
 				7A90969C194CFEEF00010F38 /* DetailedPostViewController.m in Sources */,
 				D801DA8D194E528100CB9B00 /* EntryCell.m in Sources */,

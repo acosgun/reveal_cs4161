@@ -11,6 +11,7 @@
 #import "RevealPost.h"
 #import "DummyPosts.h"
 #import "EntryCell.h"
+#import "MeDetailedPostViewController.h"
 
 @interface MeFeedTableViewController ()
 @property (strong, nonatomic) NSString *thumbnail;
@@ -228,9 +229,12 @@
         [segue.destinationViewController setTempString:str];
     }
     
-    if ([segue.identifier isEqualToString:@"meFeed"])
+    if ([segue.identifier isEqualToString:@"meFeedDetailPost"])
     {
-        
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        RevealPost *revealPost = [self.displayedData objectAtIndex:indexPath.row];
+        MeDetailedPostViewController *vc = [segue destinationViewController];
+        vc.revealPost = revealPost;
         
         /*
          UITableViewCell *cell = sender;

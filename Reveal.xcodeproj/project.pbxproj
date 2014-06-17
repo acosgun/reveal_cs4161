@@ -7,10 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7A71EB02194FDF9000C39B0A /* NotificationsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71EB01194FDF9000C39B0A /* NotificationsTableViewController.m */; };
+		7A71EB09194FE1A200C39B0A /* InboxTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71EB08194FE1A200C39B0A /* InboxTableViewController.m */; };
+		7A71EB0D19501C5900C39B0A /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71EB0C19501C5900C39B0A /* LoginViewController.m */; };
+		7A71EB1019501C6B00C39B0A /* SignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71EB0F19501C6B00C39B0A /* SignupViewController.m */; };
 		7A909671194CF3CC00010F38 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A909670194CF3CC00010F38 /* main.m */; };
 		7A909674194CF3CC00010F38 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A909673194CF3CC00010F38 /* AppDelegate.m */; };
-		7A909677194CF3CC00010F38 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A909676194CF3CC00010F38 /* FirstViewController.m */; };
-		7A90967A194CF3CC00010F38 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A909679194CF3CC00010F38 /* SecondViewController.m */; };
 		7A90967D194CF3CC00010F38 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A90967B194CF3CC00010F38 /* Main.storyboard */; };
 		7A90967F194CF3CC00010F38 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A90967E194CF3CC00010F38 /* Images.xcassets */; };
 		7A90968B194CF3CC00010F38 /* RevealTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A90968A194CF3CC00010F38 /* RevealTests.m */; };
@@ -36,15 +38,19 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7A71EB00194FDF9000C39B0A /* NotificationsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsTableViewController.h; sourceTree = "<group>"; };
+		7A71EB01194FDF9000C39B0A /* NotificationsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsTableViewController.m; sourceTree = "<group>"; };
+		7A71EB07194FE1A200C39B0A /* InboxTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InboxTableViewController.h; path = ../InboxTableViewController.h; sourceTree = "<group>"; };
+		7A71EB08194FE1A200C39B0A /* InboxTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InboxTableViewController.m; path = ../InboxTableViewController.m; sourceTree = "<group>"; };
+		7A71EB0B19501C5900C39B0A /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		7A71EB0C19501C5900C39B0A /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		7A71EB0E19501C6B00C39B0A /* SignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignupViewController.h; sourceTree = "<group>"; };
+		7A71EB0F19501C6B00C39B0A /* SignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignupViewController.m; sourceTree = "<group>"; };
 		7A90966B194CF3CC00010F38 /* Reveal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reveal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A90966F194CF3CC00010F38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7A909670194CF3CC00010F38 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		7A909672194CF3CC00010F38 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7A909673194CF3CC00010F38 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		7A909675194CF3CC00010F38 /* FirstViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FirstViewController.h; sourceTree = "<group>"; };
-		7A909676194CF3CC00010F38 /* FirstViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FirstViewController.m; sourceTree = "<group>"; };
-		7A909678194CF3CC00010F38 /* SecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
-		7A909679194CF3CC00010F38 /* SecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
 		7A90967C194CF3CC00010F38 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		7A90967E194CF3CC00010F38 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		7A909684194CF3CC00010F38 /* RevealTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RevealTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -88,6 +94,59 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7A71EB03194FDF9D00C39B0A /* Notifications VC */ = {
+			isa = PBXGroup;
+			children = (
+				7A71EB00194FDF9000C39B0A /* NotificationsTableViewController.h */,
+				7A71EB01194FDF9000C39B0A /* NotificationsTableViewController.m */,
+			);
+			name = "Notifications VC";
+			sourceTree = "<group>";
+		};
+		7A71EB04194FDFC900C39B0A /* Feed VC */ = {
+			isa = PBXGroup;
+			children = (
+				7A90969A194CFEEF00010F38 /* DetailedPostViewController.h */,
+				7A90969B194CFEEF00010F38 /* DetailedPostViewController.m */,
+				7ACCEED0194F4FBE0099CF96 /* NewPostViewController.m */,
+				7ACCEED1194F4FBE0099CF96 /* NewPostViewController.h */,
+				7A909694194CF63C00010F38 /* TableViewController.h */,
+				7A909695194CF63C00010F38 /* TableViewController.m */,
+			);
+			name = "Feed VC";
+			sourceTree = "<group>";
+		};
+		7A71EB05194FDFEF00C39B0A /* Profile VC */ = {
+			isa = PBXGroup;
+			children = (
+				D801DA8E194EDC1A00CB9B00 /* MeFeedTableViewController.h */,
+				D801DA8F194EDC1A00CB9B00 /* MeFeedTableViewController.m */,
+				D801DA94194F0B3000CB9B00 /* MeDetailedPostViewController.h */,
+				D801DA95194F0B3000CB9B00 /* MeDetailedPostViewController.m */,
+			);
+			name = "Profile VC";
+			sourceTree = "<group>";
+		};
+		7A71EB06194FE16B00C39B0A /* Inbox VC */ = {
+			isa = PBXGroup;
+			children = (
+				7A71EB07194FE1A200C39B0A /* InboxTableViewController.h */,
+				7A71EB08194FE1A200C39B0A /* InboxTableViewController.m */,
+			);
+			name = "Inbox VC";
+			sourceTree = "<group>";
+		};
+		7A71EB0A19501C3200C39B0A /* Login VC */ = {
+			isa = PBXGroup;
+			children = (
+				7A71EB0B19501C5900C39B0A /* LoginViewController.h */,
+				7A71EB0C19501C5900C39B0A /* LoginViewController.m */,
+				7A71EB0E19501C6B00C39B0A /* SignupViewController.h */,
+				7A71EB0F19501C6B00C39B0A /* SignupViewController.m */,
+			);
+			name = "Login VC";
+			sourceTree = "<group>";
+		};
 		7A909662194CF3CC00010F38 = {
 			isa = PBXGroup;
 			children = (
@@ -111,31 +170,22 @@
 		7A90966D194CF3CC00010F38 /* Reveal */ = {
 			isa = PBXGroup;
 			children = (
-				7ACCEED0194F4FBE0099CF96 /* NewPostViewController.m */,
-				7ACCEED1194F4FBE0099CF96 /* NewPostViewController.h */,
+				7A71EB0A19501C3200C39B0A /* Login VC */,
+				7A71EB06194FE16B00C39B0A /* Inbox VC */,
+				7A71EB05194FDFEF00C39B0A /* Profile VC */,
+				7A71EB04194FDFC900C39B0A /* Feed VC */,
+				7A71EB03194FDF9D00C39B0A /* Notifications VC */,
 				7A90967B194CF3CC00010F38 /* Main.storyboard */,
 				D801DA91194EE53800CB9B00 /* ProfileView.h */,
 				D801DA92194EE53800CB9B00 /* ProfileView.m */,
 				D801DA8B194E528100CB9B00 /* EntryCell.h */,
 				D801DA8C194E528100CB9B00 /* EntryCell.m */,
-				7A90969A194CFEEF00010F38 /* DetailedPostViewController.h */,
-				7A90969B194CFEEF00010F38 /* DetailedPostViewController.m */,
 				7A909672194CF3CC00010F38 /* AppDelegate.h */,
 				7A909673194CF3CC00010F38 /* AppDelegate.m */,
-				7A909675194CF3CC00010F38 /* FirstViewController.h */,
-				7A909676194CF3CC00010F38 /* FirstViewController.m */,
-				7A909678194CF3CC00010F38 /* SecondViewController.h */,
-				7A909679194CF3CC00010F38 /* SecondViewController.m */,
-				7A90967E194CF3CC00010F38 /* Images.xcassets */,
-				7A90966E194CF3CC00010F38 /* Supporting Files */,
-				7A909694194CF63C00010F38 /* TableViewController.h */,
-				7A909695194CF63C00010F38 /* TableViewController.m */,
 				D801DA7F194D891200CB9B00 /* RevealPost.h */,
 				D801DA80194D891200CB9B00 /* RevealPost.m */,
-				D801DA8E194EDC1A00CB9B00 /* MeFeedTableViewController.h */,
-				D801DA8F194EDC1A00CB9B00 /* MeFeedTableViewController.m */,
-				D801DA94194F0B3000CB9B00 /* MeDetailedPostViewController.h */,
-				D801DA95194F0B3000CB9B00 /* MeDetailedPostViewController.m */,
+				7A90967E194CF3CC00010F38 /* Images.xcassets */,
+				7A90966E194CF3CC00010F38 /* Supporting Files */,
 			);
 			path = Reveal;
 			sourceTree = "<group>";
@@ -267,17 +317,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				D801DA93194EE53800CB9B00 /* ProfileView.m in Sources */,
-				7A90967A194CF3CC00010F38 /* SecondViewController.m in Sources */,
 				D801DA90194EDC1A00CB9B00 /* MeFeedTableViewController.m in Sources */,
+				7A71EB1019501C6B00C39B0A /* SignupViewController.m in Sources */,
 				7A909674194CF3CC00010F38 /* AppDelegate.m in Sources */,
 				7ACCEED2194F4FBE0099CF96 /* NewPostViewController.m in Sources */,
 				7A90969C194CFEEF00010F38 /* DetailedPostViewController.m in Sources */,
 				D801DA8D194E528100CB9B00 /* EntryCell.m in Sources */,
-				7A909677194CF3CC00010F38 /* FirstViewController.m in Sources */,
+				7A71EB0D19501C5900C39B0A /* LoginViewController.m in Sources */,
 				D801DA87194E0B0400CB9B00 /* DummyPosts.m in Sources */,
 				D801DA96194F0B3000CB9B00 /* MeDetailedPostViewController.m in Sources */,
 				7A909696194CF63C00010F38 /* TableViewController.m in Sources */,
 				7A909671194CF3CC00010F38 /* main.m in Sources */,
+				7A71EB09194FE1A200C39B0A /* InboxTableViewController.m in Sources */,
+				7A71EB02194FDF9000C39B0A /* NotificationsTableViewController.m in Sources */,
 				D801DA81194D891200CB9B00 /* RevealPost.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -431,6 +483,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = RevealTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				METAL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -447,6 +500,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = RevealTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				METAL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";

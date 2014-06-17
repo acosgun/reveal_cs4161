@@ -33,7 +33,8 @@
 
 - (void) dismissSelf
 {
-    [[self presentingViewController] dismissViewControllerAnimated:YES completion:nil];
+    //[[self presentingViewController] dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 - (void)viewDidLoad

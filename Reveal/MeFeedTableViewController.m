@@ -42,6 +42,16 @@
     return [NSURL URLWithString:self.thumbnail];
 }
 
+- (IBAction)logoutButtonPressed:(id)sender {
+    
+    
+     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+     [defaults setObject:nil forKey:@"auth_token"];
+     NSLog(@"TODO: Perform segue to login VC");
+     [self performSegueWithIdentifier:@"me_login" sender: self];
+     
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

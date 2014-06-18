@@ -70,4 +70,5 @@
 - (IBAction)revealToggleAction:(id)sender {
     _revealPost.revealed = self.revealSwitch.on;
 }
+
 @end

@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JsonHandler.h"
 
-@interface SignupViewController : UIViewController <UITextFieldDelegate>
+@interface SignupViewController : UIViewController <UITextFieldDelegate, NSURLSessionTaskDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *usernameField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordField;
 @property (weak, nonatomic) IBOutlet UITextField *rePasswordField;

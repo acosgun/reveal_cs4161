@@ -119,10 +119,17 @@
                             <outlet property="delegate" destination="Aoe-3o-UX1" id="Xa9-RX-ZlX"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Me" id="eUw-Du-5ZI"/>
+                    <navigationItem key="navigationItem" title="Me" id="eUw-Du-5ZI">
+                        <barButtonItem key="rightBarButtonItem" title="Log out" id="M98-Kn-uRy">
+                            <connections>
+                                <action selector="logoutButtonPressed:" destination="Aoe-3o-UX1" id="viX-m3-xAt"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="profileImage" destination="5dN-6z-lIs" id="Ke2-iW-h63"/>
                         <outlet property="publicSelector" destination="yFK-SX-h67" id="Ule-Ja-pci"/>
+                        <segue destination="TDl-MH-SKR" kind="modal" identifier="me_login" id="dgm-MH-Yit"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MlJ-Wn-yy3" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -173,7 +180,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hX7-1m-5Mf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3913" y="1900"/>
+            <point key="canvasLocation" x="3933" y="1900"/>
         </scene>
         <!--Table View Controller - Feed-->
         <scene sceneID="WRD-MH-hDd">
@@ -418,7 +425,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="49e-Tb-3d3" kind="modal" id="dUu-dV-EsP"/>
+                                    <segue destination="49e-Tb-3d3" kind="modal" identifier="login_tabbar" id="dUu-dV-EsP"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -529,7 +536,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="49e-Tb-3d3" kind="modal" id="t7e-DT-84Z"/>
+                                    <segue destination="49e-Tb-3d3" kind="modal" identifier="signup_tabbar" id="t7e-DT-84Z"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="jIh-ZF-x4I">
@@ -632,6 +639,7 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="dUu-dV-EsP"/>
+        <segue reference="t7e-DT-84Z"/>
+        <segue reference="RW3-y9-7Im"/>
     </inferredMetricsTieBreakers>
 </document>

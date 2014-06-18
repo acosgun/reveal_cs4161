@@ -20,5 +20,6 @@
 @property (nonatomic, strong) RevealPost *revealPost;
 
 - (NSURL *) thumbnailURL;
+- (IBAction)logoutButtonPressed:(id)sender;
 
 @end

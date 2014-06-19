@@ -60,43 +60,48 @@
     //self.publicSelector.selectedSegmentIndex = 0;
     
     self.thumbnail =@"https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/t1.0-1/p320x320/10176093_10201958858788756_229269747_n.jpg";
+    RevealPost *rp = [RevealPost postWithIDNumber:nil];
+    self.profileImage.image = [rp imageForThumbnail:self.thumbnail];
+    /* added this functionality to RevealPost class (call shown above). Is there a better way to do this without having to create rp instance?
     NSData *imageData = [NSData dataWithContentsOfURL:self.thumbnailURL];
     UIImage *image = [UIImage imageWithData:imageData];
     self.profileImage.image = image;
-    
-    RevealPost *post1 = [RevealPost postWithIDNumber:@1];
-    post1.userName = @"Travis";
-    post1.votes = @50;
-    post1.thumbnail = @"https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/t1.0-1/p320x320/10176093_10201958858788756_229269747_n.jpg";
-    post1.date = [NSDate dateWithTimeIntervalSinceNow:-60*2];
-    post1.body = @"Ohhhh I'm going to Escambia County tomorrow to inspect bridges, now whenever you visit home you'll be driving over bridges Murray inspected.";
-    post1.revealed = true;
-    
-    RevealPost *post2 = [RevealPost postWithIDNumber:@2];
-    post2.userName = @"Travis";
-    post2.votes = @3;
-    post2.thumbnail = @"https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/t1.0-1/p320x320/10176093_10201958858788756_229269747_n.jpg";
-    post2.date = [NSDate dateWithTimeIntervalSinceNow:-60*5];
-    post2.body = @"blue skies and delicious drinks at a rooftop bar in Philly? yes, please!";
-    post2.revealed = false;
-    
-    RevealPost *post3 = [RevealPost postWithIDNumber:@3];
-    post3.userName = @"Travis";
-    post3.votes = @-4;
-    post3.thumbnail = @"https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/t1.0-1/p320x320/10176093_10201958858788756_229269747_n.jpg";
-    post3.date = [NSDate dateWithTimeIntervalSinceNow:-60*20];
-    post3.body = @"Brand New tickets for Orlando in October go on sale today at noon. They will sell out extremely fast, probably before half an hour.";
-    post3.revealed = true;
-    
-    self.feed = [NSMutableArray arrayWithObjects:post1, post2, post3, nil];
-    //DummyPosts *feed = [DummyPosts arrayWithDummyData];
-    NSLog(@"dummy data: %@", self.feed);
-    self.titles = [NSMutableArray arrayWithObjects:@"item1",@"item2",@"item3",nil];
-    
-    NSLog(@"post1 body: %@", post1.body);
-    NSLog(@"post2 body: %@", post2.body);
-    NSLog(@"post3 body: %@", post3.body);
-    
+     */
+    if (self.feed == nil) {
+        RevealPost *post1 = [RevealPost postWithIDNumber:@1];
+        post1.userName = @"Travis";
+        post1.votes = @50;
+        post1.thumbnail = @"https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/t1.0-1/p320x320/10176093_10201958858788756_229269747_n.jpg";
+        post1.date = [NSDate dateWithTimeIntervalSinceNow:-60*2];
+        post1.body = @"Ohhhh I'm going to Escambia County tomorrow to inspect bridges, now whenever you visit home you'll be driving over bridges Murray inspected.";
+        post1.revealed = true;
+        
+        RevealPost *post2 = [RevealPost postWithIDNumber:@2];
+        post2.userName = @"Travis";
+        post2.votes = @3;
+        post2.thumbnail = @"https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/t1.0-1/p320x320/10176093_10201958858788756_229269747_n.jpg";
+        post2.date = [NSDate dateWithTimeIntervalSinceNow:-60*5];
+        post2.body = @"blue skies and delicious drinks at a rooftop bar in Philly? yes, please!";
+        post2.revealed = false;
+        
+        RevealPost *post3 = [RevealPost postWithIDNumber:@3];
+        post3.userName = @"Travis";
+        post3.votes = @-4;
+        post3.thumbnail = @"https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/t1.0-1/p320x320/10176093_10201958858788756_229269747_n.jpg";
+        post3.date = [NSDate dateWithTimeIntervalSinceNow:-60*20];
+        post3.body = @"Brand New tickets for Orlando in October go on sale today at noon. They will sell out extremely fast, probably before half an hour.";
+        post3.revealed = true;
+        
+        self.feed = [NSMutableArray arrayWithObjects:post1, post2, post3, nil];
+        //DummyPosts *feed = [DummyPosts arrayWithDummyData];
+        NSLog(@"dummy data: %@", self.feed);
+        self.titles = [NSMutableArray arrayWithObjects:@"item1",@"item2",@"item3",nil];
+        
+        NSLog(@"post1 body: %@", post1.body);
+        NSLog(@"post2 body: %@", post2.body);
+        NSLog(@"post3 body: %@", post3.body);
+    }
+
     self.publicFeed = [[NSMutableArray alloc] init];
     self.hiddenFeed = [[NSMutableArray alloc] init];
     for (RevealPost *rp in self.feed)
@@ -264,17 +269,13 @@
     if(_publicSelector.selectedSegmentIndex == 0){
         self.view.backgroundColor = [UIColor redColor];
         NSLog(@"hidden selected \n");
-        [self viewDidLoad];
-        [self.tableView reloadData];
-        
 	}
 	if(_publicSelector.selectedSegmentIndex == 1){
         self.view.backgroundColor = [UIColor blueColor];
         NSLog(@"public selected \n");
-        [self viewDidLoad];
-        [self.tableView reloadData];
-        
 	}
+    [self viewDidLoad];
+    [self.tableView reloadData];
     
 }
 @end

@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface RevealPost : NSObject
 
@@ -23,5 +24,6 @@
 - (id) initWithIDNumber:(NSNumber *)IDNumber;
 + (id) postWithIDNumber:(NSNumber *)IDNumber;
 - (NSURL *) thumbnailURL;
+- (UIImage *)imageForThumbnail:(NSString *)thumbnail;
 
 @end

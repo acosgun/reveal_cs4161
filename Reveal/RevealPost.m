@@ -8,6 +8,8 @@
 
 #import "RevealPost.h"
 
+@class UIImage;
+
 @implementation RevealPost
 
 
@@ -33,5 +35,14 @@
 - (NSURL *) thumbnailURL {
     return [NSURL URLWithString:self.thumbnail];
 }
+
+- (UIImage *)imageForThumbnail:(NSString *)thumbnail {
+    self.thumbnail = thumbnail;
+    NSData *imageData = [NSData dataWithContentsOfURL:self.thumbnailURL];
+    UIImage *image = [UIImage imageWithData:imageData];
+    
+    return image;
+}
+
 
 @end

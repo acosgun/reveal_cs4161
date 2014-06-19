@@ -36,10 +36,12 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    
+    self.meDetailPostImage.image = [_revealPost imageForThumbnail:_revealPost.thumbnail];
+    /*
     NSData *imageData = [NSData dataWithContentsOfURL:_revealPost.thumbnailURL];
     UIImage *image = [UIImage imageWithData:imageData];
     self.meDetailPostImage.image = image;
+     */
     
     self.bodyLabel.text = _revealPost.body;
     self.revealSwitch.on = _revealPost.isRevealed;

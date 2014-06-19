@@ -103,13 +103,14 @@
                 //NSLog(@"Status code: %i", ((NSHTTPURLResponse *)response).statusCode);
                 NSDictionary *in_json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                 NSNumber *success = [in_json objectForKey:@"success"];
-                //NSLog(@"success: %@",success);
+                NSLog(@"success: %@",success);
                 if(success)
                 {
                     NSString *auth_token = [in_json objectForKey:@"auth_token"];
                     NSLog(@"auth_token: %@",auth_token);
 
                     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                    NSLog(@"defaults contents: %@", defaults);
                     [defaults setObject:auth_token forKey:@"auth_token"];
                     //TODO: Perform segue to Feed VC
                     [self performSegueToTabbar];

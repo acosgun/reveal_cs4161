@@ -6,6 +6,11 @@
 //  Copyright (c) 2014 Georgia Tech. All rights reserved.
 //
 
+
+/* BUT FOUND BY ALEX ON 6/19/14  
+    During login after entering username and password, if user selects the login button before selecting
+    return on the text editor (meaning it is still displayed), the performSegueToTabbar method will crash. 
+ */
 #import "LoginViewController.h"
 
 @interface LoginViewController ()
@@ -111,14 +116,16 @@
                 //NSLog(@"Status code: %i", ((NSHTTPURLResponse *)response).statusCode);
                 NSDictionary *in_json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                 NSNumber *success = [in_json objectForKey:@"success"];
-                //NSLog(@"success: %@",success);
+                NSLog(@"success: %@",success);
                 if(success)
                 {
                     NSString *auth_token = [in_json objectForKey:@"auth_token"];
                     NSLog(@"auth_token: %@",auth_token);
                     
                     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                    
                     [defaults setObject:auth_token forKey:@"auth_token"];
+                    NSLog(@"contents of defaults object: %@", defaults);
                     //TODO: Perform segue to Feed VC
                     [self performSegueToTabbar];
                     

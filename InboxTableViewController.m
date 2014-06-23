@@ -27,11 +27,10 @@
 {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSLog(@"user ID: %@", [defaults objectForKey:@"userID"]);
+    NSLog(@"user name: %@", [defaults objectForKey:@"userName"]);
+
 }
 
 - (void)didReceiveMemoryWarning

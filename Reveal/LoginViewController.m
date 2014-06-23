@@ -120,12 +120,16 @@
                 if(success)
                 {
                     NSString *auth_token = [in_json objectForKey:@"auth_token"];
+                    NSString *userID = [in_json objectForKey:@"id"];
                     NSLog(@"auth_token: %@",auth_token);
                     
                     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                     
                     [defaults setObject:auth_token forKey:@"auth_token"];
+                    [defaults setObject:userID forKey:@"userID"];
+                    [defaults setObject:username forKey:@"userName"];
                     NSLog(@"contents of defaults object: %@", defaults);
+                    NSLog(@"user ID: %@", [defaults objectForKey:@"userID"]);
                     //TODO: Perform segue to Feed VC
                     [self performSegueToTabbar];
                     

@@ -86,12 +86,19 @@
             NSLog(@"success: %@",success);
             if([success boolValue] == YES)
             {
+                /*
                 NSString *auth_token = [in_json objectForKey:@"auth_token"];
                 NSLog(@"auth_token: %@",auth_token);
                 
                 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                 NSLog(@"defaults contents: %@", defaults);
                 [defaults setObject:auth_token forKey:@"auth_token"];
+                [defaults setObject:userID forKey:@"userID"];
+                [defaults setObject:username forKey:@"userName"];
+                 */
+                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                defaults = [self setDefaults:defaults jsonData:in_json];
+                
                 
                 [self.delegate makeSignupRequestCallback:true];
             }
@@ -143,6 +150,8 @@
             NSLog(@"success: %@",success);
             if([success boolValue] == YES)
             {
+                // can setDefaults method be implemented to do this work?
+                /*
                 NSString *auth_token = [in_json objectForKey:@"auth_token"];
                 NSString *userID = [in_json objectForKey:@"id"];
                 NSLog(@"auth_token: %@",auth_token);
@@ -152,6 +161,10 @@
                 [defaults setObject:auth_token forKey:@"auth_token"];
                 [defaults setObject:userID forKey:@"userID"];
                 [defaults setObject:username forKey:@"userName"];
+                 */
+                // end of setDefaults method
+                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                defaults = [self setDefaults:defaults jsonData:in_json];
                 
                 NSLog(@"user ID: %@", [defaults objectForKey:@"userID"]);
 
@@ -170,6 +183,23 @@
         }
     }];
     [postDataTask resume];
+}
+
+//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSUserDefaults *)setDefaults:(NSUserDefaults *)defaults jsonData:(NSDictionary *)in_json {
+    NSString *auth_token = [in_json objectForKey:@"auth_token"];
+    NSString *userID = [in_json objectForKey:@"id"];
+    NSString *username = [in_json objectForKey:@"username"];
+    
+    [defaults setObject:auth_token forKey:@"auth_token"];
+    [defaults setObject:userID forKey:@"userID"];
+    [defaults setObject:username forKey:@"userName"];
+    
+    NSLog(@"(setDefaults) username: %@", [defaults objectForKey:@"userName"]);
+    NSLog(@"(setDefaults) userID: %@", [defaults objectForKey:@"userID"]);
+    NSLog(@"(setDefaults) auth_token: %@", [defaults objectForKey:@"auth_token"]);
+    
+    return defaults;
 }
 
 @end

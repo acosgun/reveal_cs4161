@@ -7,13 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DataHandler.h"
 
 @class RevealPost;
 
-@interface TableViewController : UITableViewController
+@interface TableViewController : UITableViewController <DataHandlerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *feed;
-@property (nonatomic, strong) NSMutableArray *titles; //default, will delete later
-@property (nonatomic, strong) RevealPost *revealPost;
 
 @end

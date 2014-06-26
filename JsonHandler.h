@@ -17,17 +17,24 @@
 // define protocol functions that can be used in any class using this delegate
 -(void)jsonResponseCallback:(JsonHandler *)jsonClass;
 
+-(void) makeLoginRequestCallback:(BOOL) success;
+-(void) makeSignupRequestCallback:(BOOL) success;
+
+//-(void)makeLoginRequestCallback:(JsonHandler *)jsonClass;
+//- (CGFloat)sizeOfSegmentAtIndex:(NSUInteger)segmentIndex;
+
 @end
 
 
 
 
-@interface JsonHandler : NSObject
+
+@interface JsonHandler : NSObject <NSURLSessionDelegate>
 
 @property (nonatomic, assign) id  delegate;
 
 -(void)sendJsonRequest:(NSDictionary*) user_data user_url:(NSURL*)url user_urlrequest:(NSMutableURLRequest*)request;
-//[json_handler sendJsonRequest:user_data user_url:url user_urlrequest:request];
-//- (BOOL) initNetworkCommunication:(NSString*) ip port:(int) p;
+- (void) makeLoginRequest:(NSString*)username pass:(NSString*)password;
+- (void) makeSignupRequest:(NSString*)username pass:(NSString*)password;
 
 @end

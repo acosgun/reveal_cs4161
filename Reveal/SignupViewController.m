@@ -26,6 +26,10 @@
     self.passwordField.delegate = self;
     self.rePasswordField.delegate = self;
     
+    self.json_handler = [[JsonHandler alloc] init];
+    self.json_handler.delegate = self;
+
+    
 }
 
 
@@ -70,59 +74,26 @@
     }
     else
     {
-    NSLog(@"TODO: Signup HTTP request will be made to server");
-        
-        
-        NSDictionary *user_data = [NSDictionary dictionaryWithObjectsAndKeys:
-                                   [NSDictionary dictionaryWithObjectsAndKeys:
-                                    username, @"username",
-                                    password, @"password",
-                                    nil],
-                                   @"user", nil];
-        
-        NSURL *url = [NSURL URLWithString:@"http://reveal-api.herokuapp.com/users"];
-        
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
-                                                               cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                           timeoutInterval:60.0];
-        
-        [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-        [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
-        [request setHTTPMethod:@"POST"];
-        
-    NSError *error;
-    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
-     
-        NSData *postData = [NSJSONSerialization dataWithJSONObject:user_data options:0 error:&error];
-        [request setHTTPBody:postData];
-        NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            NSLog(@"Sent POST Request");
-            if (!error)
-            {
-                //NSLog(@"Status code: %i", ((NSHTTPURLResponse *)response).statusCode);
-                NSDictionary *in_json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                NSNumber *success = [in_json objectForKey:@"success"];
-                NSLog(@"success: %@",success);
-                if(success)
-                {
-                    NSString *auth_token = [in_json objectForKey:@"auth_token"];
-                    NSLog(@"auth_token: %@",auth_token);
-
-                    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                    NSLog(@"defaults contents: %@", defaults);
-                    [defaults setObject:auth_token forKey:@"auth_token"];
-                    //TODO: Perform segue to Feed VC
-                    [self performSegueToTabbar];
-                }
-            }
-            else
-            {
-                NSLog(@"Error: %@", error.localizedDescription);
-            }
-        }];
-        [postDataTask resume];
+    [self.json_handler makeSignupRequest:username pass:password];
     }
 }
+
+
+#pragma mark - Callbacks
+-(void)makeSignupRequestCallback:(BOOL) success
+{
+    NSLog(@"makeSignupRequestCallback");
+    if(success)
+    {
+        [self performSegueToTabbar];
+        NSLog(@"signup  successful");
+    }
+    else
+    {
+        NSLog(@"signup not successful");
+        //TODO: Show login error
+    }
+}
+
 
 @end

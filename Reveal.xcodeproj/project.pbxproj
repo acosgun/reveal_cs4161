@@ -19,6 +19,7 @@
 		7A909696194CF63C00010F38 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A909695194CF63C00010F38 /* TableViewController.m */; };
 		7A90969C194CFEEF00010F38 /* DetailedPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A90969B194CFEEF00010F38 /* DetailedPostViewController.m */; };
 		7ACCEED2194F4FBE0099CF96 /* NewPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ACCEED0194F4FBE0099CF96 /* NewPostViewController.m */; };
+		7AE8424B195C0D3E0036E223 /* DataHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8424A195C0D3E0036E223 /* DataHandler.m */; };
 		7AF74B821951723A005A73B7 /* JsonHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF74B811951723A005A73B7 /* JsonHandler.m */; };
 		D801DA81194D891200CB9B00 /* RevealPost.m in Sources */ = {isa = PBXBuildFile; fileRef = D801DA80194D891200CB9B00 /* RevealPost.m */; };
 		D801DA87194E0B0400CB9B00 /* DummyPosts.m in Sources */ = {isa = PBXBuildFile; fileRef = D801DA86194E0B0400CB9B00 /* DummyPosts.m */; };
@@ -63,6 +64,8 @@
 		7A90969B194CFEEF00010F38 /* DetailedPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailedPostViewController.m; path = ../DetailedPostViewController.m; sourceTree = "<group>"; };
 		7ACCEED0194F4FBE0099CF96 /* NewPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewPostViewController.m; sourceTree = SOURCE_ROOT; };
 		7ACCEED1194F4FBE0099CF96 /* NewPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewPostViewController.h; sourceTree = SOURCE_ROOT; };
+		7AE84249195C0D3E0036E223 /* DataHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataHandler.h; sourceTree = "<group>"; };
+		7AE8424A195C0D3E0036E223 /* DataHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataHandler.m; sourceTree = "<group>"; };
 		7AF74B801951723A005A73B7 /* JsonHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonHandler.h; path = ../JsonHandler.h; sourceTree = "<group>"; };
 		7AF74B811951723A005A73B7 /* JsonHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonHandler.m; path = ../JsonHandler.m; sourceTree = "<group>"; };
 		D801DA7F194D891200CB9B00 /* RevealPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RevealPost.h; sourceTree = "<group>"; };
@@ -178,12 +181,8 @@
 				7A90967B194CF3CC00010F38 /* Main.storyboard */,
 				D801DA91194EE53800CB9B00 /* ProfileView.h */,
 				D801DA92194EE53800CB9B00 /* ProfileView.m */,
-				D801DA8B194E528100CB9B00 /* EntryCell.h */,
-				D801DA8C194E528100CB9B00 /* EntryCell.m */,
 				7A909672194CF3CC00010F38 /* AppDelegate.h */,
 				7A909673194CF3CC00010F38 /* AppDelegate.m */,
-				D801DA7F194D891200CB9B00 /* RevealPost.h */,
-				D801DA80194D891200CB9B00 /* RevealPost.m */,
 				7A90967E194CF3CC00010F38 /* Images.xcassets */,
 				7A90966E194CF3CC00010F38 /* Supporting Files */,
 			);
@@ -219,8 +218,14 @@
 		7AF74B7819516FE8005A73B7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D801DA8B194E528100CB9B00 /* EntryCell.h */,
+				D801DA8C194E528100CB9B00 /* EntryCell.m */,
+				D801DA7F194D891200CB9B00 /* RevealPost.h */,
+				D801DA80194D891200CB9B00 /* RevealPost.m */,
 				7AF74B801951723A005A73B7 /* JsonHandler.h */,
 				7AF74B811951723A005A73B7 /* JsonHandler.m */,
+				7AE84249195C0D3E0036E223 /* DataHandler.h */,
+				7AE8424A195C0D3E0036E223 /* DataHandler.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -342,6 +347,7 @@
 				D801DA90194EDC1A00CB9B00 /* MeFeedTableViewController.m in Sources */,
 				7A71EB1019501C6B00C39B0A /* SignupViewController.m in Sources */,
 				7A909674194CF3CC00010F38 /* AppDelegate.m in Sources */,
+				7AE8424B195C0D3E0036E223 /* DataHandler.m in Sources */,
 				7ACCEED2194F4FBE0099CF96 /* NewPostViewController.m in Sources */,
 				7A90969C194CFEEF00010F38 /* DetailedPostViewController.m in Sources */,
 				D801DA8D194E528100CB9B00 /* EntryCell.m in Sources */,

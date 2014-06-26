@@ -12,8 +12,11 @@
     return on the text editor (meaning it is still displayed), the performSegueToTabbar method will crash. 
  */
 #import "LoginViewController.h"
+#import "JsonHandler.h"
+
 
 @interface LoginViewController ()
+
 
 @end
 
@@ -25,9 +28,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
  
-
     self.usernameField.delegate = self;
     self.passwordField.delegate = self;
+    self.json_handler = [[JsonHandler alloc] init];
+    self.json_handler.delegate = self;
     
 }
 
@@ -84,69 +88,28 @@
     }
     else
     {
-        NSLog(@"Login HTTP request will be made to server.. receive auth_token and save it.");
-        
-        NSDictionary *user_data = [NSDictionary dictionaryWithObjectsAndKeys:
-                                   [NSDictionary dictionaryWithObjectsAndKeys:
-                                    username, @"username",
-                                    password, @"password",
-                                    nil],
-                                   @"user", nil];
-        
-        NSURL *url = [NSURL URLWithString:@"http://reveal-api.herokuapp.com/users/login"];
-        
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
-                                                               cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                           timeoutInterval:60.0];
-        
-        [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-        [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
-        [request setHTTPMethod:@"POST"];
-        
-        NSError *error;
-        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-        NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
-        
-        NSData *postData = [NSJSONSerialization dataWithJSONObject:user_data options:0 error:&error];
-        [request setHTTPBody:postData];
-        NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            NSLog(@"Sent POST Request");
-            if (!error)
-            {
-                //NSLog(@"Status code: %i", ((NSHTTPURLResponse *)response).statusCode);
-                NSDictionary *in_json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                NSNumber *success = [in_json objectForKey:@"success"];
-                NSLog(@"success: %@",success);
-                if(success)
-                {
-                    NSString *auth_token = [in_json objectForKey:@"auth_token"];
-                    NSString *userID = [in_json objectForKey:@"id"];
-                    NSLog(@"auth_token: %@",auth_token);
-                    
-                    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                    
-                    [defaults setObject:auth_token forKey:@"auth_token"];
-                    [defaults setObject:userID forKey:@"userID"];
-                    [defaults setObject:username forKey:@"userName"];
-                    NSLog(@"contents of defaults object: %@", defaults);
-                    NSLog(@"user ID: %@", [defaults objectForKey:@"userID"]);
-                    //TODO: Perform segue to Feed VC
-                    [self performSegueToTabbar];
-                    
-                    
-                }
-            }
-            else
-            {
-                NSLog(@"Error: %@", error.localizedDescription);
-            }
-        }];
-        [postDataTask resume];
-        
-        
-        
+        [self.json_handler makeLoginRequest:username pass:password];
     }
     
     
 }
+
+#pragma mark - Callbacks
+
+-(void)makeLoginRequestCallback:(BOOL) success
+{
+    NSLog(@"makeLoginRequestCallback");
+    if(success)
+    {
+        [self performSegueToTabbar];
+        NSLog(@"login  successful");
+    }
+    else
+    {
+        NSLog(@"login not successful");
+        //TODO: Show login error
+    }
+}
+
+
 @end

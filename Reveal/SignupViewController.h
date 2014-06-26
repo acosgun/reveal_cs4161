@@ -9,10 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "JsonHandler.h"
 
-@interface SignupViewController : UIViewController <UITextFieldDelegate, NSURLSessionTaskDelegate>
+@interface SignupViewController : UIViewController <UITextFieldDelegate, NSURLSessionTaskDelegate, JsonHandlerDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *usernameField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordField;
 @property (weak, nonatomic) IBOutlet UITextField *rePasswordField;
+@property (strong, nonatomic) JsonHandler* json_handler;
 - (IBAction)signupButtonAction:(id)sender;
 
 @end

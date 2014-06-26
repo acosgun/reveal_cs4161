@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JsonHandler.h"
 
-@interface LoginViewController : UIViewController <UITextFieldDelegate,NSURLSessionTaskDelegate>
+@interface LoginViewController : UIViewController <UITextFieldDelegate,NSURLSessionTaskDelegate, JsonHandlerDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *usernameField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordField;
+@property (strong, nonatomic) JsonHandler* json_handler;
 - (IBAction)loginButtonAction:(id)sender;
 
 @end

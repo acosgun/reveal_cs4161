@@ -8,6 +8,7 @@
 
 #define LOGIN_URL @"http://reveal-api.herokuapp.com/users/login"
 #define USERS_URL @"http://reveal-api.herokuapp.com/users"
+#define POSTS_URL @"http://reveal-api.herokuapp.com/posts"
 
 #import "JsonHandler.h"
 
@@ -23,7 +24,7 @@
     
 }
 
--(void) sendJsonRequest:(NSDictionary*) user_data user_url:(NSURL*)url user_urlrequest:(NSMutableURLRequest*)request;
+-(void) sendJsonRequest:(NSDictionary*)user_data user_url:(NSURL*)url user_urlrequest:(NSMutableURLRequest*)request;
 {
     NSLog(@"request received");    
     [self.delegate jsonResponseCallback:self];
@@ -51,7 +52,6 @@
     NSError *error;
     NSData *postData = [NSJSONSerialization dataWithJSONObject:user_data options:0 error:&error];
     [request setHTTPBody:postData];
-    
     
     return request;
 }
@@ -117,15 +117,9 @@
     [postDataTask resume];
 }
 
-
-
-
-
 -(void) makeLoginRequest:(NSString*)username pass:(NSString*)password
 {
-    
     NSLog(@"makeLoginRequest");
-    
     
     NSDictionary *user_data = [NSDictionary dictionaryWithObjectsAndKeys:
                                [NSDictionary dictionaryWithObjectsAndKeys:
@@ -133,12 +127,10 @@
                                 password, @"password",
                                 nil],
                                @"user", nil];
-    
-    
+    NSLog(@"login: user_data: %@", user_data);
     
     NSMutableURLRequest *request = [self createJSONMutableURLRequest:LOGIN_URL method:@"POST" userData:user_data];
     NSURLSession *session = [self createDefaultNSURLSession];
-    
     
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSLog(@"Sent POST Request");
@@ -146,6 +138,7 @@
         {
             //NSLog(@"Status code: %i", ((NSHTTPURLResponse *)response).statusCode);
             NSDictionary *in_json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            NSLog(@"login: in_json: %@", in_json);
             NSNumber *success = [in_json objectForKey:@"success"];
             NSLog(@"success: %@",success);
             if([success boolValue] == YES)
@@ -166,7 +159,7 @@
                 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                 defaults = [self setDefaults:defaults jsonData:in_json];
                 
-                NSLog(@"user ID: %@", [defaults objectForKey:@"userID"]);
+                NSLog(@"user ID (test): %@", [defaults objectForKey:@"user_id"]);
 
                 
                 [self.delegate makeLoginRequestCallback:true];
@@ -185,18 +178,77 @@
     [postDataTask resume];
 }
 
-//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (void) createPostRequestWithContent:(NSString *)body isRevealed:(BOOL)isRevealed {
+    //{"post":{"user_id":1,"revealed":true, "content":"add some cuel votes", "latitude":12.13, "longitude": 123.41}}
+    NSLog(@"makeLoginRequest");
+    NSNumber *isRevealedBOOL = [NSNumber numberWithBool:isRevealed];
+    NSNumber * latitude = [NSNumber numberWithFloat:5.2f];
+    NSNumber * longitude = [NSNumber numberWithFloat:10.11f];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    /*
+    NSDictionary *user_data = [NSDictionary dictionaryWithObjectsAndKeys:
+                               [NSDictionary dictionaryWithObjectsAndKeys:
+                                username, @"username",
+                                password, @"password",
+                                nil],
+                               @"user", nil];
+     */
+    NSLog(@"contents of defaults in createPostRequestWithContent");
+    NSLog(@"username: %@     user_id: %@", [defaults objectForKey:@"username"], [defaults objectForKey:@"user_id"]);
+    NSDictionary *post_data = [NSDictionary dictionaryWithObjectsAndKeys:
+                               [NSDictionary dictionaryWithObjectsAndKeys:
+                                [defaults objectForKey:@"user_id"], @"user_id",
+                                isRevealedBOOL, @"revealed",
+                                body, @"content",
+                                //latitude, @"latitude",
+                                //longitude, @"longitude",
+                                nil],
+                               @"post", nil];
+    NSLog(@"post_data dictionary: %@", post_data);
+    
+    NSMutableURLRequest *request = [self createJSONMutableURLRequest:POSTS_URL method:@"POST" userData:post_data];
+    NSURLSession *session = [self createDefaultNSURLSession];
+    
+    NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSLog(@"Sent POST Request from createPostRequestWithContent:isRevealed");
+        if (!error)
+        {
+            NSLog(@"there was no error");
+            NSDictionary *in_json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            NSNumber *success = [in_json objectForKey:@"success"];
+            NSLog(@"success: %@",success);
+            if([success boolValue] == YES)
+            {
+                [self.delegate makeLoginRequestCallback:true];
+            }
+            else
+            {
+                NSLog(@"data in_json dictionary: %@", in_json);
+                [self.delegate makeLoginRequestCallback:false];
+            }
+        }
+        else
+        {
+            [self.delegate makeLoginRequestCallback:false];
+            NSLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
+    [postDataTask resume];
+}
+
+
 - (NSUserDefaults *)setDefaults:(NSUserDefaults *)defaults jsonData:(NSDictionary *)in_json {
     NSString *auth_token = [in_json objectForKey:@"auth_token"];
-    NSString *userID = [in_json objectForKey:@"id"];
+    NSString *user_id = [in_json objectForKey:@"id"];
     NSString *username = [in_json objectForKey:@"username"];
     
     [defaults setObject:auth_token forKey:@"auth_token"];
-    [defaults setObject:userID forKey:@"userID"];
-    [defaults setObject:username forKey:@"userName"];
+    [defaults setObject:user_id forKey:@"user_id"];
+    [defaults setObject:username forKey:@"username"];
     
-    NSLog(@"(setDefaults) username: %@", [defaults objectForKey:@"userName"]);
-    NSLog(@"(setDefaults) userID: %@", [defaults objectForKey:@"userID"]);
+    NSLog(@"(setDefaults) username: %@", [defaults objectForKey:@"username"]);
+    NSLog(@"(setDefaults) user_id: %@", [defaults objectForKey:@"user_id"]);
     NSLog(@"(setDefaults) auth_token: %@", [defaults objectForKey:@"auth_token"]);
     
     return defaults;

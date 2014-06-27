@@ -19,6 +19,7 @@
 
 -(void) makeLoginRequestCallback:(BOOL) success;
 -(void) makeSignupRequestCallback:(BOOL) success;
+-(void) createPostRequestCallback:(BOOL) success;
 
 //-(void)makeLoginRequestCallback:(JsonHandler *)jsonClass;
 //- (CGFloat)sizeOfSegmentAtIndex:(NSUInteger)segmentIndex;
@@ -36,5 +37,6 @@
 -(void)sendJsonRequest:(NSDictionary*) user_data user_url:(NSURL*)url user_urlrequest:(NSMutableURLRequest*)request;
 - (void) makeLoginRequest:(NSString*)username pass:(NSString*)password;
 - (void) makeSignupRequest:(NSString*)username pass:(NSString*)password;
+- (void) createPostRequestWithContent:(NSString *)body isRevealed:(BOOL)isRevealed;
 
 @end

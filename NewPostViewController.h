@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class JsonHandler;
+
 @interface NewPostViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UITextView *textView;
-
+@property (strong, nonatomic) JsonHandler *json_handler;
 
 @end

@@ -56,7 +56,10 @@
 
 -(void) performSegueToTabbar
 {
- [self performSegueWithIdentifier:@"login_tabbar" sender: self];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self performSegueWithIdentifier:@"login_tabbar" sender: self];
+    });
+ 
 }
 
 /*
@@ -71,7 +74,7 @@
 */
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    //NSLog(@"textFieldShouldReturn");
+    NSLog(@"textFieldShouldReturn");
     [textField resignFirstResponder];
     return YES;
 }
@@ -101,6 +104,7 @@
     NSLog(@"makeLoginRequestCallback");
     if(success)
     {
+        
         [self performSegueToTabbar];
         NSLog(@"login  successful");
     }

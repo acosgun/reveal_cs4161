@@ -184,12 +184,15 @@
 
 - (void) createPostRequestWithContent:(NSString *)body isRevealed:(BOOL)isRevealed {
     //{"post":{"user_id":1,"revealed":true, "content":"add some cuel votes", "latitude":12.13, "longitude": 123.41}}
-    NSLog(@"create new post request");
+    NSLog(@"createPostRequestWithContent");
+    NSLog(@"body: %@",body);
     NSNumber *isRevealedBOOL = [NSNumber numberWithBool:isRevealed];
-    NSNumber * latitude = [NSNumber numberWithFloat:5.2f];
-    NSNumber * longitude = [NSNumber numberWithFloat:10.11f];
+    //NSNumber *latitude = [NSNumber numberWithFloat:5.2f];
+    //NSNumber *longitude = [NSNumber numberWithFloat:10.11f];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *auth_token =[defaults stringForKey:@"auth_token"];
+    NSString *user_id = [defaults objectForKey:@"user_id"];
     /*
     NSDictionary *user_data = [NSDictionary dictionaryWithObjectsAndKeys:
                                [NSDictionary dictionaryWithObjectsAndKeys:
@@ -198,24 +201,31 @@
                                 nil],
                                @"user", nil];
      */
-    NSLog(@"contents of defaults in createPostRequestWithContent");
-    NSLog(@"username: %@     user_id: %@", [defaults objectForKey:@"username"], [defaults objectForKey:@"user_id"]);
+    //NSLog(@"contents of defaults in createPostRequestWithContent");
+    NSLog(@"username: %@ | user_id: %@", [defaults objectForKey:@"username"], [defaults objectForKey:@"user_id"]);
     NSDictionary *post_data = [NSDictionary dictionaryWithObjectsAndKeys:
                                [NSDictionary dictionaryWithObjectsAndKeys:
-                                [defaults objectForKey:@"user_id"], @"user_id",
+                                user_id, @"user_id",
                                 isRevealedBOOL, @"revealed",
                                 body, @"content",
                                 //latitude, @"latitude",
                                 //longitude, @"longitude",
                                 nil],
-                               @"post", nil];
+                               @"post",
+                               nil];
     NSLog(@"post_data dictionary: %@", post_data);
     
     NSMutableURLRequest *request = [self createJSONMutableURLRequest:POSTS_URL method:@"POST" userData:post_data];
+    
+    NSString *authen_str = [NSString stringWithFormat:@"Token token=%@", auth_token];
+    NSLog(@"authen_str: %@",authen_str);
+    [request addValue:authen_str forHTTPHeaderField:@"Authorization"];
+    
+    
     NSURLSession *session = [self createDefaultNSURLSession];
     
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        NSLog(@"Sent POST Request from createPostRequestWithContent:isRevealed");
+        NSLog(@"Sent POST Request from createPostRequestWithContent");
         if (!error)
         {
             NSLog(@"there was no error");

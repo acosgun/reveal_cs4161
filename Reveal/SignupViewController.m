@@ -53,11 +53,15 @@
 
 -(void) performSegueToTabbar
 {
-    [self performSegueWithIdentifier:@"signup_tabbar" sender: self];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self performSegueWithIdentifier:@"signup_tabbar" sender: self];
+    });
 }
 
 
 - (IBAction)signupButtonAction:(id)sender {
+    
     NSString *username = [self.usernameField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *password = [self.passwordField.text  stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *repassword = [self.rePasswordField.text  stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];

@@ -8,6 +8,7 @@
 
 #import "DataHandler.h"
 #import "RevealPost.h"
+#import "JsonHandler.h"
 
 @implementation DataHandler
 
@@ -25,8 +26,14 @@ static DataHandler *sharedDataSource = nil;
 - (void) updateFeeds {
     NSLog(@"updateFeeds");
     //TODO: Make RESTful call to server
-    [self fillFeedWithFakeData];
-    [self.delegate feedUpdatedCallback:self];
+    
+    //[self fillFeedWithFakeData];
+    self.json_handler = [[JsonHandler alloc] init];
+    self.json_handler.delegate = self;
+    [self.json_handler getTenMostRecentPosts];
+    //[self fillFeedWithTenMostRecentPosts]; method call moved to callback (below)
+    
+    //[self.delegate feedUpdatedCallback:self];
 }
 
 - (id)init {
@@ -35,6 +42,22 @@ static DataHandler *sharedDataSource = nil;
         self.nearby_feed = [NSMutableArray array];
     }
     return self;
+}
+
+- (void) fillFeedWithTenMostRecentPosts:(NSArray *)posts {
+    self.nearby_feed = [[NSMutableArray alloc] init];
+    for (NSDictionary *post in posts) {
+        RevealPost *revealPost = [RevealPost postWithIDNumber:[post objectForKey:@"id"]];
+        revealPost.userName = [post objectForKey:@"username"];
+        revealPost.votes = [post objectForKey:@"watch_stat"];
+        revealPost.thumbnail = [post objectForKey:@"avatar_thumb"];
+        revealPost.date = [NSDate dateWithTimeIntervalSinceNow:-60*2];
+        revealPost.body = [post objectForKey:@"content"];
+        revealPost.revealed = [[post objectForKey:@"revealed"]boolValue];
+        
+        [self.nearby_feed addObject:revealPost];
+    }
+    NSLog(@"ten recent posts from fillFeedWithTenMostRecentPosts: %@", self.nearby_feed);
 }
 
 - (void) fillFeedWithFakeData
@@ -62,6 +85,14 @@ static DataHandler *sharedDataSource = nil;
     post3.body = @"Brand New tickets for Orlando in October go on sale today at noon. They will sell out extremely fast, probably before half an hour.";
     
     self.nearby_feed = [NSMutableArray arrayWithObjects:post1, post2, post3, nil];
+}
+
+#pragma mark - Callbacks
+-(void) getTenMostRecentPostsCallback:tenMostRecentPosts {
+    //self.nearby_feed = tenMostRecentPosts;
+    [self fillFeedWithTenMostRecentPosts:tenMostRecentPosts];
+    NSLog(@"Ten most recent posts sent back to DataHandler.m");
+    [self.delegate feedUpdatedCallback:self];
 }
 
 @end

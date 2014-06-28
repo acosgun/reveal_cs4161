@@ -163,6 +163,10 @@ DataHandler *data_handler;
 - (void)feedUpdatedCallback:(DataHandler *)dataHandlerClass {
     NSLog(@"feedUpdatedCallback in TableController.m");
     self.feed = dataHandlerClass.nearby_feed;
+    NSLog(@"callback from dataHandler to TAbleViewController (in Table VC)");
+    
+    //[self viewDidLoad];
+    [self.tableView reloadData];
 }
 
 @end

@@ -9,6 +9,7 @@
 #define LOGIN_URL @"http://reveal-api.herokuapp.com/users/login"
 #define USERS_URL @"http://reveal-api.herokuapp.com/users"
 #define POSTS_URL @"http://reveal-api.herokuapp.com/posts"
+#define TEN_RECENT_POSTS_URL @"http://reveal-api.herokuapp.com/posts/index"
 
 #import "JsonHandler.h"
 
@@ -49,9 +50,12 @@
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request setHTTPMethod:method_str];
     
-    NSError *error;
-    NSData *postData = [NSJSONSerialization dataWithJSONObject:user_data options:0 error:&error];
-    [request setHTTPBody:postData];
+    if (user_data != nil) {
+        NSError *error;
+        NSData *postData = [NSJSONSerialization dataWithJSONObject:user_data options:0 error:&error];
+        [request setHTTPBody:postData];
+    }
+    
     
     return request;
 }
@@ -180,7 +184,7 @@
 
 - (void) createPostRequestWithContent:(NSString *)body isRevealed:(BOOL)isRevealed {
     //{"post":{"user_id":1,"revealed":true, "content":"add some cuel votes", "latitude":12.13, "longitude": 123.41}}
-    NSLog(@"makeLoginRequest");
+    NSLog(@"create new post request");
     NSNumber *isRevealedBOOL = [NSNumber numberWithBool:isRevealed];
     NSNumber * latitude = [NSNumber numberWithFloat:5.2f];
     NSNumber * longitude = [NSNumber numberWithFloat:10.11f];
@@ -220,23 +224,47 @@
             NSLog(@"success: %@",success);
             if([success boolValue] == YES)
             {
-                [self.delegate makeLoginRequestCallback:true];
+                [self.delegate createPostRequestCallback:true];
             }
             else
             {
                 NSLog(@"data in_json dictionary: %@", in_json);
-                [self.delegate makeLoginRequestCallback:false];
+                [self.delegate createPostRequestCallback:false];
             }
         }
         else
         {
-            [self.delegate makeLoginRequestCallback:false];
+            [self.delegate createPostRequestCallback:FALSE];
             NSLog(@"Error: %@", error.localizedDescription);
         }
     }];
     [postDataTask resume];
 }
 
+
+-(void) getTenMostRecentPosts {
+    NSMutableURLRequest *request = [self createJSONMutableURLRequest:TEN_RECENT_POSTS_URL method:@"GET" userData:nil];
+    NSURLSession *session = [self createDefaultNSURLSession];
+    
+    NSURLSessionDataTask *getDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSLog(@"Sent GET Request from createPostRequestWithContent:isRevealed");
+        if (!error)
+        {
+            NSLog(@"there was no error");
+            //Must create dictionary of posts containing dictionary of JSON data so that it can be easily converted to an array
+            NSDictionary *in_json = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     [NSJSONSerialization JSONObjectWithData:data options:0 error:nil], @"posts", nil];
+            NSLog(@"data in_json dictionary: %@", in_json);
+            
+            NSArray *tenMostRecentPosts = [in_json objectForKey:@"posts"];
+            NSLog(@"tenMostRecentPosts Array: %@", tenMostRecentPosts);
+            
+            [self.delegate getTenMostRecentPostsCallback:tenMostRecentPosts];
+        }
+    }];
+    [getDataTask resume];
+    
+}
 
 - (NSUserDefaults *)setDefaults:(NSUserDefaults *)defaults jsonData:(NSDictionary *)in_json {
     NSString *auth_token = [in_json objectForKey:@"auth_token"];

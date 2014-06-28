@@ -17,9 +17,10 @@
 // define protocol functions that can be used in any class using this delegate
 -(void)jsonResponseCallback:(JsonHandler *)jsonClass;
 
--(void) makeLoginRequestCallback:(BOOL) success;
--(void) makeSignupRequestCallback:(BOOL) success;
--(void) createPostRequestCallback:(BOOL) success;
+-(void) makeLoginRequestCallback:(BOOL)success;
+-(void) makeSignupRequestCallback:(BOOL)success;
+-(void) createPostRequestCallback:(BOOL)success;
+-(void) getTenMostRecentPostsCallback:(NSArray *)tenMostRecentPosts;
 
 //-(void)makeLoginRequestCallback:(JsonHandler *)jsonClass;
 //- (CGFloat)sizeOfSegmentAtIndex:(NSUInteger)segmentIndex;
@@ -38,5 +39,6 @@
 - (void) makeLoginRequest:(NSString*)username pass:(NSString*)password;
 - (void) makeSignupRequest:(NSString*)username pass:(NSString*)password;
 - (void) createPostRequestWithContent:(NSString *)body isRevealed:(BOOL)isRevealed;
+-(void) getTenMostRecentPosts;
 
 @end

@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class JsonHandler;
+
 // declare our class
 @class DataHandler;
 
@@ -24,6 +26,7 @@
 
 @property (nonatomic, assign) id  delegate;
 @property (nonatomic, strong) NSMutableArray *nearby_feed;
+@property (nonatomic, strong) JsonHandler *json_handler;
 
 + (DataHandler *) sharedInstance;
 - (void) updateFeeds;

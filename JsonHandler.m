@@ -205,8 +205,6 @@
                                 [defaults objectForKey:@"user_id"], @"user_id",
                                 isRevealedBOOL, @"revealed",
                                 body, @"content",
-                                //latitude, @"latitude",
-                                //longitude, @"longitude",
                                 nil],
                                @"post", nil];
     NSLog(@"post_data dictionary: %@", post_data);

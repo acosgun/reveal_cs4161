@@ -12,8 +12,10 @@
 #import "DummyPosts.h"
 #import "EntryCell.h"
 #import "MeDetailedPostViewController.h"
+#import "DataHandler.h"
 
 @interface MeFeedTableViewController ()
+
 @property (strong, nonatomic) NSString *thumbnail;
 
 @property (strong, nonatomic) IBOutlet UIImageView *profileImage;
@@ -23,11 +25,10 @@
 
 @end
 
+
 @implementation MeFeedTableViewController
 
-
-
-
+DataHandler *data_handler;
 
 - (instancetype)initWithStyle:(UITableViewStyle)style
 {
@@ -56,17 +57,15 @@
 {
     [super viewDidLoad];
     
-    //self.publicSelector.selectedSegmentIndex = 1;
-    //self.publicSelector.selectedSegmentIndex = 0;
+    data_handler = [DataHandler sharedInstance];
+    data_handler.delegate = self;
+    [data_handler updateFeedsWithIdentifier:@"MeFeedTableViewController"];
     
+    /*
     self.thumbnail =@"https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/t1.0-1/p320x320/10176093_10201958858788756_229269747_n.jpg";
     RevealPost *rp = [RevealPost postWithIDNumber:nil];
     self.profileImage.image = [rp imageForThumbnail:self.thumbnail];
-    /* added this functionality to RevealPost class (call shown above). Is there a better way to do this without having to create rp instance?
-    NSData *imageData = [NSData dataWithContentsOfURL:self.thumbnailURL];
-    UIImage *image = [UIImage imageWithData:imageData];
-    self.profileImage.image = image;
-     */
+    
     if (self.feed == nil) {
         RevealPost *post1 = [RevealPost postWithIDNumber:@1];
         post1.userName = @"Travis";
@@ -101,7 +100,8 @@
         NSLog(@"post2 body: %@", post2.body);
         NSLog(@"post3 body: %@", post3.body);
     }
-
+     */
+    /*
     self.publicFeed = [[NSMutableArray alloc] init];
     self.hiddenFeed = [[NSMutableArray alloc] init];
     for (RevealPost *rp in self.feed)
@@ -114,13 +114,16 @@
             [self.hiddenFeed addObject:rp];
         }
     }
+     */
     
+    /*
     self.displayedData = [[NSMutableArray alloc] init];
     if (_publicSelector.selectedSegmentIndex == 0) {
         self.displayedData = self.hiddenFeed;
     } else if (_publicSelector.selectedSegmentIndex == 1) {
         self.displayedData = self.publicFeed;
     }
+     */
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -280,4 +283,7 @@
     [self.tableView reloadData];
     
 }
+
+#pragma mark - Callbacks
+
 @end

@@ -29,7 +29,7 @@
 @property (nonatomic, strong) JsonHandler *json_handler;
 
 + (DataHandler *) sharedInstance;
-- (void) updateFeeds;
+- (void) updateFeedsWithIdentifier:(NSString *)identifier;
 
 
 @end

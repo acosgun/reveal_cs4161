@@ -23,17 +23,22 @@ static DataHandler *sharedDataSource = nil;
     return sharedDataSource;
 }
 
-- (void) updateFeeds {
+- (void) updateFeedsWithIdentifier:(NSString *)identifier {
     NSLog(@"updateFeeds");
     //TODO: Make RESTful call to server
     
     //[self fillFeedWithFakeData];
     self.json_handler = [[JsonHandler alloc] init];
     self.json_handler.delegate = self;
-    [self.json_handler getTenMostRecentPosts];
-    //[self fillFeedWithTenMostRecentPosts]; method call moved to callback (below)
     
-    //[self.delegate feedUpdatedCallback:self];
+    if ([identifier  isEqualToString:@"TableViewController"]) {
+        [self.json_handler getTenMostRecentPosts];
+    } else if ([identifier  isEqualToString:@"MeFeedTableViewController"]) {
+        [self.json_handler getUserPosts];
+    }
+    
+    
+    [self.delegate feedUpdatedCallback:self];
 }
 
 - (id)init {

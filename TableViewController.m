@@ -36,7 +36,8 @@ DataHandler *data_handler;
     data_handler = [DataHandler sharedInstance];
     data_handler.delegate = self;
     
-    [[DataHandler sharedInstance] updateFeeds];
+    //[[DataHandler sharedInstance] updateFeeds];
+    [data_handler updateFeedsWithIdentifier:@"TableViewController"];
 }
 
 

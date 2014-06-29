@@ -6,10 +6,11 @@
 //  Copyright (c) 2014 Georgia Tech. All rights reserved.
 //
 
-#define LOGIN_URL @"http://reveal-api.herokuapp.com/users/login"
-#define USERS_URL @"http://reveal-api.herokuapp.com/users"
-#define POSTS_URL @"http://reveal-api.herokuapp.com/posts"
+#define LOGIN_URL            @"http://reveal-api.herokuapp.com/users/login"
+#define USERS_URL            @"http://reveal-api.herokuapp.com/users"
+#define POSTS_URL            @"http://reveal-api.herokuapp.com/posts"
 #define TEN_RECENT_POSTS_URL @"http://reveal-api.herokuapp.com/posts/index"
+#define USER_POSTS           @"http://reveal-api.herokuapp.com/posts/index_for_user"
 
 #import "JsonHandler.h"
 
@@ -223,7 +224,7 @@
     NSURLSession *session = [self createDefaultNSURLSession];
     
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        NSLog(@"Sent POST Request from createPostRequestWithContent");
+        NSLog(@"Sent POST Request from createPostRequestWithContent:isRevealed");
         if (!error)
         {
             NSLog(@"there was no error");
@@ -251,11 +252,12 @@
 
 
 -(void) getTenMostRecentPosts {
+    
     NSMutableURLRequest *request = [self createJSONMutableURLRequest:TEN_RECENT_POSTS_URL method:@"GET" userData:nil];
     NSURLSession *session = [self createDefaultNSURLSession];
     
     NSURLSessionDataTask *getDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        NSLog(@"Sent GET Request from createPostRequestWithContent:isRevealed");
+        NSLog(@"Sent GET Request from getTenMostRecentPosts");
         if (!error)
         {
             NSLog(@"there was no error");
@@ -273,6 +275,44 @@
     [getDataTask resume];
     
 }
+
+
+
+- (void) getUserPosts {
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *auth_token =[defaults stringForKey:@"auth_token"];
+    
+    NSMutableString *urlString = [NSMutableString stringWithString:USER_POSTS];
+    [urlString appendString:[[defaults objectForKey:@"user_id"] stringValue]];
+    NSMutableURLRequest *request = [self createJSONMutableURLRequest:TEN_RECENT_POSTS_URL method:@"GET" userData:nil];
+    
+    NSString *authen_str = [NSString stringWithFormat:@"Token token=%@", auth_token];
+    NSLog(@"authen_str: %@",authen_str);
+    [request addValue:authen_str forHTTPHeaderField:@"Authorization"];
+    
+    NSURLSession *session = [self createDefaultNSURLSession];
+    
+    NSURLSessionDataTask *getDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSLog(@"Sent GET Request from createPostRequestWithContent:isRevealed");
+        if (!error)
+        {
+            NSLog(@"there was no error");
+            //Must create dictionary of posts containing dictionary of JSON data so that it can be easily converted to an array
+            NSDictionary *in_json = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     [NSJSONSerialization JSONObjectWithData:data options:0 error:nil], @"posts", nil];
+            NSLog(@"data in_json dictionary: %@", in_json);
+            
+            NSArray *userPosts = [in_json objectForKey:@"posts"];
+            NSLog(@"userPosts Array: %@", userPosts);
+            
+            [self.delegate getUserPostsCallBack:userPosts];
+        }
+    }];
+    [getDataTask resume];
+}
+
+
 
 - (NSUserDefaults *)setDefaults:(NSUserDefaults *)defaults jsonData:(NSDictionary *)in_json {
     NSString *auth_token = [in_json objectForKey:@"auth_token"];

@@ -21,6 +21,7 @@
 -(void) makeSignupRequestCallback:(BOOL)success;
 -(void) createPostRequestCallback:(BOOL)success;
 -(void) getTenMostRecentPostsCallback:(NSArray *)tenMostRecentPosts;
+-(void) getUserPostsCallBack:(NSArray *)userPosts;
 
 //-(void)makeLoginRequestCallback:(JsonHandler *)jsonClass;
 //- (CGFloat)sizeOfSegmentAtIndex:(NSUInteger)segmentIndex;
@@ -40,5 +41,6 @@
 - (void) makeSignupRequest:(NSString*)username pass:(NSString*)password;
 - (void) createPostRequestWithContent:(NSString *)body isRevealed:(BOOL)isRevealed;
 -(void) getTenMostRecentPosts;
+- (void) getUserPosts;
 
 @end

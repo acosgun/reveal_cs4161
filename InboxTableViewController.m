@@ -30,7 +30,12 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSLog(@"user ID: %@", [defaults objectForKey:@"userID"]);
     NSLog(@"user name: %@", [defaults objectForKey:@"userName"]);
+    NSLog(@"title of table view controller: %@", self.title);
 
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+    NSLog(@"title of table view controller: %@", self.title);
 }
 
 - (void)didReceiveMemoryWarning

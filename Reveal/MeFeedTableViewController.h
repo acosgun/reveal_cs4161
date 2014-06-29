@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DataHandler.h"
 
 @class RevealPost;
 
-@interface MeFeedTableViewController : UITableViewController
+@interface MeFeedTableViewController : UITableViewController <DataHandlerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *feed;
 @property (nonatomic, strong) NSMutableArray *hiddenFeed;

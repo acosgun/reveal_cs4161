@@ -42,7 +42,12 @@
     NSTimeInterval elapsedTime = [revealPost.date timeIntervalSinceNow];
     int intElapsedTime = (int)elapsedTime/60 * -1;
     self.elapsedTimeLabel.text = [NSString stringWithFormat:@"%dm", intElapsedTime];
+    self.nameLabel.text = revealPost.userName;
     
+    NSData *imageData = [NSData dataWithContentsOfURL:revealPost.thumbnailURL];
+    UIImage *image = [UIImage imageWithData:imageData];
+    self.mainImageLabel.image = image;
+    /*
     if ([revealPost isRevealed]) {
         self.nameLabel.text = revealPost.userName;
         
@@ -53,6 +58,7 @@
         self.nameLabel.text = @"Anonymous";
         self.mainImageLabel.image = [UIImage imageNamed:@"anonymous_thumbnail.png"];
     }
+     */
 }
 
 @end

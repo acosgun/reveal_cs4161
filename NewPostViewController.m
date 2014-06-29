@@ -81,6 +81,7 @@
 - (void) createPostRequestCallback:(BOOL)success {
     if (success) {
         NSLog(@"New post was created!!!");
+        [self dismissSelf];
     } else {
         NSLog(@"Error creating new post");
         //TODO: show error for creating post

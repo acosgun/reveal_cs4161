@@ -23,7 +23,7 @@
 - (void) setFrameHeight:(RevealPost *)revealPost {
     const CGFloat topMargin = 35.0f;
     const CGFloat bottomMargin = 40.0f;
-    const CGFloat minHeight = 150.0f;
+    const CGFloat minHeight = 135.0f;
     
     UIFont *font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
     

@@ -20,6 +20,9 @@
 @property (nonatomic, strong) NSMutableArray *titles; //default, will delete later
 @property (nonatomic, strong) RevealPost *revealPost;
 
+@property (weak, nonatomic) IBOutlet UISegmentedControl *hiddenRevealedSelector;
+
+
 - (NSURL *) thumbnailURL;
 - (IBAction)logoutButtonPressed:(id)sender;
 

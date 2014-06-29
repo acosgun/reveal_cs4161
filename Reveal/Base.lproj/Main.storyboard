@@ -127,8 +127,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="hiddenRevealedSelector" destination="yFK-SX-h67" id="OyA-PS-4vk"/>
                         <outlet property="profileImage" destination="5dN-6z-lIs" id="Ke2-iW-h63"/>
-                        <outlet property="publicSelector" destination="yFK-SX-h67" id="Ule-Ja-pci"/>
                         <segue destination="TDl-MH-SKR" kind="modal" identifier="me_login" id="dgm-MH-Yit"/>
                     </connections>
                 </tableViewController>
@@ -284,13 +284,6 @@
                                     <rect key="frame" x="5" y="6" width="62" height="62"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 </imageView>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="hHS-pm-33m">
-                                    <rect key="frame" x="75" y="6" width="119" height="25"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
                                 <view contentMode="scaleToFill" id="ldn-hG-1k2">
                                     <rect key="frame" x="0.0" y="107" width="320" height="33"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
@@ -325,6 +318,17 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 </view>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="x7G-sP-3ng">
+                                    <rect key="frame" x="75" y="6" width="136" height="25"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <state key="normal" title="Name">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="pressedPostName:" destination="qJu-cT-U0k" eventType="touchUpInside" id="gSj-2D-KqI"/>
+                                        <segue destination="Aoe-3o-UX1" kind="push" identifier="DetailedPostToProfile" id="oYW-v8-UUl"/>
+                                    </connections>
+                                </button>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         </view>
@@ -347,7 +351,7 @@
                     <connections>
                         <outlet property="postBody" destination="Byg-fr-qBh" id="KfC-Iq-k49"/>
                         <outlet property="postImage" destination="Tkf-3p-i3v" id="57t-ld-UX2"/>
-                        <outlet property="postName" destination="hHS-pm-33m" id="NBZ-13-YHM"/>
+                        <outlet property="postName" destination="x7G-sP-3ng" id="pJw-FT-ndJ"/>
                         <outlet property="postSubView" destination="a45-27-VX5" id="qbs-CX-WtN"/>
                     </connections>
                 </tableViewController>
@@ -698,5 +702,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="dUu-dV-EsP"/>
         <segue reference="dgm-MH-Yit"/>
+        <segue reference="oYW-v8-UUl"/>
     </inferredMetricsTieBreakers>
 </document>

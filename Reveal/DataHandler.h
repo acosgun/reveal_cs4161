@@ -31,6 +31,7 @@
 
 + (DataHandler *) sharedInstance;
 - (void) updateFeedsWithIdentifier:(NSString *)identifier;
+- (void) updateFeedsWithIdentifier:(NSString *)identifier postClass:(RevealPost *)revealPost;
 
 
 @end

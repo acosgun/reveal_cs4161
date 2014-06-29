@@ -10,9 +10,10 @@
 #define USERS_URL            @"http://reveal-api.herokuapp.com/users"
 #define POSTS_URL            @"http://reveal-api.herokuapp.com/posts"
 #define TEN_RECENT_POSTS_URL @"http://reveal-api.herokuapp.com/posts/index"
-#define USER_POSTS           @"http://reveal-api.herokuapp.com/posts/index_for_user"
+#define USER_POSTS           @"http://reveal-api.herokuapp.com/posts/index_for_user/"
 
 #import "JsonHandler.h"
+#import "RevealPost.h"
 
 @implementation JsonHandler
 
@@ -278,14 +279,20 @@
 
 
 
-- (void) getUserPosts {
+- (void) getUserPosts:(RevealPost *)revealPost {
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *auth_token =[defaults stringForKey:@"auth_token"];
     
     NSMutableString *urlString = [NSMutableString stringWithString:USER_POSTS];
-    [urlString appendString:[[defaults objectForKey:@"user_id"] stringValue]];
-    NSMutableURLRequest *request = [self createJSONMutableURLRequest:TEN_RECENT_POSTS_URL method:@"GET" userData:nil];
+    
+    if (revealPost) {
+        [urlString appendString:[revealPost.userID stringValue]];
+    } else {
+        [urlString appendString:[[defaults objectForKey:@"user_id"] stringValue]];
+    }
+    NSLog(@"URL for getUserPosts: %@", urlString);
+    NSMutableURLRequest *request = [self createJSONMutableURLRequest:urlString method:@"GET" userData:nil];
     
     NSString *authen_str = [NSString stringWithFormat:@"Token token=%@", auth_token];
     NSLog(@"authen_str: %@",authen_str);
@@ -294,17 +301,17 @@
     NSURLSession *session = [self createDefaultNSURLSession];
     
     NSURLSessionDataTask *getDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        NSLog(@"Sent GET Request from createPostRequestWithContent:isRevealed");
+        NSLog(@"Sent GET Request from getUserPosts");
         if (!error)
         {
             NSLog(@"there was no error");
             //Must create dictionary of posts containing dictionary of JSON data so that it can be easily converted to an array
             NSDictionary *in_json = [NSDictionary dictionaryWithObjectsAndKeys:
                                      [NSJSONSerialization JSONObjectWithData:data options:0 error:nil], @"posts", nil];
-            NSLog(@"data in_json dictionary: %@", in_json);
+            //NSLog(@"data in_json dictionary: %@", in_json);
             
             NSArray *userPosts = [in_json objectForKey:@"posts"];
-            NSLog(@"userPosts Array: %@", userPosts);
+            //NSLog(@"userPosts Array: %@", userPosts);
             
             [self.delegate getUserPostsCallBack:userPosts];
         }

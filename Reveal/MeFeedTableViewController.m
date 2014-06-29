@@ -19,9 +19,6 @@
 @property (strong, nonatomic) NSString *thumbnail;
 
 @property (strong, nonatomic) IBOutlet UIImageView *profileImage;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *publicSelector;
-
-- (IBAction)pubSelSwitch;
 
 @end
 
@@ -59,7 +56,8 @@ DataHandler *data_handler;
     
     data_handler = [DataHandler sharedInstance];
     data_handler.delegate = self;
-    [data_handler updateFeedsWithIdentifier:@"MeFeedTableViewController"];
+    [data_handler updateFeedsWithIdentifier:@"MeFeedTableViewController" postClass:self.revealPost];
+    //self.hiddenRevealedSelector.hidden = true;
     
     /*
     self.thumbnail =@"https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/t1.0-1/p320x320/10176093_10201958858788756_229269747_n.jpg";
@@ -118,9 +116,9 @@ DataHandler *data_handler;
     
     /*
     self.displayedData = [[NSMutableArray alloc] init];
-    if (_publicSelector.selectedSegmentIndex == 0) {
+    if (self.hiddenRevealedSelector.selectedSegmentIndex == 0) {
         self.displayedData = self.hiddenFeed;
-    } else if (_publicSelector.selectedSegmentIndex == 1) {
+    } else if (self.hiddenRevealedSelector.selectedSegmentIndex == 1) {
         self.displayedData = self.publicFeed;
     }
      */
@@ -150,9 +148,9 @@ DataHandler *data_handler;
 {
     // Return the number of rows in the section.
     NSMutableArray *displayedPosts = [[NSMutableArray alloc] init];
-    if (_publicSelector.selectedSegmentIndex == 0) {
+    if (self.hiddenRevealedSelector.selectedSegmentIndex == 0) {
         displayedPosts = self.hiddenFeed;
-    } else if (_publicSelector.selectedSegmentIndex == 1) {
+    } else if (self.hiddenRevealedSelector.selectedSegmentIndex == 1) {
         displayedPosts = self.publicFeed;
     }
     
@@ -169,9 +167,9 @@ DataHandler *data_handler;
     EntryCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     
     NSMutableArray *displayedPosts = [[NSMutableArray alloc] init];
-    if (_publicSelector.selectedSegmentIndex == 0) {
+    if (self.hiddenRevealedSelector.selectedSegmentIndex == 0) {
         displayedPosts = self.hiddenFeed;
-    } else if (_publicSelector.selectedSegmentIndex == 1) {
+    } else if (self.hiddenRevealedSelector.selectedSegmentIndex == 1) {
         displayedPosts = self.publicFeed;
     }
     //cell.textLabel.text = [self.titles objectAtIndex:indexPath.row];
@@ -271,12 +269,12 @@ DataHandler *data_handler;
 
 
 - (IBAction)pubSelSwitch {
-    if(_publicSelector.selectedSegmentIndex == 0){
-        self.view.backgroundColor = [UIColor redColor];
+    if(self.hiddenRevealedSelector.selectedSegmentIndex == 0){
+        //self.view.backgroundColor = [UIColor redColor];
         NSLog(@"hidden selected \n");
 	}
-	if(_publicSelector.selectedSegmentIndex == 1){
-        self.view.backgroundColor = [UIColor blueColor];
+	if(self.hiddenRevealedSelector.selectedSegmentIndex == 1){
+        //self.view.backgroundColor = [UIColor blueColor];
         NSLog(@"public selected \n");
 	}
     [self viewDidLoad];
@@ -304,9 +302,9 @@ DataHandler *data_handler;
     }
     
      self.displayedData = [[NSMutableArray alloc] init];
-     if (_publicSelector.selectedSegmentIndex == 0) {
+     if (self.hiddenRevealedSelector.selectedSegmentIndex == 0) {
      self.displayedData = self.hiddenFeed;
-     } else if (_publicSelector.selectedSegmentIndex == 1) {
+     } else if (self.hiddenRevealedSelector.selectedSegmentIndex == 1) {
      self.displayedData = self.publicFeed;
      }
     

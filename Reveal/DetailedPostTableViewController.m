@@ -9,14 +9,15 @@
 #import "DetailedPostTableViewController.h"
 #import "RevealPost.h"
 #import "DetailedPostSubView.h"
+#import "MeFeedTableViewController.h"
 
 @interface DetailedPostTableViewController ()
 
 @property (weak, nonatomic) IBOutlet DetailedPostSubView *postSubView;
 
 @property (weak, nonatomic) IBOutlet UIImageView *postImage;
-@property (weak, nonatomic) IBOutlet UILabel *postName;
 @property (weak, nonatomic) IBOutlet UILabel *postBody;
+@property (weak, nonatomic) IBOutlet UIButton *postName;
 
 @end
 
@@ -39,8 +40,11 @@
     [self.postSubView setFrameHeight:self.post];
     
     self.postImage.image = [self.post imageForThumbnail:self.post.thumbnail];
-    self.postName.text = self.post.userName;
+    //self.postName.text = self.post.userName;
+    [self.postName setTitle:self.post.userName forState:UIControlStateNormal];
     self.postBody.text = self.post.body;
+    NSLog(@"post_id (detailedPostVC): %@", self.post.IDNumber);
+    NSLog(@"user_id (detailedPostVC): %@", self.post.userID);
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -131,10 +135,25 @@
 }
 */
 
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"DetailedPostToProfile"]) {
+        MeFeedTableViewController *meFeedTVC = [segue destinationViewController];
+        meFeedTVC.hiddenRevealedSelector.hidden = true;
+        meFeedTVC.revealPost = self.post;
+        
+        NSLog(@"selector should be hidden");
+    }
+}
+
 #pragma mark - IB Actions
 - (IBAction)pressedShareButton:(id)sender {
     NSLog(@"share button was pressed");
 }
+
+- (IBAction)pressedPostName:(id)sender {
+    NSLog(@"Post name button was pressed");
+}
+
 
 
 @end

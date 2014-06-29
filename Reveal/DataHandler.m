@@ -33,12 +33,21 @@ static DataHandler *sharedDataSource = nil;
     
     if ([identifier  isEqualToString:@"TableViewController"]) {
         [self.json_handler getTenMostRecentPosts];
-    } else if ([identifier  isEqualToString:@"MeFeedTableViewController"]) {
-        [self.json_handler getUserPosts];
     }
     
     
     [self.delegate feedUpdatedCallback:self];
+}
+
+- (void) updateFeedsWithIdentifier:(NSString *)identifier postClass:(RevealPost *)revealPost {
+    
+    self.json_handler = [[JsonHandler alloc] init];
+    self.json_handler.delegate = self;
+    
+    if ([identifier isEqualToString:@"MeFeedTableViewController"]) {
+        [self.json_handler getUserPosts:revealPost];
+    }
+        [self.delegate feedUpdatedCallback:self];
 }
 
 - (id)init {
@@ -59,6 +68,7 @@ static DataHandler *sharedDataSource = nil;
         revealPost.date = [NSDate dateWithTimeIntervalSinceNow:-60*2];
         revealPost.body = [post objectForKey:@"content"];
         revealPost.revealed = [[post objectForKey:@"revealed"]boolValue];
+        revealPost.userID = [post objectForKey:@"user_id"];
         
         [self.nearby_feed addObject:revealPost];
     }

@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class RevealPost;
+
 // declare our class
 @class JsonHandler;
 
@@ -41,6 +43,6 @@
 - (void) makeSignupRequest:(NSString*)username pass:(NSString*)password;
 - (void) createPostRequestWithContent:(NSString *)body isRevealed:(BOOL)isRevealed;
 -(void) getTenMostRecentPosts;
-- (void) getUserPosts;
+- (void) getUserPosts:(RevealPost *)revealPost;
 
 @end

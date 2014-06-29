@@ -13,6 +13,7 @@
 
 @property (strong, nonatomic) NSNumber *IDNumber;
 @property (strong, nonatomic) NSString *userName;
+@property (strong, nonatomic) NSNumber *userID;
 @property (strong, nonatomic) NSString *body;
 @property (strong, nonatomic) NSNumber *votes;
 @property (nonatomic, assign, getter=isRevealed) BOOL revealed;

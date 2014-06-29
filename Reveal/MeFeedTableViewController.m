@@ -7,7 +7,7 @@
 //
 
 #import "MeFeedTableViewController.h"
-#import "DetailedPostViewController.h"
+#import "DetailedPostTableViewController.h"
 #import "RevealPost.h"
 #import "DummyPosts.h"
 #import "EntryCell.h"
@@ -232,6 +232,7 @@
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    /*
     NSLog(@"Preparing for segue: %@", segue.identifier);
     if( [segue.identifier isEqualToString:@"showDetailedPost"])
     {
@@ -241,8 +242,9 @@
         RevealPost *revealPost = [self.feed objectAtIndex:indexPath.row];
         NSString *str = revealPost.body;
         //NSString *str = [self.titles objectAtIndex:indexPath.row];
-        [segue.destinationViewController setTempString:str];
+        //[segue.destinationViewController setTempString:str];
     }
+     */
     
     if ([segue.identifier isEqualToString:@"meFeedDetailPost"])
     {

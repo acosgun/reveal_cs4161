@@ -14,10 +14,8 @@
 		7A909671194CF3CC00010F38 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A909670194CF3CC00010F38 /* main.m */; };
 		7A909674194CF3CC00010F38 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A909673194CF3CC00010F38 /* AppDelegate.m */; };
 		7A90967D194CF3CC00010F38 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A90967B194CF3CC00010F38 /* Main.storyboard */; };
-		7A90967F194CF3CC00010F38 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A90967E194CF3CC00010F38 /* Images.xcassets */; };
 		7A90968B194CF3CC00010F38 /* RevealTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A90968A194CF3CC00010F38 /* RevealTests.m */; };
 		7A909696194CF63C00010F38 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A909695194CF63C00010F38 /* TableViewController.m */; };
-		7A90969C194CFEEF00010F38 /* DetailedPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A90969B194CFEEF00010F38 /* DetailedPostViewController.m */; };
 		7ACCEED2194F4FBE0099CF96 /* NewPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ACCEED0194F4FBE0099CF96 /* NewPostViewController.m */; };
 		7AE8424B195C0D3E0036E223 /* DataHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8424A195C0D3E0036E223 /* DataHandler.m */; };
 		7AF74B821951723A005A73B7 /* JsonHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF74B811951723A005A73B7 /* JsonHandler.m */; };
@@ -27,6 +25,9 @@
 		D801DA90194EDC1A00CB9B00 /* MeFeedTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D801DA8F194EDC1A00CB9B00 /* MeFeedTableViewController.m */; };
 		D801DA93194EE53800CB9B00 /* ProfileView.m in Sources */ = {isa = PBXBuildFile; fileRef = D801DA92194EE53800CB9B00 /* ProfileView.m */; };
 		D801DA96194F0B3000CB9B00 /* MeDetailedPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D801DA95194F0B3000CB9B00 /* MeDetailedPostViewController.m */; };
+		D80A09CF195F624900257782 /* DetailedPostTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A09CE195F624900257782 /* DetailedPostTableViewController.m */; };
+		D80A09D1195F7EB900257782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D80A09D0195F7EB900257782 /* Images.xcassets */; };
+		D80A09D4195F85C500257782 /* DetailedPostSubView.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A09D3195F85C500257782 /* DetailedPostSubView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,14 +55,11 @@
 		7A909672194CF3CC00010F38 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7A909673194CF3CC00010F38 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		7A90967C194CF3CC00010F38 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		7A90967E194CF3CC00010F38 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		7A909684194CF3CC00010F38 /* RevealTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RevealTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A909689194CF3CC00010F38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7A90968A194CF3CC00010F38 /* RevealTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RevealTests.m; sourceTree = "<group>"; };
 		7A909694194CF63C00010F38 /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableViewController.h; path = ../TableViewController.h; sourceTree = "<group>"; };
 		7A909695194CF63C00010F38 /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableViewController.m; path = ../TableViewController.m; sourceTree = "<group>"; };
-		7A90969A194CFEEF00010F38 /* DetailedPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailedPostViewController.h; path = ../DetailedPostViewController.h; sourceTree = "<group>"; };
-		7A90969B194CFEEF00010F38 /* DetailedPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailedPostViewController.m; path = ../DetailedPostViewController.m; sourceTree = "<group>"; };
 		7ACCEED0194F4FBE0099CF96 /* NewPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewPostViewController.m; sourceTree = SOURCE_ROOT; };
 		7ACCEED1194F4FBE0099CF96 /* NewPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewPostViewController.h; sourceTree = SOURCE_ROOT; };
 		7AE84249195C0D3E0036E223 /* DataHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataHandler.h; sourceTree = "<group>"; };
@@ -80,6 +78,11 @@
 		D801DA92194EE53800CB9B00 /* ProfileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileView.m; sourceTree = "<group>"; };
 		D801DA94194F0B3000CB9B00 /* MeDetailedPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeDetailedPostViewController.h; sourceTree = "<group>"; };
 		D801DA95194F0B3000CB9B00 /* MeDetailedPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeDetailedPostViewController.m; sourceTree = "<group>"; };
+		D80A09CD195F624900257782 /* DetailedPostTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailedPostTableViewController.h; sourceTree = "<group>"; };
+		D80A09CE195F624900257782 /* DetailedPostTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailedPostTableViewController.m; sourceTree = "<group>"; };
+		D80A09D0195F7EB900257782 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ../../../.Trash/Images.xcassets; sourceTree = "<group>"; };
+		D80A09D2195F85C500257782 /* DetailedPostSubView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailedPostSubView.h; sourceTree = "<group>"; };
+		D80A09D3195F85C500257782 /* DetailedPostSubView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailedPostSubView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,12 +115,14 @@
 		7A71EB04194FDFC900C39B0A /* Feed VC */ = {
 			isa = PBXGroup;
 			children = (
-				7A90969A194CFEEF00010F38 /* DetailedPostViewController.h */,
-				7A90969B194CFEEF00010F38 /* DetailedPostViewController.m */,
-				7ACCEED0194F4FBE0099CF96 /* NewPostViewController.m */,
-				7ACCEED1194F4FBE0099CF96 /* NewPostViewController.h */,
 				7A909694194CF63C00010F38 /* TableViewController.h */,
 				7A909695194CF63C00010F38 /* TableViewController.m */,
+				D80A09CD195F624900257782 /* DetailedPostTableViewController.h */,
+				D80A09CE195F624900257782 /* DetailedPostTableViewController.m */,
+				7ACCEED0194F4FBE0099CF96 /* NewPostViewController.m */,
+				7ACCEED1194F4FBE0099CF96 /* NewPostViewController.h */,
+				D80A09D2195F85C500257782 /* DetailedPostSubView.h */,
+				D80A09D3195F85C500257782 /* DetailedPostSubView.m */,
 			);
 			name = "Feed VC";
 			sourceTree = "<group>";
@@ -176,6 +181,7 @@
 		7A90966D194CF3CC00010F38 /* Reveal */ = {
 			isa = PBXGroup;
 			children = (
+				D80A09D0195F7EB900257782 /* Images.xcassets */,
 				7AF74B7919516FEF005A73B7 /* View */,
 				7AF74B7819516FE8005A73B7 /* Model */,
 				7A90967B194CF3CC00010F38 /* Main.storyboard */,
@@ -183,7 +189,6 @@
 				D801DA92194EE53800CB9B00 /* ProfileView.m */,
 				7A909672194CF3CC00010F38 /* AppDelegate.h */,
 				7A909673194CF3CC00010F38 /* AppDelegate.m */,
-				7A90967E194CF3CC00010F38 /* Images.xcassets */,
 				7A90966E194CF3CC00010F38 /* Supporting Files */,
 			);
 			path = Reveal;
@@ -324,7 +329,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A90967D194CF3CC00010F38 /* Main.storyboard in Resources */,
-				7A90967F194CF3CC00010F38 /* Images.xcassets in Resources */,
+				D80A09D1195F7EB900257782 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -349,14 +354,15 @@
 				7A909674194CF3CC00010F38 /* AppDelegate.m in Sources */,
 				7AE8424B195C0D3E0036E223 /* DataHandler.m in Sources */,
 				7ACCEED2194F4FBE0099CF96 /* NewPostViewController.m in Sources */,
-				7A90969C194CFEEF00010F38 /* DetailedPostViewController.m in Sources */,
 				D801DA8D194E528100CB9B00 /* EntryCell.m in Sources */,
+				D80A09CF195F624900257782 /* DetailedPostTableViewController.m in Sources */,
 				7A71EB0D19501C5900C39B0A /* LoginViewController.m in Sources */,
 				D801DA87194E0B0400CB9B00 /* DummyPosts.m in Sources */,
 				D801DA96194F0B3000CB9B00 /* MeDetailedPostViewController.m in Sources */,
 				7A909696194CF63C00010F38 /* TableViewController.m in Sources */,
 				7A909671194CF3CC00010F38 /* main.m in Sources */,
 				7A71EB09194FE1A200C39B0A /* InboxTableViewController.m in Sources */,
+				D80A09D4195F85C500257782 /* DetailedPostSubView.m in Sources */,
 				7A71EB02194FDF9000C39B0A /* NotificationsTableViewController.m in Sources */,
 				D801DA81194D891200CB9B00 /* RevealPost.m in Sources */,
 			);

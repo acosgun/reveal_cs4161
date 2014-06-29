@@ -7,7 +7,7 @@
 //
 
 #import "TableViewController.h"
-#import "DetailedPostViewController.h"
+#import "DetailedPostTableViewController.h"
 #import "RevealPost.h"
 #import "EntryCell.h"
 #import "DataHandler.h"
@@ -131,15 +131,15 @@ DataHandler *data_handler;
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     NSLog(@"Preparing for segue: %@", segue.identifier);
-    if( [segue.identifier isEqualToString:@"showDetailedPost"])
+    if( [segue.identifier isEqualToString:@"FeedPostToDetailedView"])
     {
-        NSLog(@"inside showDetailedPost");
+        NSLog(@"inside DetailedPostTableViewController");
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         
         RevealPost *revealPost = [self.feed objectAtIndex:indexPath.row];
-        NSString *str = revealPost.body;
+        [segue.destinationViewController setPost:revealPost];
         //NSString *str = [self.titles objectAtIndex:indexPath.row];
-        [segue.destinationViewController setTempString:str];
+        //[segue.destinationViewController setTempString:str];
     }
     
     if ([segue.identifier isEqualToString:@"meFeed"])

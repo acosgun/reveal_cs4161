@@ -36,15 +36,20 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.meDetailPostImage.image = [_revealPost imageForThumbnail:_revealPost.thumbnail];
+    //self.meDetailPostImage.image = [_revealPost imageForThumbnail:_revealPost.thumbnail];
+    self.meDetailPostImage.image = [self.revealPost imageForThumbnail:self.revealPost.thumbnail];
+
     /*
     NSData *imageData = [NSData dataWithContentsOfURL:_revealPost.thumbnailURL];
     UIImage *image = [UIImage imageWithData:imageData];
     self.meDetailPostImage.image = image;
      */
-    
+    self.bodyLabel.text = self.revealPost.body;
+    self.revealSwitch.on = self.revealPost.isRevealed;
+    /*
     self.bodyLabel.text = _revealPost.body;
     self.revealSwitch.on = _revealPost.isRevealed;
+     */
 }
 
 - (void)didReceiveMemoryWarning

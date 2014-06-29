@@ -285,5 +285,33 @@ DataHandler *data_handler;
 }
 
 #pragma mark - Callbacks
+- (void) feedUpdatedCallback:(DataHandler *)dataHandlerClass {
+    NSLog(@"feedUpdatedCallback in TableController.m");
+    self.feed = dataHandlerClass.nearby_feed;
+    NSLog(@"callback from dataHandler to MeFeedTableViewController (in Table VC)");
+    
+    self.publicFeed = [[NSMutableArray alloc] init];
+    self.hiddenFeed = [[NSMutableArray alloc] init];
+    for (RevealPost *rp in self.feed)
+    {
+        if (rp.revealed)
+        {
+            [self.publicFeed addObject:rp];
+        } else
+        {
+            [self.hiddenFeed addObject:rp];
+        }
+    }
+    
+     self.displayedData = [[NSMutableArray alloc] init];
+     if (_publicSelector.selectedSegmentIndex == 0) {
+     self.displayedData = self.hiddenFeed;
+     } else if (_publicSelector.selectedSegmentIndex == 1) {
+     self.displayedData = self.publicFeed;
+     }
+    
+    //[self viewDidLoad];
+    [self.tableView reloadData];
+}
 
 @end

@@ -100,4 +100,10 @@ static DataHandler *sharedDataSource = nil;
     [self.delegate feedUpdatedCallback:self];
 }
 
+-(void) getUserPostsCallBack:(NSArray *)userPosts {
+    [self fillFeedWithTenMostRecentPosts:userPosts];
+    NSLog(@"User posts sent back to DataHandler.m");
+    [self.delegate feedUpdatedCallback:self];
+}
+
 @end

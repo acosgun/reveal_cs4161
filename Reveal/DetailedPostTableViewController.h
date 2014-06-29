@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JsonHandler.h"
 
 @class RevealPost;
 
-@interface DetailedPostTableViewController : UITableViewController
+@interface DetailedPostTableViewController : UITableViewController <JsonHandlerDelegate>
 
 @property(strong, nonatomic) RevealPost *post;
+@property (strong, nonatomic) JsonHandler *json_handler;
 
 @end

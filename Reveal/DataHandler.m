@@ -50,6 +50,11 @@ static DataHandler *sharedDataSource = nil;
         [self.delegate feedUpdatedCallback:self];
 }
 
+- (void) createSharePost:(RevealPost *)revealPost {
+    self.json_handler = [[JsonHandler alloc] init];
+    self.json_handler.delegate = self;
+}
+
 - (id)init {
     if ( (self = [super init]) ) {
         // your custom initialization

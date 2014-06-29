@@ -11,6 +11,7 @@
 #define POSTS_URL            @"http://reveal-api.herokuapp.com/posts"
 #define TEN_RECENT_POSTS_URL @"http://reveal-api.herokuapp.com/posts/index"
 #define USER_POSTS           @"http://reveal-api.herokuapp.com/posts/index_for_user/"
+#define SHARES_URL           @"http://reveal-api.herokuapp.com/shares"
 
 #import "JsonHandler.h"
 #import "RevealPost.h"
@@ -319,7 +320,49 @@
     [getDataTask resume];
 }
 
+- (void) createSharePost:(RevealPost *)revealPost {
+    
+    //{"share":{"post_id":1,"user_id":1}}
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *auth_token =[defaults stringForKey:@"auth_token"];
+    
+    NSDictionary *share_data = [NSDictionary dictionaryWithObjectsAndKeys:
+                               [NSDictionary dictionaryWithObjectsAndKeys:
+                                revealPost.IDNumber, @"post_id",
+                                [revealPost.userID stringValue], @"user_id",
+                                nil],
+                               @"share",
+                               nil];
+    NSLog(@"share_data dictionary: %@", share_data);
+    
+    NSMutableURLRequest *request = [self createJSONMutableURLRequest:SHARES_URL method:@"POST" userData:share_data];
+    NSURLSession *session = [self createDefaultNSURLSession];
+    
+    
+    NSString *authen_str = [NSString stringWithFormat:@"Token token=%@", auth_token];
+    NSLog(@"authen_str: %@",authen_str);
+    [request addValue:authen_str forHTTPHeaderField:@"Authorization"];
+    
+    NSURLSessionDataTask *shareTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSLog(@"createSharePost: Sent POST Request");
+        if (!error)
+        {
+            NSLog(@"there was no error");
+            //Must create dictionary of posts containing dictionary of JSON data so that it can be easily converted to an array
+            //NSDictionary *in_json = [NSDictionary dictionaryWithObjectsAndKeys:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil], @"posts", nil];
+            NSDictionary *in_json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            NSLog(@"data in_json dictionary: %@", in_json);
+            
+            NSNumber *success = [in_json objectForKey:@"success"];
+            NSLog(@"success?: %@", success);
+            
+            [self.delegate createSharePostCallback:[success boolValue]];
+        }
+    }];
+    [shareTask resume];
+}
 
+# pragma mark - Defaults Methods
 
 - (NSUserDefaults *)setDefaults:(NSUserDefaults *)defaults jsonData:(NSDictionary *)in_json {
     NSString *auth_token = [in_json objectForKey:@"auth_token"];

@@ -10,6 +10,7 @@
 #import "RevealPost.h"
 #import "DetailedPostSubView.h"
 #import "MeFeedTableViewController.h"
+#import "JsonHandler.h"
 
 @interface DetailedPostTableViewController ()
 
@@ -148,12 +149,24 @@
 #pragma mark - IB Actions
 - (IBAction)pressedShareButton:(id)sender {
     NSLog(@"share button was pressed");
+    
+    self.json_handler = [[JsonHandler alloc] init];
+    self.json_handler.delegate = self;
+    
+    [self.json_handler createSharePost:self.post];
 }
 
 - (IBAction)pressedPostName:(id)sender {
     NSLog(@"Post name button was pressed");
 }
 
-
+#pragma mark - Callbacks
+- (void) createSharePostCallback:(BOOL)success {
+    if (success) {
+        NSLog(@"post was successfully shared");
+    } else {
+        NSLog(@"ERROR: post not successfully shared");
+    }
+}
 
 @end

@@ -24,6 +24,7 @@
 -(void) createPostRequestCallback:(BOOL)success;
 -(void) getTenMostRecentPostsCallback:(NSArray *)tenMostRecentPosts;
 -(void) getUserPostsCallBack:(NSArray *)userPosts;
+-(void) createSharePostCallback:(BOOL)success;
 
 //-(void)makeLoginRequestCallback:(JsonHandler *)jsonClass;
 //- (CGFloat)sizeOfSegmentAtIndex:(NSUInteger)segmentIndex;
@@ -44,5 +45,6 @@
 - (void) createPostRequestWithContent:(NSString *)body isRevealed:(BOOL)isRevealed;
 -(void) getTenMostRecentPosts;
 - (void) getUserPosts:(RevealPost *)revealPost;
+- (void) createSharePost:(RevealPost *)revealPost;
 
 @end

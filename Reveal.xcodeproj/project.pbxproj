@@ -26,8 +26,8 @@
 		D801DA93194EE53800CB9B00 /* ProfileView.m in Sources */ = {isa = PBXBuildFile; fileRef = D801DA92194EE53800CB9B00 /* ProfileView.m */; };
 		D801DA96194F0B3000CB9B00 /* MeDetailedPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D801DA95194F0B3000CB9B00 /* MeDetailedPostViewController.m */; };
 		D80A09CF195F624900257782 /* DetailedPostTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A09CE195F624900257782 /* DetailedPostTableViewController.m */; };
-		D80A09D1195F7EB900257782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D80A09D0195F7EB900257782 /* Images.xcassets */; };
 		D80A09D4195F85C500257782 /* DetailedPostSubView.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A09D3195F85C500257782 /* DetailedPostSubView.m */; };
+		D822C172195FF1680001E482 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D822C171195FF1680001E482 /* Images.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,9 +80,9 @@
 		D801DA95194F0B3000CB9B00 /* MeDetailedPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeDetailedPostViewController.m; sourceTree = "<group>"; };
 		D80A09CD195F624900257782 /* DetailedPostTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailedPostTableViewController.h; sourceTree = "<group>"; };
 		D80A09CE195F624900257782 /* DetailedPostTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailedPostTableViewController.m; sourceTree = "<group>"; };
-		D80A09D0195F7EB900257782 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ../../../.Trash/Images.xcassets; sourceTree = "<group>"; };
 		D80A09D2195F85C500257782 /* DetailedPostSubView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailedPostSubView.h; sourceTree = "<group>"; };
 		D80A09D3195F85C500257782 /* DetailedPostSubView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailedPostSubView.m; sourceTree = "<group>"; };
+		D822C171195FF1680001E482 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Reveal/Images.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +161,7 @@
 		7A909662194CF3CC00010F38 = {
 			isa = PBXGroup;
 			children = (
+				D822C171195FF1680001E482 /* Images.xcassets */,
 				D801DA85194E0B0400CB9B00 /* DummyPosts.h */,
 				D801DA86194E0B0400CB9B00 /* DummyPosts.m */,
 				7A90966D194CF3CC00010F38 /* Reveal */,
@@ -181,7 +182,6 @@
 		7A90966D194CF3CC00010F38 /* Reveal */ = {
 			isa = PBXGroup;
 			children = (
-				D80A09D0195F7EB900257782 /* Images.xcassets */,
 				7AF74B7919516FEF005A73B7 /* View */,
 				7AF74B7819516FE8005A73B7 /* Model */,
 				7A90967B194CF3CC00010F38 /* Main.storyboard */,
@@ -329,7 +329,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A90967D194CF3CC00010F38 /* Main.storyboard in Resources */,
-				D80A09D1195F7EB900257782 /* Images.xcassets in Resources */,
+				D822C172195FF1680001E482 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

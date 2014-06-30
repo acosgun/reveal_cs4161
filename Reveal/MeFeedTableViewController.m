@@ -57,80 +57,11 @@ DataHandler *data_handler;
     data_handler = [DataHandler sharedInstance];
     data_handler.delegate = self;
     [data_handler updateFeedsWithIdentifier:@"MeFeedTableViewController" postClass:self.revealPost];
+}
 
-    //self.profileImage
-    
-    //self.hiddenRevealedSelector.hidden = true;
-    
-    /*
-    self.thumbnail =@"https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/t1.0-1/p320x320/10176093_10201958858788756_229269747_n.jpg";
-    RevealPost *rp = [RevealPost postWithIDNumber:nil];
-    self.profileImage.image = [rp imageForThumbnail:self.thumbnail];
-    
-    if (self.feed == nil) {
-        RevealPost *post1 = [RevealPost postWithIDNumber:@1];
-        post1.userName = @"Travis";
-        post1.votes = @50;
-        post1.thumbnail = @"https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/t1.0-1/p320x320/10176093_10201958858788756_229269747_n.jpg";
-        post1.date = [NSDate dateWithTimeIntervalSinceNow:-60*2];
-        post1.body = @"Ohhhh I'm going to Escambia County tomorrow to inspect bridges, now whenever you visit home you'll be driving over bridges Murray inspected.";
-        post1.revealed = true;
-        
-        RevealPost *post2 = [RevealPost postWithIDNumber:@2];
-        post2.userName = @"Travis";
-        post2.votes = @3;
-        post2.thumbnail = @"https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/t1.0-1/p320x320/10176093_10201958858788756_229269747_n.jpg";
-        post2.date = [NSDate dateWithTimeIntervalSinceNow:-60*5];
-        post2.body = @"blue skies and delicious drinks at a rooftop bar in Philly? yes, please!";
-        post2.revealed = false;
-        
-        RevealPost *post3 = [RevealPost postWithIDNumber:@3];
-        post3.userName = @"Travis";
-        post3.votes = @-4;
-        post3.thumbnail = @"https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/t1.0-1/p320x320/10176093_10201958858788756_229269747_n.jpg";
-        post3.date = [NSDate dateWithTimeIntervalSinceNow:-60*20];
-        post3.body = @"Brand New tickets for Orlando in October go on sale today at noon. They will sell out extremely fast, probably before half an hour.";
-        post3.revealed = true;
-        
-        self.feed = [NSMutableArray arrayWithObjects:post1, post2, post3, nil];
-        //DummyPosts *feed = [DummyPosts arrayWithDummyData];
-        NSLog(@"dummy data: %@", self.feed);
-        self.titles = [NSMutableArray arrayWithObjects:@"item1",@"item2",@"item3",nil];
-        
-        NSLog(@"post1 body: %@", post1.body);
-        NSLog(@"post2 body: %@", post2.body);
-        NSLog(@"post3 body: %@", post3.body);
-    }
-     */
-    /*
-    self.publicFeed = [[NSMutableArray alloc] init];
-    self.hiddenFeed = [[NSMutableArray alloc] init];
-    for (RevealPost *rp in self.feed)
-    {
-        if (rp.revealed)
-        {
-            [self.publicFeed addObject:rp];
-        } else
-        {
-            [self.hiddenFeed addObject:rp];
-        }
-    }
-     */
-    
-    /*
-    self.displayedData = [[NSMutableArray alloc] init];
-    if (self.hiddenRevealedSelector.selectedSegmentIndex == 0) {
-        self.displayedData = self.hiddenFeed;
-    } else if (self.hiddenRevealedSelector.selectedSegmentIndex == 1) {
-        self.displayedData = self.publicFeed;
-    }
-     */
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+-(void) viewWillAppear:(BOOL)animated
+{
+    data_handler.delegate = self;
 }
 
 - (void)didReceiveMemoryWarning
@@ -157,7 +88,7 @@ DataHandler *data_handler;
         displayedPosts = self.publicFeed;
     }
     
-    NSLog(@"COUNT: %d", [displayedPosts count]);
+    //NSLog(@"COUNT: %d", [displayedPosts count]);
     //return [displayedPosts count];
     return [self.displayedData count];
 }
@@ -182,7 +113,7 @@ DataHandler *data_handler;
     
     //cell.textLabel.text = revealPost.body; replaced because of custom cell configuration method
     [cell configureCellForPost:revealPost];
-    NSLog(@"text label: %@", revealPost.IDNumber);
+    //NSLog(@"text label: %@", revealPost.IDNumber);
     return cell;
 }
 
@@ -287,10 +218,8 @@ DataHandler *data_handler;
 
 #pragma mark - Callbacks
 - (void) feedUpdatedCallback:(DataHandler *)dataHandlerClass {
-    NSLog(@"feedUpdatedCallback in TableController.m");
+    NSLog(@"feedUpdatedCallback in MeFeedTableController.m");
     self.feed = dataHandlerClass.nearby_feed;
-    NSLog(@"callback from dataHandler to MeFeedTableViewController (in Table VC)");
-    
     self.publicFeed = [[NSMutableArray alloc] init];
     self.hiddenFeed = [[NSMutableArray alloc] init];
     for (RevealPost *rp in self.feed)

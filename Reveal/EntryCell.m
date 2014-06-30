@@ -37,7 +37,7 @@
     self.bodyLabel.text = revealPost.body;
     
     NSString *voteText;
-    if(revealPost.votes > 0)
+    if([revealPost.votes intValue]> 0)
     {
         voteText = [NSString stringWithFormat:@"+%@",revealPost.votes];
     }
@@ -55,7 +55,7 @@
     
     int intElapsedTime = (int)elapsedTime/60 * -1;
     
-    NSLog(@"intElapsedTime: %d",intElapsedTime);
+    //NSLog(@"intElapsedTime: %d",intElapsedTime);
     
     self.elapsedTimeLabel.text = [NSString stringWithFormat:@"%dm", intElapsedTime];
     self.nameLabel.text = revealPost.userName;

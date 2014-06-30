@@ -51,6 +51,8 @@ static DataHandler *sharedDataSource = nil;
     self.json_handler.delegate = self;
 }
 
+
+
 - (id)init {
     if ( (self = [super init]) ) {
         // your custom initialization
@@ -82,7 +84,23 @@ static DataHandler *sharedDataSource = nil;
     //NSLog(@"ten recent posts from fillFeedWithTenMostRecentPosts: %@", self.nearby_feed);
 }
 
-#pragma mark - Callbacks
+- (void) revealPost:(NSInteger *) post_id
+{
+    NSInteger action_id = 0;
+    [self.json_handler changeRevealStatus:post_id action:&action_id];
+}
+- (void) hidePost:(NSInteger *) post_id
+{
+    NSInteger action_id = 1;
+    [self.json_handler changeRevealStatus:post_id action:&action_id];
+}
+- (void) deletePost:(NSInteger *) post_id
+{
+    NSInteger action_id = 2;
+    [self.json_handler changeRevealStatus:post_id action:&action_id];
+}
+
+#pragma mark - JSON Callbacks
 -(void) getTenMostRecentPostsCallback:tenMostRecentPosts {
     //self.nearby_feed = tenMostRecentPosts;
     [self fillFeedWithTenMostRecentPosts:tenMostRecentPosts];
@@ -95,6 +113,15 @@ static DataHandler *sharedDataSource = nil;
     //NSLog(@"User posts sent back to DataHandler.m");
     [self.delegate feedUpdatedCallback:self];
 }
+
+-(void)revealStatusCallback:(BOOL)success action:(NSInteger)action_id
+{
+    NSLog(@"revealStatusCallback in DataHandler.m");
+    NSLog(@"action_id: %d",action_id);
+    [self.delegate revealStatusCallback:success action:action_id];
+}
+
+
 
 
 

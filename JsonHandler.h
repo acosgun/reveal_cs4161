@@ -25,9 +25,7 @@
 -(void) getTenMostRecentPostsCallback:(NSArray *)tenMostRecentPosts;
 -(void) getUserPostsCallBack:(NSArray *)userPosts;
 -(void) createSharePostCallback:(BOOL)success;
-
-//-(void)makeLoginRequestCallback:(JsonHandler *)jsonClass;
-//- (CGFloat)sizeOfSegmentAtIndex:(NSUInteger)segmentIndex;
+-(void) revealStatusCallback:(BOOL)success action:(NSInteger)action_id;
 
 @end
 
@@ -37,8 +35,10 @@
 
 @interface JsonHandler : NSObject <NSURLSessionDelegate>
 
-@property (nonatomic, assign) id  delegate;
+@property (nonatomic, assign) id<JsonHandlerDelegate>  delegate;
 
+
+-(void) changeRevealStatus:(NSInteger*)post_id action:(NSInteger*)action_id;
 -(void)sendJsonRequest:(NSDictionary*) user_data user_url:(NSURL*)url user_urlrequest:(NSMutableURLRequest*)request;
 - (void) makeLoginRequest:(NSString*)username pass:(NSString*)password;
 - (void) makeSignupRequest:(NSString*)username pass:(NSString*)password;

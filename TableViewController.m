@@ -41,6 +41,7 @@ DataHandler *data_handler;
 
 -(void) viewWillAppear:(BOOL)animated
 {
+    data_handler.delegate = self;
     [self updateFeeds];
 }
 
@@ -172,7 +173,10 @@ DataHandler *data_handler;
     [self.tableView reloadData];
     
     if([self.refreshControl isRefreshing])
+    {
+        NSLog(@"Refreshing");
         [self.refreshControl endRefreshing];
+    }
     
 }
 

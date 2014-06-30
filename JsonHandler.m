@@ -12,6 +12,8 @@
 #define TEN_RECENT_POSTS_URL @"http://reveal-api.herokuapp.com/posts/index"
 #define USER_POSTS           @"http://reveal-api.herokuapp.com/posts/index_for_user/"
 #define SHARES_URL           @"http://reveal-api.herokuapp.com/shares"
+#define REVEAL_URL           @"http://reveal-api.herokuapp.com/posts/reveal"
+#define HIDE_URL             @"http://reveal-api.herokuapp.com/posts/hide"
 
 #import "JsonHandler.h"
 #import "RevealPost.h"
@@ -364,6 +366,60 @@
     }];
     [shareTask resume];
 }
+
+-(void) changeRevealStatus:(NSInteger*)post_id action:(NSInteger*) action_id
+{
+    NSLog(@"post_id: %d",*post_id);
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *auth_token =[defaults stringForKey:@"auth_token"];
+    
+    NSDictionary *my_data = [[NSDictionary alloc] init];
+   
+    NSURLSession *session = [self createDefaultNSURLSession];
+    NSMutableURLRequest *request;
+    
+    NSLog(@"action_id: %d",*action_id);
+    NSInteger intActionId= *action_id;
+    if(*action_id == 0) //REVEAL
+    {
+        NSString *req_url = [NSString stringWithFormat:@"%@/%d",REVEAL_URL,*post_id];
+        NSLog(@"%@",req_url);
+        request = [self createJSONMutableURLRequest:req_url method:@"PUT" userData:my_data];
+    }
+    else if (*action_id == 1) //HIDE
+    {
+        NSString *req_url = [NSString stringWithFormat:@"%@/%d",HIDE_URL,*post_id];
+        NSLog(@"%@",req_url);
+        request = [self createJSONMutableURLRequest:req_url method:@"PUT" userData:my_data];
+    }
+    else if (*action_id == 2) //DELETE
+    {
+        NSString *req_url = [NSString stringWithFormat:@"%@/%d",POSTS_URL,*post_id];
+        request = [self createJSONMutableURLRequest:req_url method:@"DELETE" userData:my_data];
+    }
+    
+    NSString *authen_str = [NSString stringWithFormat:@"Token token=%@", auth_token];
+    [request addValue:authen_str forHTTPHeaderField:@"Authorization"];
+
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (!error)
+        {
+            NSDictionary *in_json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            NSLog(@"data in_json dictionary: %@", in_json);
+            NSNumber *success = [in_json objectForKey:@"success"];
+            [self.delegate revealStatusCallback:[success boolValue] action:intActionId];
+        }
+        else
+        {
+            NSNumber *success = 0;
+            [self.delegate revealStatusCallback:[success boolValue] action:intActionId];
+        }
+    }];
+    [task resume];
+}
+
+
 
 # pragma mark - Defaults Methods
 

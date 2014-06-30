@@ -35,12 +35,28 @@
 
 - (void) configureCellForPost:(RevealPost *)revealPost {
     self.bodyLabel.text = revealPost.body;
-    self.votesLabel.text = [revealPost.votes stringValue];
+    
+    NSString *voteText;
+    if(revealPost.votes > 0)
+    {
+        voteText = [NSString stringWithFormat:@"+%@",revealPost.votes];
+    }
+    else
+    {
+        voteText = [revealPost.votes stringValue];
+    }
+    self.votesLabel.text = voteText;
+    
+    //revealPost.date
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"mm"];
     NSTimeInterval elapsedTime = [revealPost.date timeIntervalSinceNow];
+    
     int intElapsedTime = (int)elapsedTime/60 * -1;
+    
+    NSLog(@"intElapsedTime: %d",intElapsedTime);
+    
     self.elapsedTimeLabel.text = [NSString stringWithFormat:@"%dm", intElapsedTime];
     self.nameLabel.text = revealPost.userName;
     

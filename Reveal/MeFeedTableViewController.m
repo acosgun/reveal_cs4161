@@ -57,6 +57,9 @@ DataHandler *data_handler;
     data_handler = [DataHandler sharedInstance];
     data_handler.delegate = self;
     [data_handler updateFeedsWithIdentifier:@"MeFeedTableViewController" postClass:self.revealPost];
+
+    //self.profileImage
+    
     //self.hiddenRevealedSelector.hidden = true;
     
     /*

@@ -32,15 +32,17 @@ DataHandler *data_handler;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(updateFeeds) forControlEvents:UIControlEventValueChanged];
     
     data_handler = [DataHandler sharedInstance];
     data_handler.delegate = self;
-    
-    //[[DataHandler sharedInstance] updateFeeds];
-    [data_handler updateFeedsWithIdentifier:@"TableViewController"];
 }
 
-
+-(void) viewWillAppear:(BOOL)animated
+{
+    [self updateFeeds];
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -53,7 +55,7 @@ DataHandler *data_handler;
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 2;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -134,7 +136,7 @@ DataHandler *data_handler;
     NSLog(@"Preparing for segue: %@", segue.identifier);
     if( [segue.identifier isEqualToString:@"FeedPostToDetailedView"])
     {
-        NSLog(@"inside DetailedPostTableViewController");
+        //NSLog(@"inside DetailedPostTableViewController");
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         
         RevealPost *revealPost = [self.feed objectAtIndex:indexPath.row];
@@ -164,10 +166,25 @@ DataHandler *data_handler;
 - (void)feedUpdatedCallback:(DataHandler *)dataHandlerClass {
     NSLog(@"feedUpdatedCallback in TableController.m");
     self.feed = dataHandlerClass.nearby_feed;
-    NSLog(@"callback from dataHandler to TAbleViewController (in Table VC)");
+    //NSLog(@"callback from dataHandler to TAbleViewController (in Table VC)");
     
-    //[self viewDidLoad];
+    //NSLog(@"nearby_feed count: %d",self.feed.count);
     [self.tableView reloadData];
+    
+    if([self.refreshControl isRefreshing])
+        [self.refreshControl endRefreshing];
+    
 }
+
+#pragma mark - Pull to Refresh Data
+
+- (void) updateFeeds
+{
+    //NSLog(@"updateFeeds");
+    [[DataHandler sharedInstance] updateFeedsWithIdentifier:@"TableViewController"];
+}
+
+
+//[self updateFeeds];
 
 @end

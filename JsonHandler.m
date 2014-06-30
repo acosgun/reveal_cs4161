@@ -34,9 +34,7 @@
     [self.delegate jsonResponseCallback:self];
 }
 
--(void)jsonResponseCallback:(JsonHandler *)jsonClass {
-    NSLog(@"Hiya!");
-}
+
 
 
 -(NSMutableURLRequest*) createJSONMutableURLRequest:(NSString*) url_str method:(NSString*) method_str userData:(NSDictionary*) user_data
@@ -84,7 +82,7 @@
     
     
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        NSLog(@"Sent POST Request");
+        //NSLog(@"Sent POST Request");
         if (!error)
         {
             //NSLog(@"Status code: %i", ((NSHTTPURLResponse *)response).statusCode);
@@ -254,23 +252,28 @@
 
 
 -(void) getTenMostRecentPosts {
-    
+
     NSMutableURLRequest *request = [self createJSONMutableURLRequest:TEN_RECENT_POSTS_URL method:@"GET" userData:nil];
     NSURLSession *session = [self createDefaultNSURLSession];
     
     NSURLSessionDataTask *getDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        NSLog(@"Sent GET Request from getTenMostRecentPosts");
+        //NSLog(@"Sent GET Request from getTenMostRecentPosts");
         if (!error)
         {
-            NSLog(@"there was no error");
+            //NSLog(@"there was no error");
             //Must create dictionary of posts containing dictionary of JSON data so that it can be easily converted to an array
             NSDictionary *in_json = [NSDictionary dictionaryWithObjectsAndKeys:
                                      [NSJSONSerialization JSONObjectWithData:data options:0 error:nil], @"posts", nil];
-            NSLog(@"data in_json dictionary: %@", in_json);
+            //NSLog(@"data in_json dictionary: %@", in_json);
             
             NSArray *tenMostRecentPosts = [in_json objectForKey:@"posts"];
-            NSLog(@"tenMostRecentPosts Array: %@", tenMostRecentPosts);
+            //NSLog(@"tenMostRecentPosts Array: %@", tenMostRecentPosts);
             
+            [self.delegate getTenMostRecentPostsCallback:tenMostRecentPosts];
+        }
+        else
+        {
+            NSArray *tenMostRecentPosts = [[NSArray alloc] init];
             [self.delegate getTenMostRecentPostsCallback:tenMostRecentPosts];
         }
     }];
@@ -292,20 +295,20 @@
     } else {
         [urlString appendString:[[defaults objectForKey:@"user_id"] stringValue]];
     }
-    NSLog(@"URL for getUserPosts: %@", urlString);
+    //NSLog(@"URL for getUserPosts: %@", urlString);
     NSMutableURLRequest *request = [self createJSONMutableURLRequest:urlString method:@"GET" userData:nil];
     
     NSString *authen_str = [NSString stringWithFormat:@"Token token=%@", auth_token];
-    NSLog(@"authen_str: %@",authen_str);
+    //NSLog(@"authen_str: %@",authen_str);
     [request addValue:authen_str forHTTPHeaderField:@"Authorization"];
     
     NSURLSession *session = [self createDefaultNSURLSession];
     
     NSURLSessionDataTask *getDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        NSLog(@"Sent GET Request from getUserPosts");
+        //NSLog(@"Sent GET Request from getUserPosts");
         if (!error)
         {
-            NSLog(@"there was no error");
+            //NSLog(@"there was no error");
             //Must create dictionary of posts containing dictionary of JSON data so that it can be easily converted to an array
             NSDictionary *in_json = [NSDictionary dictionaryWithObjectsAndKeys:
                                      [NSJSONSerialization JSONObjectWithData:data options:0 error:nil], @"posts", nil];
@@ -333,28 +336,28 @@
                                 nil],
                                @"share",
                                nil];
-    NSLog(@"share_data dictionary: %@", share_data);
+    //NSLog(@"share_data dictionary: %@", share_data);
     
     NSMutableURLRequest *request = [self createJSONMutableURLRequest:SHARES_URL method:@"POST" userData:share_data];
     NSURLSession *session = [self createDefaultNSURLSession];
     
     
     NSString *authen_str = [NSString stringWithFormat:@"Token token=%@", auth_token];
-    NSLog(@"authen_str: %@",authen_str);
+    //NSLog(@"authen_str: %@",authen_str);
     [request addValue:authen_str forHTTPHeaderField:@"Authorization"];
     
     NSURLSessionDataTask *shareTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        NSLog(@"createSharePost: Sent POST Request");
+        //NSLog(@"createSharePost: Sent POST Request");
         if (!error)
         {
-            NSLog(@"there was no error");
+            //NSLog(@"there was no error");
             //Must create dictionary of posts containing dictionary of JSON data so that it can be easily converted to an array
             //NSDictionary *in_json = [NSDictionary dictionaryWithObjectsAndKeys:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil], @"posts", nil];
             NSDictionary *in_json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            NSLog(@"data in_json dictionary: %@", in_json);
+            //NSLog(@"data in_json dictionary: %@", in_json);
             
             NSNumber *success = [in_json objectForKey:@"success"];
-            NSLog(@"success?: %@", success);
+            //NSLog(@"success?: %@", success);
             
             [self.delegate createSharePostCallback:[success boolValue]];
         }

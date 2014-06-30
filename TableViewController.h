@@ -14,5 +14,5 @@
 @interface TableViewController : UITableViewController <DataHandlerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *feed;
-
+@property (nonatomic,strong) UIRefreshControl *refreshControl;
 @end

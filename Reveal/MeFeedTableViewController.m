@@ -56,7 +56,15 @@ DataHandler *data_handler;
     
     data_handler = [DataHandler sharedInstance];
     data_handler.delegate = self;
+    //[data_handler updateFeedsWithIdentifier:@"MeFeedTableViewController" postClass:self.revealPost];
+}
+
+- (void) viewDidAppear:(BOOL)animated {
     [data_handler updateFeedsWithIdentifier:@"MeFeedTableViewController" postClass:self.revealPost];
+    //[self.tableView numberOfRowsInSection:1];
+    [self tableView:self.tableView numberOfRowsInSection:1];
+    [self.tableView reloadData];
+    
 }
 
 -(void) viewWillAppear:(BOOL)animated
@@ -211,7 +219,8 @@ DataHandler *data_handler;
         //self.view.backgroundColor = [UIColor blueColor];
         NSLog(@"public selected \n");
 	}
-    [self viewDidLoad];
+    //[self viewDidLoad];
+    [self viewDidAppear:YES];
     [self.tableView reloadData];
     
 }
@@ -240,8 +249,9 @@ DataHandler *data_handler;
      self.displayedData = self.publicFeed;
      }
     
-    //[self viewDidLoad];
+    //[self viewDidAppear:YES];
     [self.tableView reloadData];
+    NSLog(@"callback complete");
 }
 
 @end

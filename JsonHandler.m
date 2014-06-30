@@ -353,13 +353,12 @@
         if (!error)
         {
             //NSLog(@"there was no error");
-            //Must create dictionary of posts containing dictionary of JSON data so that it can be easily converted to an array
-            //NSDictionary *in_json = [NSDictionary dictionaryWithObjectsAndKeys:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil], @"posts", nil];
+            
             NSDictionary *in_json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
             //NSLog(@"data in_json dictionary: %@", in_json);
             
             NSNumber *success = [in_json objectForKey:@"success"];
-            //NSLog(@"success?: %@", success);
+            NSLog(@"success?: %@", success);
             
             [self.delegate createSharePostCallback:[success boolValue]];
         }

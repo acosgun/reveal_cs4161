@@ -7,7 +7,7 @@
 //
 
 #define LOGIN_URL            @"http://reveal-api.herokuapp.com/users/login"
-#define USERS_URL            @"http://reveal-api.herokuapp.com/users"
+#define USERS_URL            @"http://reveal-api.herokuapp.com/users/"
 #define POSTS_URL            @"http://reveal-api.herokuapp.com/posts"
 #define TEN_RECENT_POSTS_URL @"http://reveal-api.herokuapp.com/posts/index"
 #define USER_POSTS           @"http://reveal-api.herokuapp.com/posts/index_for_user/"
@@ -29,6 +29,8 @@
     return self;
     
 }
+
+#pragma mark - JSON Initializers
 
 -(void) sendJsonRequest:(NSDictionary*)user_data user_url:(NSURL*)url user_urlrequest:(NSMutableURLRequest*)request;
 {
@@ -68,6 +70,10 @@
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     return [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
 }
+
+
+
+# pragma mark - Server Requests
 
 -(void) makeSignupRequest:(NSString*)username pass:(NSString*)password
 {
@@ -418,9 +424,38 @@
     [task resume];
 }
 
+- (void) getUserInformation:(NSString *)userIDNumber {
+    NSLog(@"entered getUserInformation");
+    
+    NSMutableString *urlString = [NSMutableString stringWithString:USERS_URL];
+    [urlString appendString:userIDNumber];
+    NSLog(@"urlString: %@", urlString);
+    
+    NSMutableURLRequest *request = [self createJSONMutableURLRequest:urlString method:@"GET" userData:nil];
+    NSURLSession *session = [self createDefaultNSURLSession];
+    
+    NSLog(@"Just before getDataTask");
+    NSURLSessionDataTask *getDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        
+        if (!error)
+        {
+            NSLog(@"success in getUserInformation request");
+            NSDictionary *in_json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            NSLog(@"data in_json dictionary: %@", in_json);
+            
+            [self.delegate getUserInformationCallback:in_json];
+        } else {
+            NSLog(@"ERROR IN getUserInformation");
+        }
+    }];
+    [getDataTask resume];
+    
+    NSLog(@"just before return in getUserInformation");
+}
 
 
-# pragma mark - Defaults Methods
+
+# pragma mark - Private Methods
 
 - (NSUserDefaults *)setDefaults:(NSUserDefaults *)defaults jsonData:(NSDictionary *)in_json {
     NSString *auth_token = [in_json objectForKey:@"auth_token"];
@@ -436,6 +471,27 @@
     NSLog(@"(setDefaults) auth_token: %@", [defaults objectForKey:@"auth_token"]);
     
     return defaults;
+}
+
+- (void) updateUserProfileImage:(NSDictionary *)userInformation {
+    NSLog(@"entered updateUserProfileImage");
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    NSURL *imageURL = [NSURL URLWithString:[userInformation objectForKey:@"avatar_medium"]];
+    NSData *image_data = [NSData dataWithContentsOfURL:imageURL];
+    
+    [defaults setObject:image_data forKey:@"avatar_data"];
+}
+
+-(void) getUserInformationCallback:(NSDictionary *)userInformation {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSLog(@"userDataFromServer: %@", userInformation);///////
+    NSURL *imageURL = [NSURL URLWithString:[userInformation objectForKey:@"avatar_medium"]];
+    NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
+    UIImage *image = [UIImage imageWithData:imageData];
+    
+    [defaults setObject:image forKey:@"avatar"];
+    NSLog(@"updateUserProfileImage: avatar is: %@", [defaults objectForKey:@"avatar_medium"]);
 }
 
 @end

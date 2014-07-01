@@ -82,6 +82,11 @@
     }
 }
 
+- (void) updateUserProfileImage {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [self.json_handler getUserInformation:[[defaults objectForKey:@"user_id"] stringValue]];
+}
+
 
 #pragma mark - Callbacks
 -(void)makeSignupRequestCallback:(BOOL) success
@@ -89,6 +94,7 @@
     NSLog(@"makeSignupRequestCallback");
     if(success)
     {
+        [self updateUserProfileImage];
         [self performSegueToTabbar];
         NSLog(@"signup  successful");
     }
@@ -97,6 +103,10 @@
         NSLog(@"signup not successful");
         //TODO: Show login error
     }
+}
+
+-(void) getUserInformationCallback:(NSDictionary *)userInformation {
+    [self.json_handler updateUserProfileImage:userInformation];
 }
 
 

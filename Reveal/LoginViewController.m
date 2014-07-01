@@ -43,6 +43,7 @@
     NSString *auth_token =[prefs stringForKey:@"auth_token"];
     if(auth_token != nil) //already logged in. Perform segue
     {
+        [self updateUserProfileImage];
         NSLog(@"Logged in! TODO:Perform segue to FEED VC");
         [self performSegueToTabbar];
         
@@ -92,9 +93,15 @@
     else
     {
         [self.json_handler makeLoginRequest:username pass:password];
+        [self updateUserProfileImage];
     }
     
     
+}
+
+- (void) updateUserProfileImage {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [self.json_handler getUserInformation:[[defaults objectForKey:@"user_id"] stringValue]];
 }
 
 #pragma mark - Callbacks
@@ -113,6 +120,10 @@
         NSLog(@"login not successful");
         //TODO: Show login error
     }
+}
+
+-(void) getUserInformationCallback:(NSDictionary *)userInformation {
+    [self.json_handler updateUserProfileImage:userInformation];
 }
 
 

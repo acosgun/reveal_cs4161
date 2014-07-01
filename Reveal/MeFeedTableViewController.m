@@ -57,14 +57,15 @@ DataHandler *data_handler;
     data_handler = [DataHandler sharedInstance];
     data_handler.delegate = self;
     //[data_handler updateFeedsWithIdentifier:@"MeFeedTableViewController" postClass:self.revealPost];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    self.profileImage.image = [UIImage imageWithData:[defaults objectForKey:@"avatar_data"]];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
     [data_handler updateFeedsWithIdentifier:@"MeFeedTableViewController" postClass:self.revealPost];
     //[self.tableView numberOfRowsInSection:1];
-    [self tableView:self.tableView numberOfRowsInSection:1];
     [self.tableView reloadData];
-    
+    [self tableView:self.tableView numberOfRowsInSection:1];
 }
 
 -(void) viewWillAppear:(BOOL)animated

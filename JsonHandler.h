@@ -26,6 +26,7 @@
 -(void) getUserPostsCallBack:(NSArray *)userPosts;
 -(void) createSharePostCallback:(BOOL)success;
 -(void) revealStatusCallback:(BOOL)success action:(NSInteger)action_id;
+-(void) getUserInformationCallback:(NSDictionary *)userInformation;
 
 @end
 
@@ -46,5 +47,6 @@
 -(void) getTenMostRecentPosts;
 - (void) getUserPosts:(RevealPost *)revealPost;
 - (void) createSharePost:(RevealPost *)revealPost;
-
+- (void) getUserInformation:(NSString *)userIDNumber;
+- (void) updateUserProfileImage:(NSDictionary *)userInformation;
 @end

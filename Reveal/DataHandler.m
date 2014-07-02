@@ -76,6 +76,7 @@ static DataHandler *sharedDataSource = nil;
         revealPost.votes = [post objectForKey:@"watch_stat"];
         revealPost.thumbnail = [post objectForKey:@"avatar_thumb"];
         revealPost.date = [NSDate dateWithTimeIntervalSinceNow:-60*2];
+        revealPost.dateString = [post objectForKey:@"created_at"];
         revealPost.body = [post objectForKey:@"content"];
         revealPost.revealed = [[post objectForKey:@"revealed"]boolValue];
         revealPost.userID = [post objectForKey:@"user_id"];

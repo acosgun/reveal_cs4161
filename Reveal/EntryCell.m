@@ -12,8 +12,9 @@
 @interface EntryCell ()
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *bodyLabel;
-@property (weak, nonatomic) IBOutlet UILabel *elapsedTimeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *votesLabel;
+@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+
 
 @property (weak, nonatomic) IBOutlet UIImageView *mainImageLabel;
 
@@ -57,7 +58,8 @@
     
     //NSLog(@"intElapsedTime: %d",intElapsedTime);
     
-    self.elapsedTimeLabel.text = [NSString stringWithFormat:@"%dm", intElapsedTime];
+    //self.elapsedTimeLabel.text = [NSString stringWithFormat:@"%dm", intElapsedTime];
+    self.dateLabel.text = revealPost.dateString;
     self.nameLabel.text = revealPost.userName;
     
     NSData *imageData = [NSData dataWithContentsOfURL:revealPost.thumbnailURL];

@@ -9,7 +9,7 @@
 #import "DetailedPostTableViewController.h"
 #import "RevealPost.h"
 #import "DetailedPostSubView.h"
-#import "MeFeedTableViewController.h"
+#import "UserProfileTableViewController.h"
 #import "JsonHandler.h"
 
 @interface DetailedPostTableViewController ()
@@ -38,6 +38,16 @@
     [super viewDidLoad];
     
     //self.postSubView.frame.size.height = [self.postSubView setFrameHeight:self.post];
+    
+    
+    // Uncomment the following line to preserve selection between presentations.
+    // self.clearsSelectionOnViewWillAppear = NO;
+    
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (void) viewWillAppear:(BOOL)animated {
     [self.postSubView setFrameHeight:self.post];
     
     self.postImage.image = [self.post imageForThumbnail:self.post.thumbnail];
@@ -46,12 +56,6 @@
     self.postBody.text = self.post.body;
     NSLog(@"post_id (detailedPostVC): %@", self.post.IDNumber);
     NSLog(@"user_id (detailedPostVC): %@", self.post.userID);
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)didReceiveMemoryWarning
@@ -137,8 +141,10 @@
 */
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    
     if ([segue.identifier isEqualToString:@"FeedToUserProfile"]) {
-        MeFeedTableViewController *vc = [segue destinationViewController];
+        
+        UserProfileTableViewController *vc = [segue destinationViewController];
         vc.revealPost = self.post;
         }
 }

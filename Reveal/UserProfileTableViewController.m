@@ -35,6 +35,8 @@ DataHandler *data_handler;
 {
     [super viewDidLoad];
     
+    self.feed = [[NSMutableArray alloc] init];
+    
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(updateFeeds) forControlEvents:UIControlEventValueChanged];
     
@@ -44,12 +46,21 @@ DataHandler *data_handler;
 
 -(void) viewWillAppear:(BOOL)animated
 {
-    data_handler.delegate = self;
+    //[self.feed removeAllObjects];
+    [DataHandler sharedInstance].delegate = self;
     [self updateFeeds];
     
     self.nameLabel.text = self.revealPost.userName;
     self.profileImage.image = [self.revealPost imageForThumbnail:self.revealPost.thumbnail];
+    
+    NSLog(@"reveal post passed in: %@    %@", self.revealPost.userID, self.revealPost.userName);
 }
+
+-(void) viewWillDisappear:(BOOL)animated {
+    NSLog(@"ViewWillDissappear UserProfileTVC");
+    [self.feed removeAllObjects];
+}
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -138,16 +149,15 @@ DataHandler *data_handler;
 
 #pragma mark - Callbacks
 - (void) feedUpdatedCallback:(DataHandler *)dataHandlerClass {
-    NSLog(@"feedUpdatedCallback in UserProfileTVC.m");
+    NSLog(@"!!!feedUpdatedCallback in UserProfileTVC.m");
     
     if ([self.revealPost.userID isEqual:[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"]]) {
-        self.feed = [[NSMutableArray alloc] init];
+
         for (RevealPost *post in dataHandlerClass.nearby_feed) {
             if (post.revealed == true) {
                 [self.feed addObject:post];
             }
         }
-            
     } else {
         self.feed = dataHandlerClass.nearby_feed;
     }
@@ -155,7 +165,6 @@ DataHandler *data_handler;
     NSLog(@"feed is : %@", self.feed);
     
     //[self viewDidAppear:YES];
-    [self.tableView reloadData];
     
     if([self.refreshControl isRefreshing])
     {
@@ -163,7 +172,12 @@ DataHandler *data_handler;
         [self.refreshControl endRefreshing];
     }
     
-    NSLog(@"callback complete");
+    //[self.tableView reloadData];
+    [self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+    NSLog(@"callback complete!!!");
 }
 
 

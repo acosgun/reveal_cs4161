@@ -31,18 +31,25 @@ DataHandler *data_handler;
 
 - (void)viewDidLoad
 {
+    NSLog(@"ViewDidLoad is called");
     [super viewDidLoad];
+    
+    self.feed = [[NSMutableArray alloc] init];
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(updateFeeds) forControlEvents:UIControlEventValueChanged];
     
     data_handler = [DataHandler sharedInstance];
     data_handler.delegate = self;
+    [self updateFeeds];
 }
 
 -(void) viewWillAppear:(BOOL)animated
 {
+    NSLog(@"ViewWillAppear is called: presenting view controller: %@", self.navigationController.presentingViewController);
     data_handler.delegate = self;
-    [self updateFeeds];
+    [self.tableView reloadData];
+    //[self updateFeeds];
+    //[self.refreshControl beginRefreshing];
 }
 
 - (void)didReceiveMemoryWarning
@@ -141,23 +148,12 @@ DataHandler *data_handler;
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         
         RevealPost *revealPost = [self.feed objectAtIndex:indexPath.row];
+        
         [segue.destinationViewController setPost:revealPost];
         //NSString *str = [self.titles objectAtIndex:indexPath.row];
         //[segue.destinationViewController setTempString:str];
     }
     
-    if ([segue.identifier isEqualToString:@"meFeed"])
-    {
-                
-        
-        /*
-        UITableViewCell *cell = sender;
-        NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-        UINavigationController *navigationController = segue.destinationViewController;
-        EntryViewController *entryViewController = (EntryViewController *)navigationController.topViewController;
-        entryViewController.entry = [self.fetchedResultsController objectAtIndexPath:indexPath];
-         */
-    }
     
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
@@ -170,7 +166,6 @@ DataHandler *data_handler;
     //NSLog(@"callback from dataHandler to TAbleViewController (in Table VC)");
     
     //NSLog(@"nearby_feed count: %d",self.feed.count);
-    [self.tableView reloadData];
     
     if([self.refreshControl isRefreshing])
     {
@@ -178,17 +173,23 @@ DataHandler *data_handler;
         [self.refreshControl endRefreshing];
     }
     
+    [self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+    
+    NSLog(@"toto");
+    //[self tableView:self.tableView cellForRowAtIndexPath:<#(NSIndexPath *)#>];
 }
 
 #pragma mark - Pull to Refresh Data
 
 - (void) updateFeeds
 {
+    [self.feed removeAllObjects];
     //NSLog(@"updateFeeds");
     [[DataHandler sharedInstance] updateFeedsWithIdentifier:@"TableViewController"];
 }
 
-
-//[self updateFeeds];
 
 @end

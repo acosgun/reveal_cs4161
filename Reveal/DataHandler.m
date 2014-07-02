@@ -43,6 +43,7 @@ static DataHandler *sharedDataSource = nil;
     if ([identifier isEqualToString:@"MeFeedTableViewController"]) {
         [self.json_handler getUserPosts:revealPost];
     } else if ([identifier isEqualToString:@"UserProfileTableViewController"]) {
+        NSLog(@"!!!JsonHandler call (from UserProfileTVC) in datahandler class, reveal post info: %@     %@", revealPost.userID, revealPost.userName);
         [self.json_handler getUserPosts:revealPost];
     }
         [self.delegate feedUpdatedCallback:self];

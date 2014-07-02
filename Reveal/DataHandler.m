@@ -42,6 +42,8 @@ static DataHandler *sharedDataSource = nil;
     
     if ([identifier isEqualToString:@"MeFeedTableViewController"]) {
         [self.json_handler getUserPosts:revealPost];
+    } else if ([identifier isEqualToString:@"UserProfileTableViewController"]) {
+        [self.json_handler getUserPosts:revealPost];
     }
         [self.delegate feedUpdatedCallback:self];
 }

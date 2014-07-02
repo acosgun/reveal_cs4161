@@ -63,18 +63,8 @@
     NSData *imageData = [NSData dataWithContentsOfURL:revealPost.thumbnailURL];
     UIImage *image = [UIImage imageWithData:imageData];
     self.mainImageLabel.image = image;
-    /*
-    if ([revealPost isRevealed]) {
-        self.nameLabel.text = revealPost.userName;
-        
-        NSData *imageData = [NSData dataWithContentsOfURL:revealPost.thumbnailURL];
-        UIImage *image = [UIImage imageWithData:imageData];
-        self.mainImageLabel.image = image;
-    } else {
-        self.nameLabel.text = @"Anonymous";
-        self.mainImageLabel.image = [UIImage imageNamed:@"anonymous_thumbnail.png"];
-    }
-     */
+   
+    NSLog(@"end of configureCellForPost");
 }
 
 @end

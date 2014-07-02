@@ -22,6 +22,8 @@
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *hiddenRevealedSelector;
 
+@property (strong, nonatomic) UIRefreshControl *refreshControl;
+
 
 - (NSURL *) thumbnailURL;
 - (IBAction)logoutButtonPressed:(id)sender;

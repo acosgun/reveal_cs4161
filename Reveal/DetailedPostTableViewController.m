@@ -137,13 +137,10 @@
 */
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"DetailedPostToProfile"]) {
-        MeFeedTableViewController *meFeedTVC = [segue destinationViewController];
-        meFeedTVC.hiddenRevealedSelector.hidden = true;
-        meFeedTVC.revealPost = self.post;
-        
-        NSLog(@"selector should be hidden");
-    }
+    if ([segue.identifier isEqualToString:@"FeedToUserProfile"]) {
+        MeFeedTableViewController *vc = [segue destinationViewController];
+        vc.revealPost = self.post;
+        }
 }
 
 #pragma mark - IB Actions

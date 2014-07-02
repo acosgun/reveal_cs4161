@@ -9,7 +9,6 @@
 #import "MeFeedTableViewController.h"
 #import "DetailedPostTableViewController.h"
 #import "RevealPost.h"
-#import "DummyPosts.h"
 #import "EntryCell.h"
 #import "MeDetailedPostViewController.h"
 #import "DataHandler.h"
@@ -19,6 +18,8 @@
 @property (strong, nonatomic) NSString *thumbnail;
 
 @property (strong, nonatomic) IBOutlet UIImageView *profileImage;
+@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
+
 
 @end
 
@@ -54,23 +55,26 @@ DataHandler *data_handler;
 {
     [super viewDidLoad];
     
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(updateFeeds) forControlEvents:UIControlEventValueChanged];
+    
     data_handler = [DataHandler sharedInstance];
     data_handler.delegate = self;
     //[data_handler updateFeedsWithIdentifier:@"MeFeedTableViewController" postClass:self.revealPost];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     self.profileImage.image = [UIImage imageWithData:[defaults objectForKey:@"avatar_data"]];
+    self.nameLabel.text = [defaults objectForKey:@"username"];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
     [data_handler updateFeedsWithIdentifier:@"MeFeedTableViewController" postClass:self.revealPost];
-    //[self.tableView numberOfRowsInSection:1];
-    [self.tableView reloadData];
-    [self tableView:self.tableView numberOfRowsInSection:1];
+    
 }
 
 -(void) viewWillAppear:(BOOL)animated
 {
     data_handler.delegate = self;
+    [self updateFeeds];
 }
 
 - (void)didReceiveMemoryWarning
@@ -215,15 +219,15 @@ DataHandler *data_handler;
     if(self.hiddenRevealedSelector.selectedSegmentIndex == 0){
         //self.view.backgroundColor = [UIColor redColor];
         NSLog(@"hidden selected \n");
+        self.displayedData = self.hiddenFeed;
 	}
 	if(self.hiddenRevealedSelector.selectedSegmentIndex == 1){
         //self.view.backgroundColor = [UIColor blueColor];
         NSLog(@"public selected \n");
+        self.displayedData = self.publicFeed;
 	}
-    //[self viewDidLoad];
-    [self viewDidAppear:YES];
-    [self.tableView reloadData];
     
+    [self.tableView reloadData];
 }
 
 #pragma mark - Callbacks
@@ -252,7 +256,37 @@ DataHandler *data_handler;
     
     //[self viewDidAppear:YES];
     [self.tableView reloadData];
+    
+    if([self.refreshControl isRefreshing])
+    {
+        NSLog(@"Refreshing");
+        [self.refreshControl endRefreshing];
+    }
+    
     NSLog(@"callback complete");
+    
+    /*
+     NSLog(@"feedUpdatedCallback in TableController.m");
+     self.feed = dataHandlerClass.nearby_feed;
+     //NSLog(@"callback from dataHandler to TAbleViewController (in Table VC)");
+     
+     //NSLog(@"nearby_feed count: %d",self.feed.count);
+     [self.tableView reloadData];
+     
+     if([self.refreshControl isRefreshing])
+     {
+     NSLog(@"Refreshing");
+     [self.refreshControl endRefreshing];
+     }
+     */
+}
+
+#pragma mark - Pull to Refresh Data
+
+- (void) updateFeeds
+{
+    //NSLog(@"updateFeeds");
+    [[DataHandler sharedInstance] updateFeedsWithIdentifier:@"MeFeedTableViewController" postClass:self.revealPost];
 }
 
 @end

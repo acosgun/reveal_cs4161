@@ -24,6 +24,7 @@
         self.body = nil;
         self.userName = nil;
         self.revealed = false;
+        self.current_user_vote = nil;
     }
     return self;
 }

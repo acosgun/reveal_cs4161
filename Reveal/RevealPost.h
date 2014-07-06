@@ -20,6 +20,7 @@
 @property (strong, nonatomic) NSDate *date;
 @property (strong, nonatomic) NSString *dateString;
 @property (strong, nonatomic) NSString *thumbnail;
+@property (strong, nonatomic) NSString *current_user_vote;
 //@property (strong, nonatomic) NSTimeInterval *elapsedTime;
 
 

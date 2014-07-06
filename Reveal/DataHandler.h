@@ -20,6 +20,8 @@
 // define protocol functions that can be used in any class using this delegate
 -(void)feedUpdatedCallback:(DataHandler *)dataHandlerClass;
 -(void)revealStatusCallback:(BOOL)success action:(NSInteger)action_id;
+-(void)watchPostCallback:(BOOL)success;
+-(void)ignorePostCallbackL:(BOOL)success;
 
 @end
 
@@ -36,5 +38,7 @@
 - (void) revealPost:(NSInteger *) post_id;
 - (void) hidePost:(NSInteger *) post_id;
 - (void) deletePost:(NSInteger *) post_id;
+- (void) watchPost:(NSInteger *)post_id HTTMethod:(NSString *)method;
+- (void) ignorePost:(NSInteger *)post_id HTTMethod:(NSString *)method;
 
 @end

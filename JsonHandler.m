@@ -14,6 +14,7 @@
 #define SHARES_URL           @"http://reveal-api.herokuapp.com/shares"
 #define REVEAL_URL           @"http://reveal-api.herokuapp.com/posts/reveal"
 #define HIDE_URL             @"http://reveal-api.herokuapp.com/posts/hide"
+#define WATCH_URL            @"http://reveal-api.herokuapp.com/votes/"
 
 #import "JsonHandler.h"
 #import "RevealPost.h"
@@ -264,6 +265,13 @@
     NSMutableURLRequest *request = [self createJSONMutableURLRequest:TEN_RECENT_POSTS_URL method:@"GET" userData:nil];
     NSURLSession *session = [self createDefaultNSURLSession];
     
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *auth_token = [defaults objectForKey:@"auth_token"];
+    NSString *authen_str = [NSString stringWithFormat:@"Token token=%@", auth_token];
+    [request addValue:authen_str forHTTPHeaderField:@"Authorization"];
+
+    
+    
     NSURLSessionDataTask *getDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         //NSLog(@"Sent GET Request from getTenMostRecentPosts");
         if (!error)
@@ -272,7 +280,7 @@
             //Must create dictionary of posts containing dictionary of JSON data so that it can be easily converted to an array
             NSDictionary *in_json = [NSDictionary dictionaryWithObjectsAndKeys:
                                      [NSJSONSerialization JSONObjectWithData:data options:0 error:nil], @"posts", nil];
-            //NSLog(@"data in_json dictionary: %@", in_json);
+            NSLog(@"data in_json dictionary: %@", in_json);
             
             NSArray *tenMostRecentPosts = [in_json objectForKey:@"posts"];
             //NSLog(@"tenMostRecentPosts Array: %@", tenMostRecentPosts);
@@ -344,7 +352,7 @@
                                 nil],
                                @"share",
                                nil];
-    //NSLog(@"share_data dictionary: %@", share_data);
+    NSLog(@"share_data dictionary: %@", share_data);
     
     NSMutableURLRequest *request = [self createJSONMutableURLRequest:SHARES_URL method:@"POST" userData:share_data];
     NSURLSession *session = [self createDefaultNSURLSession];
@@ -361,7 +369,7 @@
             //NSLog(@"there was no error");
             
             NSDictionary *in_json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            //NSLog(@"data in_json dictionary: %@", in_json);
+            NSLog(@"data in_json dictionary: %@", in_json);
             
             NSNumber *success = [in_json objectForKey:@"success"];
             NSLog(@"success?: %@", success);
@@ -451,6 +459,68 @@
     [getDataTask resume];
     
     NSLog(@"just before return in getUserInformation");
+}
+
+- (void) changeWatchStatus:(NSInteger *)post_id action:(NSString *)action HTTPMethod:(NSString *)method {
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *auth_token = [defaults stringForKey:@"auth_token"];
+    
+    NSNumber *post_id_Num = [NSNumber numberWithInt:*post_id];
+    
+    //json call for watch: {"vote":{"post_id":1,"user_id":2, "action":"watch"}}
+    NSDictionary *watch_data = [NSDictionary dictionaryWithObjectsAndKeys:
+                               [NSDictionary dictionaryWithObjectsAndKeys:
+                                post_id_Num, @"post_id",
+                                [defaults objectForKey:@"user_id"], @"user_id",
+                                action, @"action",
+                                nil],
+                               @"vote",
+                               nil];
+    NSLog(@"post_data dictionary: %@", watch_data);
+    
+    NSMutableString *url = [NSMutableString stringWithString:WATCH_URL];
+    if ([method isEqualToString:@"PUT"]) {
+        [url appendString:@"update"];
+        NSLog(@"url for updates (PUT Method): %@", url);
+    }
+    
+    NSMutableURLRequest *request = [self createJSONMutableURLRequest:url method:method userData:watch_data];
+    
+    
+    NSString *authen_str = [NSString stringWithFormat:@"Token token=%@", auth_token];
+    NSLog(@"authen_str: %@",authen_str);
+    [request addValue:authen_str forHTTPHeaderField:@"Authorization"];
+    
+    
+    NSURLSession *session = [self createDefaultNSURLSession];
+    
+    NSURLSessionDataTask *watchDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSLog(@"Sent POST Request from changeWatchStatus:action");
+        if (!error)
+        {
+            NSLog(@"there was no error");
+            NSDictionary *in_json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            NSNumber *success = [in_json objectForKey:@"success"];
+            NSLog(@"success: %@",success);
+            if([success boolValue] == YES)
+            {
+                NSLog(@"data in_json (success=true): %@", in_json);
+                [self.delegate changeWatchStatusCallback:true action:action];
+            }
+            else
+            {
+                NSLog(@"data in_json (success=false): %@", in_json);
+                [self.delegate changeWatchStatusCallback:false action:action];
+            }
+        }
+        else
+        {
+            [self.delegate changeWatchStatusCallback:false action:action];
+            NSLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
+    [watchDataTask resume];
 }
 
 

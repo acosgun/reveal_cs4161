@@ -81,6 +81,7 @@ static DataHandler *sharedDataSource = nil;
         revealPost.body = [post objectForKey:@"content"];
         revealPost.revealed = [[post objectForKey:@"revealed"]boolValue];
         revealPost.userID = [post objectForKey:@"user_id"];
+        revealPost.current_user_vote = [post objectForKey:@"current_user_vote"];
         
         [self.nearby_feed addObject:revealPost];
     }
@@ -104,6 +105,14 @@ static DataHandler *sharedDataSource = nil;
     [self.json_handler changeRevealStatus:post_id action:&action_id];
 }
 
+- (void) watchPost:(NSInteger *)post_id HTTMethod:(NSString *)method {
+    [self.json_handler changeWatchStatus:post_id action:@"watch" HTTPMethod:method];
+}
+
+- (void) ignorePost:(NSInteger *)post_id HTTMethod:(NSString *)method {
+    [self.json_handler changeWatchStatus:post_id action:@"ignore" HTTPMethod:method];
+}
+
 #pragma mark - JSON Callbacks
 -(void) getTenMostRecentPostsCallback:tenMostRecentPosts {
     //self.nearby_feed = tenMostRecentPosts;
@@ -125,7 +134,13 @@ static DataHandler *sharedDataSource = nil;
     [self.delegate revealStatusCallback:success action:action_id];
 }
 
-
+-(void) changeWatchStatusCallback:(BOOL)success action:(NSString *)action {
+    if ([action isEqualToString:@"watch"]) {
+        [self.delegate watchPostCallback:success];
+    } else if ([action isEqualToString:@"ignore"]) {
+        [self.delegate ignorePostCallbackL:success];
+    }
+}
 
 
 

@@ -47,9 +47,11 @@ DataHandler *data_handler;
 {
     NSLog(@"ViewWillAppear is called: presenting view controller: %@", self.navigationController.presentingViewController);
     data_handler.delegate = self;
-    [self.tableView reloadData];
+    //[self.tableView reloadData];
     //[self updateFeeds];
     //[self.refreshControl beginRefreshing];
+    
+    [self updateFeeds];
 }
 
 - (void)didReceiveMemoryWarning

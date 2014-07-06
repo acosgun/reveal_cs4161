@@ -11,10 +11,13 @@
 #import "DetailedPostSubView.h"
 #import "UserProfileTableViewController.h"
 #import "JsonHandler.h"
+#import "DataHandler.h"
 
 @interface DetailedPostTableViewController ()
 
 @property (weak, nonatomic) IBOutlet DetailedPostSubView *postSubView;
+@property (weak, nonatomic) IBOutlet UIButton *watchButton;
+
 
 @property (weak, nonatomic) IBOutlet UIImageView *postImage;
 @property (weak, nonatomic) IBOutlet UILabel *postBody;
@@ -23,6 +26,8 @@
 @end
 
 @implementation DetailedPostTableViewController
+
+DataHandler *data_handler;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -37,6 +42,8 @@
 {
     [super viewDidLoad];
     
+    data_handler = [DataHandler sharedInstance];
+    
     //self.postSubView.frame.size.height = [self.postSubView setFrameHeight:self.post];
     
     
@@ -48,6 +55,9 @@
 }
 
 - (void) viewWillAppear:(BOOL)animated {
+    
+    data_handler.delegate = self;
+    
     [self.postSubView setFrameHeight:self.post];
     
     self.postImage.image = [self.post imageForThumbnail:self.post.thumbnail];
@@ -56,6 +66,8 @@
     self.postBody.text = self.post.body;
     NSLog(@"post_id (detailedPostVC): %@", self.post.IDNumber);
     NSLog(@"user_id (detailedPostVC): %@", self.post.userID);
+    
+    [self setWatchButtonBackgroundColor];
 }
 
 - (void)didReceiveMemoryWarning
@@ -163,12 +175,87 @@
     NSLog(@"Post name button was pressed");
 }
 
+- (IBAction)pressedWatchButton:(id)sender {
+    NSLog(@"watch button was pressed");
+    NSLog(@"current_user_vote = %@", self.post.current_user_vote);
+    NSInteger post_id =[self.post.IDNumber intValue];
+    
+    if ([self.post.current_user_vote isEqualToString:@""]) {
+        [self promptForWatch];
+    } else if ([self.post.current_user_vote isEqualToString:@"watch"]) {
+        [data_handler ignorePost:&post_id HTTMethod:@"PUT"];
+    } else if ([self.post.current_user_vote isEqualToString:@"ignore"]) {
+        [data_handler watchPost:&post_id HTTMethod:@"PUT"];
+    }
+}
+
+- (void) setWatchButtonBackgroundColor {
+    if ([self.post.current_user_vote isEqualToString:@"watch"]) {
+        self.watchButton.backgroundColor = [UIColor greenColor];
+        //self.watchButton.imageView.image = nil;
+        [self.watchButton setImage:nil forState:UIControlStateNormal];
+        self.watchButton.titleLabel.text = @"W";
+    } else if ([self.post.current_user_vote isEqualToString:@"ignore"]) {
+        self.watchButton.backgroundColor = [UIColor grayColor];
+        //self.watchButton.imageView.image = nil;
+        [self.watchButton setImage:nil forState:UIControlStateNormal];
+        self.watchButton.titleLabel.text = @"I";
+
+    }
+}
+
+
+#pragma mark - Action Sheet
+- (void) promptForWatch {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Watch Screen" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Watch", @"Ignore", nil];
+    
+    [actionSheet showInView:self.view];
+    NSLog(@"action view should appear");
+}
+
+- (void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    NSInteger post_id =[self.post.IDNumber intValue];
+    if (buttonIndex != actionSheet.cancelButtonIndex) {
+        NSString *method = @"POST";
+        if (buttonIndex != actionSheet.firstOtherButtonIndex) {
+            [data_handler ignorePost:&post_id HTTMethod:method];
+        } else {
+            [data_handler watchPost:&post_id HTTMethod:method];
+        }
+    }
+}
+
+
 #pragma mark - Callbacks
 - (void) createSharePostCallback:(BOOL)success {
     if (success) {
         NSLog(@"post was successfully shared");
     } else {
         NSLog(@"ERROR: post not successfully shared");
+    }
+}
+
+- (void) watchPostCallback:(BOOL)success {
+    if (success) {
+        NSLog(@"I am watching post");
+        //[self.watchButton adjustsImageWhenHighlighted];
+        self.post.current_user_vote = @"watch";
+        [self setWatchButtonBackgroundColor];
+    }
+}
+
+- (void) ignorePostCallbackL:(BOOL)success {
+    if (success) {
+        NSLog(@"I am ignoring post");
+        //[self.watchButton adjustsImageWhenDisabled];
+        self.post.current_user_vote = @"ignore";
+        //[self setWatchButtonBackgroundColor];
+        [self setWatchButtonBackgroundColor];
+        [self.tableView setNeedsDisplay];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView setNeedsDisplay];
+        });
+        
     }
 }
 

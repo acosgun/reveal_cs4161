@@ -27,6 +27,7 @@
 -(void) createSharePostCallback:(BOOL)success;
 -(void) revealStatusCallback:(BOOL)success action:(NSInteger)action_id;
 -(void) getUserInformationCallback:(NSDictionary *)userInformation;
+-(void) changeWatchStatusCallback:(BOOL)success action:(NSString *)action;
 
 @end
 
@@ -49,4 +50,6 @@
 - (void) createSharePost:(RevealPost *)revealPost;
 - (void) getUserInformation:(NSString *)userIDNumber;
 - (void) updateUserProfileImage:(NSDictionary *)userInformation;
+- (void) changeWatchStatus:(NSInteger *)post_id action:(NSString *)action HTTPMethod:(NSString *)method;
+
 @end

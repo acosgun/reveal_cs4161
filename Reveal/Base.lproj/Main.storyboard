@@ -324,11 +324,14 @@
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="34l-gI-Kau">
-                                            <rect key="frame" x="10" y="0.0" width="39" height="30"/>
+                                            <rect key="frame" x="20" y="0.0" width="41" height="26"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <state key="normal" title="Watch Icon" image="blue-eye-icon-17684040">
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
+                                            <connections>
+                                                <action selector="pressedWatchButton:" destination="qJu-cT-U0k" eventType="touchUpInside" id="xsW-YI-D5I"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                 </view>
@@ -378,6 +381,7 @@
                         <outlet property="postImage" destination="Tkf-3p-i3v" id="57t-ld-UX2"/>
                         <outlet property="postName" destination="x7G-sP-3ng" id="pJw-FT-ndJ"/>
                         <outlet property="postSubView" destination="a45-27-VX5" id="qbs-CX-WtN"/>
+                        <outlet property="watchButton" destination="34l-gI-Kau" id="a9M-YB-z6O"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lrX-NZ-Jif" userLabel="First Responder" sceneMemberID="firstResponder"/>

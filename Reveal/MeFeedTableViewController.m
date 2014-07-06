@@ -255,13 +255,17 @@ DataHandler *data_handler;
      }
     
     //[self viewDidAppear:YES];
-    [self.tableView reloadData];
     
     if([self.refreshControl isRefreshing])
     {
         NSLog(@"Refreshing");
         [self.refreshControl endRefreshing];
     }
+    
+    [self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
     
     NSLog(@"callback complete");
     

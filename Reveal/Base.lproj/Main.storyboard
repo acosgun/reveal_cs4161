@@ -117,6 +117,7 @@
                                     <outlet property="mainImageLabel" destination="oCb-gA-0mT" id="Xep-Wy-MmN"/>
                                     <outlet property="nameLabel" destination="xZT-cF-8hE" id="pSz-bS-ZaD"/>
                                     <outlet property="votesLabel" destination="Y0G-9g-RFS" id="GIC-aW-aFq"/>
+                                    <segue destination="kjP-cY-6F2" kind="push" identifier="meFeedDetailPost" id="F0H-3d-AB5"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

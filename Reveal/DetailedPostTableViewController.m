@@ -40,9 +40,26 @@ DataHandler *data_handler;
 
 - (void)viewDidLoad
 {
+  
+    
     [super viewDidLoad];
     
     data_handler = [DataHandler sharedInstance];
+    
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSInteger user_id = [[defaults objectForKey:@"user_id"] integerValue];
+
+    if([self.post.userID integerValue] != user_id)
+    {
+        self.deleteButton.hidden = TRUE;
+    }
+    else
+    {
+        self.watchButton.hidden = TRUE;
+    }
+    
+    
     
     //self.postSubView.frame.size.height = [self.postSubView setFrameHeight:self.post];
     
@@ -211,6 +228,33 @@ DataHandler *data_handler;
     }
 }
 
+- (IBAction)deleteButtonPressed:(id)sender
+{
+    NSInteger post_id = [self.post.IDNumber intValue];
+    [[DataHandler sharedInstance] deletePost:&post_id];
+}
+
+- (IBAction)facebookButtonPressed:(id)sender {
+
+    NSString *content_str = [NSString stringWithFormat:@"%@ says:\"%@\" on Reveal", self.post.userName, self.post.body];
+    [[DataHandler sharedInstance] postToFacebook:content_str viewController:self];
+}
+
+
+- (IBAction)twitterButtonPressed:(id)sender {
+    NSString *content_str = [NSString stringWithFormat:@"%@ says:\"%@\" on Reveal", self.post.userName, self.post.body];
+
+    [[DataHandler sharedInstance] postToTwitter:content_str viewController:self];
+}
+
+- (void) dismissSelf
+{
+    [[self presentingViewController] dismissViewControllerAnimated:NO completion:nil];
+    //[self.navigationController popToRootViewControllerAnimated:YES];
+    //[self.navigationController popViewControllerAnimated:NO];
+}
+
+
 
 #pragma mark - Action Sheet
 - (void) promptForWatch {
@@ -231,6 +275,8 @@ DataHandler *data_handler;
         }
     }
 }
+
+
 
 
 #pragma mark - Callbacks
@@ -265,6 +311,19 @@ DataHandler *data_handler;
         
     }
 }
+
+-(void)revealStatusCallback:(BOOL)success action:(NSInteger)action_id
+{
+    NSLog(@"revealStatusCallback in DetailedPostTVC.m");
+    NSLog(@"action_id: %d",action_id);
+    if(success && (action_id == 2))
+    {
+        NSLog(@"dismiss DetailedPostTVC");
+        [self dismissSelf];
+        
+    }
+}
+
 
 
 

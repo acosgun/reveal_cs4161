@@ -322,7 +322,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ogO-a5-7xw">
-                                            <rect key="frame" x="278" y="0.0" width="32" height="32"/>
+                                            <rect key="frame" x="275" y="4" width="25" height="25"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <state key="normal" title="Share Icon" image="share_icon">
                                                 <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -332,13 +332,43 @@
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="34l-gI-Kau">
-                                            <rect key="frame" x="20" y="0.0" width="41" height="26"/>
+                                            <rect key="frame" x="20" y="3" width="30" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <state key="normal" title="Watch Icon" image="blue-eye-icon-17684040">
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                             <connections>
                                                 <action selector="pressedWatchButton:" destination="qJu-cT-U0k" eventType="touchUpInside" id="xsW-YI-D5I"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="JqV-7C-98h">
+                                            <rect key="frame" x="84" y="2" width="24" height="24"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <state key="normal" image="trash-2-24">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="deleteButtonPressed:" destination="qJu-cT-U0k" eventType="touchUpInside" id="HeZ-yJ-8fi"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="WU5-p5-zQN">
+                                            <rect key="frame" x="145" y="1" width="30" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <state key="normal" backgroundImage="40x40-twitter-bird-white-on">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="twitterButtonPressed:" destination="qJu-cT-U0k" eventType="touchUpInside" id="L5O-zT-BUb"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="DZF-DT-yLb">
+                                            <rect key="frame" x="211" y="1" width="30" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <state key="normal" image="facebook_logo_icon_40x40">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="facebookButtonPressed:" destination="qJu-cT-U0k" eventType="touchUpInside" id="yhd-VT-bB4"/>
                                             </connections>
                                         </button>
                                     </subviews>
@@ -385,10 +415,13 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="ANC-gj-Lhx"/>
                     <connections>
+                        <outlet property="deleteButton" destination="JqV-7C-98h" id="kor-1Q-sjg"/>
+                        <outlet property="facebookButton" destination="DZF-DT-yLb" id="KOY-OQ-EA9"/>
                         <outlet property="postBody" destination="Byg-fr-qBh" id="KfC-Iq-k49"/>
                         <outlet property="postImage" destination="Tkf-3p-i3v" id="57t-ld-UX2"/>
                         <outlet property="postName" destination="x7G-sP-3ng" id="pJw-FT-ndJ"/>
                         <outlet property="postSubView" destination="a45-27-VX5" id="qbs-CX-WtN"/>
+                        <outlet property="twitterButton" destination="WU5-p5-zQN" id="1O3-S4-b4V"/>
                         <outlet property="watchButton" destination="34l-gI-Kau" id="a9M-YB-z6O"/>
                     </connections>
                 </tableViewController>
@@ -847,12 +880,15 @@
         </scene>
     </scenes>
     <resources>
+        <image name="40x40-twitter-bird-white-on" width="40" height="40"/>
         <image name="bell" width="30" height="30"/>
         <image name="blue-eye-icon-17684040" width="334" height="215"/>
         <image name="email" width="30" height="30"/>
+        <image name="facebook_logo_icon_40x40" width="40" height="40"/>
         <image name="man" width="30" height="30"/>
         <image name="share_icon" width="718" height="800"/>
         <image name="text-list" width="30" height="30"/>
+        <image name="trash-2-24" width="24" height="24"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

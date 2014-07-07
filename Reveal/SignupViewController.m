@@ -95,15 +95,25 @@
     NSLog(@"makeSignupRequestCallback");
     if(success)
     {
+        NSLog(@"signup  successful");
         [self updateUserProfileImage];
         [self performSegueToTabbar];
-        NSLog(@"signup  successful");
     }
     else
     {
         NSLog(@"signup not successful");
         //TODO: Show login error
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self showSignupError];
+        });
     }
+}
+
+-(void) showSignupError
+{
+    
+    UIAlertView *alertView =[[UIAlertView alloc] initWithTitle:@"Oops!" message:@"Error signing up!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alertView show];
 }
 
 -(void) getUserInformationCallback:(NSDictionary *)userInformation {

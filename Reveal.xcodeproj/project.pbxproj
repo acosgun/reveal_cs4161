@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7A4A6C60196A94F0008FCF8A /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A4A6C5F196A94F0008FCF8A /* Social.framework */; };
 		7A71EB02194FDF9000C39B0A /* NotificationsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71EB01194FDF9000C39B0A /* NotificationsTableViewController.m */; };
 		7A71EB09194FE1A200C39B0A /* InboxTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71EB08194FE1A200C39B0A /* InboxTableViewController.m */; };
 		7A71EB0D19501C5900C39B0A /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71EB0C19501C5900C39B0A /* LoginViewController.m */; };
@@ -42,6 +43,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7A4A6C5F196A94F0008FCF8A /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		7A71EB00194FDF9000C39B0A /* NotificationsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsTableViewController.h; sourceTree = "<group>"; };
 		7A71EB01194FDF9000C39B0A /* NotificationsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsTableViewController.m; sourceTree = "<group>"; };
 		7A71EB07194FE1A200C39B0A /* InboxTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InboxTableViewController.h; path = ../InboxTableViewController.h; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A4A6C60196A94F0008FCF8A /* Social.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -164,6 +167,7 @@
 		7A909662194CF3CC00010F38 = {
 			isa = PBXGroup;
 			children = (
+				7A4A6C5F196A94F0008FCF8A /* Social.framework */,
 				D822C171195FF1680001E482 /* Images.xcassets */,
 				D801DA85194E0B0400CB9B00 /* DummyPosts.h */,
 				D801DA86194E0B0400CB9B00 /* DummyPosts.m */,

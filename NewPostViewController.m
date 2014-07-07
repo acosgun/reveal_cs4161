@@ -64,7 +64,7 @@ DataHandler *data_handler;
 
 - (void) dismissSelf
 {
-    [[self presentingViewController] dismissViewControllerAnimated:YES completion:nil];
+    [[self presentingViewController] dismissViewControllerAnimated:NO completion:nil];
     //[self.navigationController popToRootViewControllerAnimated:YES];
     //[self.navigationController popViewControllerAnimated:NO];
 }

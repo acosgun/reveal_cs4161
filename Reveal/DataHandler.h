@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "JsonHandler.h"
 #import <CoreLocation/CoreLocation.h>
+#import <Social/Social.h>
 
 @class JsonHandler;
 
@@ -52,4 +53,6 @@
 - (void) followUser:(NSInteger *)user_id followedUserID:(NSInteger *) followed_user_id;
 - (void) unfollowUser:(NSInteger *)user_id followedUserID:(NSInteger *) followed_user_id;
 - (void) createPostRequestWithContent:(NSString *)body isRevealed:(BOOL)isRevealed;
+- (void) postToFacebook:(NSString*)content viewController:(UIViewController*)view_controller;
+- (void) postToTwitter:(NSString*)content viewController:(UIViewController*)view_controller;
 @end

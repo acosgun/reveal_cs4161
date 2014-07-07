@@ -16,5 +16,13 @@
 
 @property(strong, nonatomic) RevealPost *post;
 @property (strong, nonatomic) JsonHandler *json_handler;
+@property (weak, nonatomic) IBOutlet UIButton *deleteButton;
+@property (weak, nonatomic) IBOutlet UIButton *twitterButton;
+@property (weak, nonatomic) IBOutlet UIButton *facebookButton;
+
+- (IBAction)deleteButtonPressed:(id)sender;
+- (IBAction)facebookButtonPressed:(id)sender;
+
+- (IBAction)twitterButtonPressed:(id)sender;
 
 @end

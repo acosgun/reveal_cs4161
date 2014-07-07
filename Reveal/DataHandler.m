@@ -212,6 +212,59 @@ static DataHandler *sharedDataSource = nil;
     }
 }
 
+#pragma mark - Social
+- (void) postToFacebook:(NSString*)content viewController:(UIViewController*)view_controller
+{
+    SLComposeViewController *facebookController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];;
+
+    [facebookController setInitialText:content];
+    
+    //[facebookController addURL: [NSURL URLWithString:
+    //@"https://itunes.apple.com/us/app/flappy-obama-vs-putin/id845630949"]];
+    
+    [view_controller presentViewController:facebookController animated:YES completion:nil];
+    
+    SLComposeViewControllerCompletionHandler myBlock = ^(SLComposeViewControllerResult result){
+        if (result == SLComposeViewControllerResultCancelled)
+        {
+            //NSLog(@"delete");
+        }
+        else
+        {
+            //NSLog(@"post");
+        }
+        
+        [facebookController dismissViewControllerAnimated:YES completion:Nil];
+    };
+    facebookController.completionHandler=myBlock;
+}
+
+- (void) postToTwitter:(NSString*)content viewController:(UIViewController*)view_controller
+{
+SLComposeViewController *twitterController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];;
+    
+    
+    [twitterController setInitialText:content];
+        
+    [view_controller presentViewController:twitterController animated:YES completion:nil];
+    
+    SLComposeViewControllerCompletionHandler myBlock = ^(SLComposeViewControllerResult result){
+        if (result == SLComposeViewControllerResultCancelled) {
+            
+            //NSLog(@"delete");
+            
+        } else
+            
+        {
+            //NSLog(@"post");
+        }
+        
+        [twitterController dismissViewControllerAnimated:YES completion:Nil];
+    };
+    twitterController.completionHandler=myBlock;
+    
+}
+
 
 #pragma mark - JSON Callbacks
 -(void) getTenMostRecentPostsCallback:tenMostRecentPosts {

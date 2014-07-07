@@ -10,6 +10,7 @@
 #define USERS_URL            @"http://reveal-api.herokuapp.com/users/"
 #define POSTS_URL            @"http://reveal-api.herokuapp.com/posts"
 #define TEN_RECENT_POSTS_URL @"http://reveal-api.herokuapp.com/posts/index"
+#define POPULAR_POSTS_URL    @"http://reveal-api.herokuapp.com/posts/index_popular"
 #define USER_POSTS           @"http://reveal-api.herokuapp.com/posts/index_for_user/"
 #define SHARES_URL           @"http://reveal-api.herokuapp.com/shares"
 #define REVEAL_URL           @"http://reveal-api.herokuapp.com/posts/reveal"
@@ -325,6 +326,37 @@
     
 }
 
+- (void) getPopularPosts {
+    NSMutableURLRequest *request = [self createJSONMutableURLRequest:POPULAR_POSTS_URL method:@"GET" userData:nil];
+    NSURLSession *session = [self createDefaultNSURLSession];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *auth_token = [defaults objectForKey:@"auth_token"];
+    NSString *authen_str = [NSString stringWithFormat:@"Token token=%@", auth_token];
+    [request addValue:authen_str forHTTPHeaderField:@"Authorization"];
+    
+    NSURLSessionDataTask *getDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        //NSLog(@"Sent GET Request from getTenMostRecentPosts");
+        if (!error)
+        {
+            //NSLog(@"there was no error");
+            //Must create dictionary of posts containing dictionary of JSON data so that it can be easily converted to an array
+            NSDictionary *in_json = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     [NSJSONSerialization JSONObjectWithData:data options:0 error:nil], @"posts", nil];
+            //NSLog(@"data in_json dictionary: %@", in_json);
+            
+            NSArray *popularPosts = [in_json objectForKey:@"posts"];
+            //NSLog(@"tenMostRecentPosts Array: %@", tenMostRecentPosts);
+            
+            [self.delegate getPopularPostsCallback:popularPosts];
+        }
+        else
+        {
+            NSLog(@"ERROR with getPopularPosts");
+        }
+    }];
+    [getDataTask resume];
+}
 
 
 - (void) getUserPosts:(RevealPost *)revealPost {

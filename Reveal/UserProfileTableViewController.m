@@ -160,13 +160,13 @@ DataHandler *data_handler;
     
     if ([self.revealPost.userID isEqual:[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"]]) {
 
-        for (RevealPost *post in dataHandlerClass.nearby_feed) {
+        for (RevealPost *post in dataHandlerClass.feed) {
             if (post.revealed == true) {
                 [self.feed addObject:post];
             }
         }
     } else {
-        self.feed = dataHandlerClass.nearby_feed;
+        self.feed = dataHandlerClass.feed;
     }
     
     //NSLog(@"feed is : %@", self.feed);

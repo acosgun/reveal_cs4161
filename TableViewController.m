@@ -14,6 +14,8 @@
 
 @interface TableViewController ()
 
+@property (weak, nonatomic) IBOutlet UISegmentedControl *feedSelector;
+
 @end
 
 @implementation TableViewController
@@ -39,17 +41,15 @@ DataHandler *data_handler;
     [self.refreshControl addTarget:self action:@selector(updateFeeds) forControlEvents:UIControlEventValueChanged];
     
     data_handler = [DataHandler sharedInstance];
-    data_handler.delegate = self;
     [self updateFeeds];
+    
+    self.feedSelector.selectedSegmentIndex = 0;
 }
 
 -(void) viewWillAppear:(BOOL)animated
 {
     NSLog(@"ViewWillAppear is called: presenting view controller: %@", self.navigationController.presentingViewController);
     data_handler.delegate = self;
-    //[self.tableView reloadData];
-    //[self updateFeeds];
-    //[self.refreshControl beginRefreshing];
     
     [self updateFeeds];
 }
@@ -72,7 +72,7 @@ DataHandler *data_handler;
 {
     // Return the number of rows in the section.
     //NSLog(@"COUNT: %d", [self.feed count]);
-    return [self.feed count];
+    return [self.displayedFeed count];
 }
 
 
@@ -82,12 +82,8 @@ DataHandler *data_handler;
     //UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     EntryCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     
-    // Configure the cell...
-    //cell.textLabel.text = [self.titles objectAtIndex:indexPath.row];
-    RevealPost *revealPost = [self.feed objectAtIndex:indexPath.row];
+    RevealPost *revealPost = [self.displayedFeed objectAtIndex:indexPath.row];
     
-    
-    //cell.textLabel.text = revealPost.body; replaced because of custom cell configuration method
     [cell configureCellForPost:revealPost];
     //NSLog(@"text label: %@", cell.textLabel.text);
     return cell;
@@ -99,43 +95,6 @@ DataHandler *data_handler;
 }
 
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 
 #pragma mark - Navigation
@@ -149,7 +108,7 @@ DataHandler *data_handler;
         //NSLog(@"inside DetailedPostTableViewController");
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         
-        RevealPost *revealPost = [self.feed objectAtIndex:indexPath.row];
+        RevealPost *revealPost = [self.displayedFeed objectAtIndex:indexPath.row];
         
         [segue.destinationViewController setPost:revealPost];
         //NSString *str = [self.titles objectAtIndex:indexPath.row];
@@ -161,21 +120,64 @@ DataHandler *data_handler;
     // Pass the selected object to the new view controller.
 }
 
+#pragma mark - IB Actions
+
+- (IBAction)feedSelectorWasPressed:(id)sender {
+    
+    //[self.displayedFeed removeAllObjects];
+    
+    if (self.feedSelector.selectedSegmentIndex == 0) {
+        NSLog(@"feed was selected. Feed: %@", self.feed);
+        self.displayedFeed = self.feed;
+    } else if (self.feedSelector.selectedSegmentIndex == 1) {
+        NSLog(@"popular feed was selected. Pop Feed: %@", self.popularFeed);
+        self.displayedFeed = self.popularFeed;
+    } else if (self.feedSelector.selectedSegmentIndex == 2) {
+        NSLog(@"nearby feed was selected");
+    } else if (self.feedSelector.selectedSegmentIndex == 3) {
+        NSLog(@"followed feed was selected");
+    }
+    
+    [self reloadDataInTableView];
+}
+
+
 #pragma mark - Data portal
 - (void)feedUpdatedCallback:(DataHandler *)dataHandlerClass {
     NSLog(@"feedUpdatedCallback in TableController.m");
-    self.feed = dataHandlerClass.nearby_feed;
-    //NSLog(@"callback from dataHandler to TAbleViewController (in Table VC)");
+    self.feed = dataHandlerClass.feed;
     
-    //NSLog(@"nearby_feed count: %d",self.feed.count);
-    
-    if([self.refreshControl isRefreshing])
-    {
-        NSLog(@"Refreshing");
-        [self.refreshControl endRefreshing];
+    if (self.feedSelector.selectedSegmentIndex == 0) {
+        self.displayedFeed = self.feed;
     }
     
+    if( ([self.refreshControl isRefreshing]) & (self.feedSelector.selectedSegmentIndex == 0) )
+    {
+        NSLog(@"Refreshing (feed updated callback)");
+        [self.refreshControl endRefreshing];
+        [self reloadDataInTableView];
+    }
+    
+}
+
+- (void) popularFeedUpdatedCallback:(DataHandler *)dataHandlerClass {
+    self.popularFeed = dataHandlerClass.popularFeed;
+    
+    if (self.feedSelector.selectedSegmentIndex == 1) {
+        self.displayedFeed = self.popularFeed;
+    }
+    
+    if( ([self.refreshControl isRefreshing]) & (self.feedSelector.selectedSegmentIndex == 1))
+    {
+        NSLog(@"Refreshing (pop feed updated callback)");
+        [self.refreshControl endRefreshing];
+        [self reloadDataInTableView];
+    }
+} 
+
+- (void) reloadDataInTableView {
     [self.tableView reloadData];
+    NSLog(@"first reload of tableView (before dispatch)");
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
     });
@@ -188,10 +190,55 @@ DataHandler *data_handler;
 
 - (void) updateFeeds
 {
+
+    [self.refreshControl beginRefreshing];
+    /*  THESE REMOVE ALL OBJECTS CALLS CAUSED THE APP TO CRASH!!!
+    [self.displayedFeed removeAllObjects];
     [self.feed removeAllObjects];
+    [self.popularFeed removeAllObjects];
+    [self reloadDataInTableView];
+     */
     //NSLog(@"updateFeeds");
     [[DataHandler sharedInstance] updateFeedsWithIdentifier:@"TableViewController"];
 }
+
+/*
+ // Override to support conditional editing of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the specified item to be editable.
+ return YES;
+ }
+ */
+
+/*
+ // Override to support editing the table view.
+ - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ if (editingStyle == UITableViewCellEditingStyleDelete) {
+ // Delete the row from the data source
+ [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+ } else if (editingStyle == UITableViewCellEditingStyleInsert) {
+ // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+ }
+ }
+ */
+
+/*
+ // Override to support rearranging the table view.
+ - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+ {
+ }
+ */
+
+/*
+ // Override to support conditional rearranging of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the item to be re-orderable.
+ return YES;
+ }
+ */
 
 
 @end

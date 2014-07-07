@@ -13,6 +13,9 @@
 
 @interface TableViewController : UITableViewController <DataHandlerDelegate>
 
-@property (nonatomic, strong) NSMutableArray *feed;
+@property (nonatomic, strong) NSMutableArray *feed; // default feed for most recent posts
+@property (nonatomic, strong) NSMutableArray *popularFeed;
+@property (nonatomic, strong) NSMutableArray *displayedFeed;
+
 @property (nonatomic,strong) UIRefreshControl *refreshControl;
 @end

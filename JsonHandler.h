@@ -28,7 +28,10 @@
 -(void) makeSignupRequestCallback:(BOOL)success;
 -(void) createPostRequestCallback:(BOOL)success;
 -(void) getTenMostRecentPostsCallback:(NSArray *)tenMostRecentPosts;
+
 -(void) getUserPostsCallBack:(NSArray *)userPosts;
+-(void) getPopularPostsCallback:(NSArray *)posts;
+
 -(void) createSharePostCallback:(BOOL)success;
 -(void) revealStatusCallback:(BOOL)success action:(NSInteger)action_id;
 -(void) getUserInformationCallback:(NSDictionary *)userInformation;

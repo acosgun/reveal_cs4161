@@ -22,6 +22,8 @@
 
 @optional
 -(void)feedUpdatedCallback:(DataHandler *)dataHandlerClass;
+-(void)popularFeedUpdatedCallback:(DataHandler *)dataHandlerClass;
+
 -(void)revealStatusCallback:(BOOL)success action:(NSInteger)action_id;
 -(void)watchPostCallback:(BOOL)success;
 -(void)ignorePostCallbackL:(BOOL)success;
@@ -32,7 +34,8 @@
 @interface DataHandler : NSObject <JsonHandlerDelegate, CLLocationManagerDelegate>
 
 @property (nonatomic, assign) id  delegate;
-@property (nonatomic, strong) NSMutableArray *nearby_feed;
+@property (nonatomic, strong) NSMutableArray *feed;
+@property (nonatomic, strong) NSMutableArray *popularFeed;
 @property (nonatomic, strong) JsonHandler *json_handler;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 

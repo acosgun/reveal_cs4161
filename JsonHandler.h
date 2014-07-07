@@ -55,7 +55,9 @@
 - (void) makeLoginRequest:(NSString*)username pass:(NSString*)password;
 - (void) makeSignupRequest:(NSString*)username pass:(NSString*)password;
 - (void) createPostRequestWithContent:(NSString *)body isRevealed:(BOOL)isRevealed locationEnabled:(BOOL)location_enabled lat:(CLLocationDegrees)lat lon:(CLLocationDegrees)lon;
--(void) getTenMostRecentPosts;
+- (void) getTenMostRecentPosts;
+- (void) getPopularPosts;
+
 - (void) getUserPosts:(RevealPost *)revealPost;
 - (void) createSharePost:(RevealPost *)revealPost;
 - (void) getUserInformation:(NSInteger *)userIDNumber includeAuthToken:(BOOL)include_token;

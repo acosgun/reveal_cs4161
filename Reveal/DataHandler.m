@@ -63,6 +63,7 @@ static DataHandler *sharedDataSource = nil;
     if ( (self = [super init]) ) {
         // your custom initialization
         [self initialize];
+        self.feed = [NSMutableArray array];
     }
     return self;
 }

@@ -181,9 +181,7 @@ DataHandler *data_handler;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
     });
-    
-    //NSLog(@"toto");
-    //[self tableView:self.tableView cellForRowAtIndexPath:<#(NSIndexPath *)#>];
+    NSLog(@"second reload of tableview (after dispatch)");
 }
 
 #pragma mark - Pull to Refresh Data

@@ -32,6 +32,9 @@ static DataHandler *sharedDataSource = nil;
     
     if ([identifier  isEqualToString:@"TableViewController"]) {
         [self.json_handler getTenMostRecentPosts];
+        [self.json_handler getPopularPosts];
+        //[self.json_handler getNearbyPosts];
+        //[self.json_handler getFollowedPosts];
     }
 }
 
@@ -59,16 +62,28 @@ static DataHandler *sharedDataSource = nil;
 - (id)init {
     if ( (self = [super init]) ) {
         // your custom initialization
-        self.nearby_feed = [NSMutableArray array];
+        self.feed = [NSMutableArray array];
     }
     return self;
 }
 
 - (void) fillFeedWithTenMostRecentPosts:(NSArray *)posts {
-
     //NSLog(@"fillFeedWithTenMostRecentPosts");
-    self.nearby_feed = [[NSMutableArray alloc] init];
-    //[self.nearby_feed removeAllObjects];
+    self.feed = [[NSMutableArray alloc] init];
+    
+    self.feed = [self createPostArrayFromJSONResponse:posts];
+    //NSLog(@"nearby_feed count: %d",self.feed.count);
+    //NSLog(@"ten recent posts from fillFeedWithTenMostRecentPosts: %@", self.feed);
+}
+
+- (void) fillFeedWithPopularPosts:(NSArray *)posts {
+    self.popularFeed = [[NSMutableArray alloc] init];
+    self.popularFeed = [self createPostArrayFromJSONResponse:posts];
+}
+
+- (NSMutableArray *)createPostArrayFromJSONResponse:(NSArray *)posts {
+    
+    NSMutableArray *postsArray = [[NSMutableArray alloc] init];
     
     for (NSDictionary *post in posts)
     {
@@ -83,10 +98,9 @@ static DataHandler *sharedDataSource = nil;
         revealPost.userID = [post objectForKey:@"user_id"];
         revealPost.current_user_vote = [post objectForKey:@"current_user_vote"];
         
-        [self.nearby_feed addObject:revealPost];
+        [postsArray addObject:revealPost];
     }
-    //NSLog(@"nearby_feed count: %d",self.nearby_feed.count);
-    //NSLog(@"ten recent posts from fillFeedWithTenMostRecentPosts: %@", self.nearby_feed);
+    return postsArray;
 }
 
 - (void) revealPost:(NSInteger *) post_id
@@ -120,10 +134,16 @@ static DataHandler *sharedDataSource = nil;
 
 #pragma mark - JSON Callbacks
 -(void) getTenMostRecentPostsCallback:tenMostRecentPosts {
-    //self.nearby_feed = tenMostRecentPosts;
+    //self.feed = tenMostRecentPosts;
     [self fillFeedWithTenMostRecentPosts:tenMostRecentPosts];
     //NSLog(@"Ten most recent posts sent back to DataHandler.m");
     [self.delegate feedUpdatedCallback:self];
+}
+
+- (void) getPopularPostsCallback:(NSArray *)posts {
+    [self fillFeedWithPopularPosts:posts];
+    [self.delegate popularFeedUpdatedCallback:self];
+    NSLog(@"Popular Posts were updated");
 }
 
 -(void) getUserPostsCallBack:(NSArray *)userPosts {

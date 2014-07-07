@@ -27,7 +27,10 @@
 -(void) makeSignupRequestCallback:(BOOL)success;
 -(void) createPostRequestCallback:(BOOL)success;
 -(void) getTenMostRecentPostsCallback:(NSArray *)tenMostRecentPosts;
+
 -(void) getUserPostsCallBack:(NSArray *)userPosts;
+-(void) getPopularPostsCallback:(NSArray *)posts;
+
 -(void) createSharePostCallback:(BOOL)success;
 -(void) revealStatusCallback:(BOOL)success action:(NSInteger)action_id;
 -(void) getUserInformationCallback:(NSDictionary *)userInformation;
@@ -49,7 +52,10 @@
 - (void) makeLoginRequest:(NSString*)username pass:(NSString*)password;
 - (void) makeSignupRequest:(NSString*)username pass:(NSString*)password;
 - (void) createPostRequestWithContent:(NSString *)body isRevealed:(BOOL)isRevealed;
--(void) getTenMostRecentPosts;
+
+- (void) getTenMostRecentPosts;
+- (void) getPopularPosts;
+
 - (void) getUserPosts:(RevealPost *)revealPost;
 - (void) createSharePost:(RevealPost *)revealPost;
 - (void) getUserInformation:(NSInteger *)userIDNumber includeAuthToken:(BOOL)include_token;

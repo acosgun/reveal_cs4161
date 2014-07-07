@@ -66,11 +66,6 @@ DataHandler *data_handler;
     self.nameLabel.text = [defaults objectForKey:@"username"];
 }
 
-- (void) viewDidAppear:(BOOL)animated {
-    [data_handler updateFeedsWithIdentifier:@"MeFeedTableViewController" postClass:self.revealPost];
-    
-}
-
 -(void) viewWillAppear:(BOOL)animated
 {
     data_handler.delegate = self;
@@ -113,12 +108,13 @@ DataHandler *data_handler;
     //UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     EntryCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     
+    /*
     NSMutableArray *displayedPosts = [[NSMutableArray alloc] init];
     if (self.hiddenRevealedSelector.selectedSegmentIndex == 0) {
         displayedPosts = self.hiddenFeed;
     } else if (self.hiddenRevealedSelector.selectedSegmentIndex == 1) {
         displayedPosts = self.publicFeed;
-    }
+    } */
     //cell.textLabel.text = [self.titles objectAtIndex:indexPath.row];
     //RevealPost *revealPost = [displayedPosts objectAtIndex:indexPath.row];
     RevealPost *revealPost = [self.displayedData objectAtIndex:indexPath.row];
@@ -233,7 +229,7 @@ DataHandler *data_handler;
 #pragma mark - Callbacks
 - (void) feedUpdatedCallback:(DataHandler *)dataHandlerClass {
     NSLog(@"feedUpdatedCallback in MeFeedTableController.m");
-    self.feed = dataHandlerClass.nearby_feed;
+    self.feed = dataHandlerClass.feed;
     self.publicFeed = [[NSMutableArray alloc] init];
     self.hiddenFeed = [[NSMutableArray alloc] init];
     for (RevealPost *rp in self.feed)

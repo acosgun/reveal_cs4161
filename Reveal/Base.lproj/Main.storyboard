@@ -219,10 +219,14 @@
                             <rect key="frame" x="0.0" y="64" width="320" height="29"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <segments>
-                                <segment title="Nearby"/>
+                                <segment title="Recent"/>
                                 <segment title="Popular"/>
-                                <segment title="Revealed"/>
+                                <segment title="Nearby"/>
+                                <segment title="Followed"/>
                             </segments>
+                            <connections>
+                                <action selector="feedSelectorWasPressed:" destination="Esr-mS-yj2" eventType="valueChanged" id="IgW-bn-AhH"/>
+                            </connections>
                         </segmentedControl>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="mainCell" rowHeight="142" id="dKg-JY-hfP" customClass="EntryCell">
@@ -289,6 +293,9 @@
                         <barButtonItem key="rightBarButtonItem" systemItem="search" id="RHC-fl-Toe"/>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="feedSelector" destination="CwN-fK-LBd" id="09q-Mm-kcX"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CFv-lq-a3U" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

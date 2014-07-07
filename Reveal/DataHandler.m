@@ -113,6 +113,13 @@ static DataHandler *sharedDataSource = nil;
     [self.json_handler changeWatchStatus:post_id action:@"ignore" HTTPMethod:method];
 }
 
+
+- (void) updateProfileImage {
+    
+        [self.json_handler updateProfileImageRequest];
+}
+
+
 #pragma mark - JSON Callbacks
 -(void) getTenMostRecentPostsCallback:tenMostRecentPosts {
     //self.nearby_feed = tenMostRecentPosts;

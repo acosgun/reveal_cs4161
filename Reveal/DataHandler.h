@@ -40,5 +40,6 @@
 - (void) deletePost:(NSInteger *) post_id;
 - (void) watchPost:(NSInteger *)post_id HTTMethod:(NSString *)method;
 - (void) ignorePost:(NSInteger *)post_id HTTMethod:(NSString *)method;
+- (void) updateProfileImage;
 
 @end

@@ -51,5 +51,6 @@
 - (void) getUserInformation:(NSString *)userIDNumber;
 - (void) updateUserProfileImage:(NSDictionary *)userInformation;
 - (void) changeWatchStatus:(NSInteger *)post_id action:(NSString *)action HTTPMethod:(NSString *)method;
+- (void) updateProfileImageRequest;
 
 @end

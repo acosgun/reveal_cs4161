@@ -523,6 +523,10 @@
     [watchDataTask resume];
 }
 
+- (void) updateProfileImageRequest {
+    
+}
+
 
 
 # pragma mark - Private Methods

@@ -13,13 +13,12 @@
 #import "MeDetailedPostViewController.h"
 #import "DataHandler.h"
 
-@interface MeFeedTableViewController ()
+@interface MeFeedTableViewController () <UIImagePickerControllerDelegate, UIActionSheetDelegate, UINavigationControllerDelegate, DataHandlerDelegate>
 
-@property (strong, nonatomic) NSString *thumbnail;
+@property (strong, nonatomic) UIImage *pickedImage;
 
-@property (strong, nonatomic) IBOutlet UIImageView *profileImage;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
-
+@property (weak, nonatomic) IBOutlet UIButton *imageButton;
 
 @end
 
@@ -35,10 +34,6 @@ DataHandler *data_handler;
         // Custom initialization
     }
     return self;
-}
-
-- (NSURL *) thumbnailURL {
-    return [NSURL URLWithString:self.thumbnail];
 }
 
 - (IBAction)logoutButtonPressed:(id)sender {
@@ -61,9 +56,6 @@ DataHandler *data_handler;
     data_handler = [DataHandler sharedInstance];
     data_handler.delegate = self;
     //[data_handler updateFeedsWithIdentifier:@"MeFeedTableViewController" postClass:self.revealPost];
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    self.profileImage.image = [UIImage imageWithData:[defaults objectForKey:@"avatar_data"]];
-    self.nameLabel.text = [defaults objectForKey:@"username"];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -74,6 +66,9 @@ DataHandler *data_handler;
 -(void) viewWillAppear:(BOOL)animated
 {
     data_handler.delegate = self;
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [self.imageButton setImage:[UIImage imageWithData:[defaults objectForKey:@"avatar_data"]] forState:UIControlStateNormal];
+    self.nameLabel.text = [defaults objectForKey:@"username"];
     [self updateFeeds];
 }
 
@@ -136,43 +131,56 @@ DataHandler *data_handler;
 }
 
 
-/*
- // Override to support conditional editing of the table view.
- - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the specified item to be editable.
- return YES;
- }
- */
+# pragma mark - Image Picker
 
-/*
- // Override to support editing the table view.
- - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
- {
- if (editingStyle == UITableViewCellEditingStyleDelete) {
- // Delete the row from the data source
- [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
- } else if (editingStyle == UITableViewCellEditingStyleInsert) {
- // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
- }
- }
- */
+- (void) promptForSource {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Image Source" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Camera", @"Photo Roll", nil];
+    
+    [actionSheet showInView:self.view];
+}
 
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
- {
- }
- */
+- (void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex != actionSheet.cancelButtonIndex) {
+        if (buttonIndex != actionSheet.firstOtherButtonIndex) {
+            [self promptForCamera];
+        } else {
+            [self promptForPhotoRoll];
+        }
+    }
+}
 
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
+- (void) promptForCamera {
+    UIImagePickerController *controller = [[UIImagePickerController alloc] init];
+    controller.sourceType = UIImagePickerControllerSourceTypeCamera;
+    controller.delegate = self;
+    [self presentViewController:controller animated:YES completion:nil];
+}
+
+- (void) promptForPhotoRoll {
+    UIImagePickerController *controller = [[UIImagePickerController alloc] init];
+    controller.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    controller.delegate = self;
+    [self presentViewController:controller animated:YES completion:nil];
+}
+
+- (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    UIImage *image = info[UIImagePickerControllerOriginalImage];
+    self.pickedImage = image;
+    
+    //maybe add code for setting image data here
+    [self.revealPost setThumbnailDataFromImage:self.pickedImage];
+    [self updateProfileImage];
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void) imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void) updateProfileImage {
+    [data_handler updateProfileImage];
+}
 
 
 #pragma mark - Navigation
@@ -215,6 +223,7 @@ DataHandler *data_handler;
 }
 
 
+#pragma mark - IB Actions
 - (IBAction)pubSelSwitch {
     if(self.hiddenRevealedSelector.selectedSegmentIndex == 0){
         //self.view.backgroundColor = [UIColor redColor];
@@ -229,6 +238,11 @@ DataHandler *data_handler;
     
     [self.tableView reloadData];
 }
+
+- (IBAction)imageButtonWasPressed:(id)sender {
+    
+}
+
 
 #pragma mark - Callbacks
 - (void) feedUpdatedCallback:(DataHandler *)dataHandlerClass {
@@ -292,5 +306,45 @@ DataHandler *data_handler;
     //NSLog(@"updateFeeds");
     [[DataHandler sharedInstance] updateFeedsWithIdentifier:@"MeFeedTableViewController" postClass:self.revealPost];
 }
+
+
+
+/*
+ // Override to support conditional editing of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the specified item to be editable.
+ return YES;
+ }
+ */
+
+/*
+ // Override to support editing the table view.
+ - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ if (editingStyle == UITableViewCellEditingStyleDelete) {
+ // Delete the row from the data source
+ [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+ } else if (editingStyle == UITableViewCellEditingStyleInsert) {
+ // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+ }
+ }
+ */
+
+/*
+ // Override to support rearranging the table view.
+ - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+ {
+ }
+ */
+
+/*
+ // Override to support conditional rearranging of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the item to be re-orderable.
+ return YES;
+ }
+ */
 
 @end

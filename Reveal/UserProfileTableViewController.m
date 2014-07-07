@@ -33,7 +33,7 @@ DataHandler *data_handler;
 
 - (void)viewDidLoad
 {
-    NSLog(@"viewDidLoad: UserProfileVC");
+    //NSLog(@"viewDidLoad: UserProfileVC");
     [super viewDidLoad];
     
     self.feed = [[NSMutableArray alloc] init];
@@ -53,9 +53,7 @@ DataHandler *data_handler;
     //self.followers_button.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
 
     self.following_button.titleLabel.numberOfLines = 2;
-    //self.followers_button.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    //self.followers_button.layer.borderWidth =
-    
+    //self.followers_button.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;    
 }
 
 -(void) updateFollowButtons:(BOOL)current_user_follows follower_stat:(NSInteger)follower_stat followed_stat:(NSInteger)followed_stat
@@ -73,8 +71,6 @@ DataHandler *data_handler;
     NSString *str_following = [NSString stringWithFormat:@"%ld \nFollowing",(long)followed_stat];
     
     dispatch_async(dispatch_get_main_queue(), ^{
-       
-    
     self.follow_button.enabled = FALSE;
     [self.follow_button setTitle:str_follow forState:UIControlStateNormal];
     [self.follow_button setTitle:str_follow forState:UIControlStateHighlighted];
@@ -90,8 +86,12 @@ DataHandler *data_handler;
     self.followers_button.enabled = TRUE;
     
     
-    
+    self.following_button.enabled = FALSE;
     [self.following_button setTitle:str_following forState:UIControlStateNormal];
+    [self.following_button setTitle:str_following forState:UIControlStateHighlighted];
+    [self.following_button setTitle:str_following forState:UIControlStateDisabled];
+    [self.following_button setTitle:str_following forState:UIControlStateSelected];
+    self.following_button.enabled = TRUE;
     });
    
 }
@@ -109,11 +109,11 @@ DataHandler *data_handler;
     
     self.nameLabel.text = self.revealPost.userName;
     self.profileImage.image = [self.revealPost imageForThumbnail:self.revealPost.thumbnail];
-    NSLog(@"reveal post passed in: %@    %@", self.revealPost.userID, self.revealPost.userName);
+    //NSLog(@"reveal post passed in: %@    %@", self.revealPost.userID, self.revealPost.userName);
 }
 
 -(void) viewWillDisappear:(BOOL)animated {
-    NSLog(@"ViewWillDissappear UserProfileTVC");
+    //NSLog(@"ViewWillDissappear UserProfileTVC");
     [self.feed removeAllObjects];
 }
 
@@ -198,7 +198,7 @@ DataHandler *data_handler;
 -(void) getUserInformationCallback:(NSDictionary *)userInformation {
     //NSLog(@"userInformation: %@",userInformation);
     
-    NSNumber *c_u_follows = [userInformation objectForKey:@"success"];
+    NSNumber *c_u_follows = [userInformation objectForKey:@"current_user_follows"];        
     self.current_user_follows = [c_u_follows boolValue];
     NSNumber *followed_stat = [userInformation objectForKey:@"followed_stat"];
     NSNumber *follower_stat = [userInformation objectForKey:@"follower_stat"];
@@ -218,16 +218,32 @@ DataHandler *data_handler;
 
 - (IBAction)followButtonPressed:(id)sender {
     
-    NSLog(@"followButtonPressed");
+    //NSLog(@"followButtonPressed");
     
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSInteger user_id = [[defaults objectForKey:@"user_id"] integerValue];
+    NSInteger followed_user_id = [self.revealPost.userID integerValue];
     if(self.current_user_follows)
     {
-        //Unfollow
+        //UnFollow
+        [[DataHandler sharedInstance] unfollowUser:&user_id followedUserID:&followed_user_id];
     }
     else
-    {
-        //Follow
+    {   //Follow
+        [[DataHandler sharedInstance] followUser:&user_id followedUserID:&followed_user_id];
+        
     }
-    
 }
+
+#pragma mark - Callbacks
+-(void) followUnfollowConfirmCallback:(BOOL)follow success:(BOOL)success
+{
+//    NSLog(@"followUnfollowConfirmCallback in UserProfileTVC.m");
+//    NSLog(@"follow: %d, success: %d",follow,success);
+    if(success)
+    {
+        [self getUserInfo];
+    }
+}
+
 @end

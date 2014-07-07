@@ -36,6 +36,7 @@
 @property (nonatomic, assign) id  delegate;
 @property (nonatomic, strong) NSMutableArray *feed;
 @property (nonatomic, strong) NSMutableArray *popularFeed;
+@property (nonatomic, strong) NSMutableArray *nearby_feed;
 @property (nonatomic, strong) JsonHandler *json_handler;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 

@@ -24,6 +24,7 @@
 @optional
 -(void)feedUpdatedCallback:(DataHandler *)dataHandlerClass;
 -(void)popularFeedUpdatedCallback:(DataHandler *)dataHandlerClass;
+-(void)nearbyFeedUpdatedCallback:(DataHandler *)dataHandlerClass;
 
 -(void)revealStatusCallback:(BOOL)success action:(NSInteger)action_id;
 -(void)watchPostCallback:(BOOL)success;

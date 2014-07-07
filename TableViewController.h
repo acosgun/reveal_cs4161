@@ -15,6 +15,7 @@
 
 @property (nonatomic, strong) NSMutableArray *feed; // default feed for most recent posts
 @property (nonatomic, strong) NSMutableArray *popularFeed;
+@property (nonatomic, strong) NSMutableArray *nearbyFeed;
 @property (nonatomic, strong) NSMutableArray *displayedFeed;
 
 @property (nonatomic,strong) UIRefreshControl *refreshControl;

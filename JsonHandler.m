@@ -11,6 +11,7 @@
 #define POSTS_URL            @"http://reveal-api.herokuapp.com/posts"
 #define TEN_RECENT_POSTS_URL @"http://reveal-api.herokuapp.com/posts/index"
 #define POPULAR_POSTS_URL    @"http://reveal-api.herokuapp.com/posts/index_popular"
+#define NEARBY_POSTS_URL     @"http://reveal-api.herokuapp.com/posts/index_by_location?"
 #define USER_POSTS           @"http://reveal-api.herokuapp.com/posts/index_for_user/"
 #define SHARES_URL           @"http://reveal-api.herokuapp.com/shares"
 #define REVEAL_URL           @"http://reveal-api.herokuapp.com/posts/reveal"
@@ -353,6 +354,44 @@
         else
         {
             NSLog(@"ERROR with getPopularPosts");
+        }
+    }];
+    [getDataTask resume];
+}
+
+- (void) getNearbyPosts:(CLLocationDegrees)lat lon:(CLLocationDegrees)lon {
+    
+    NSNumber *lat_number = [NSNumber numberWithDouble:lat];
+    NSNumber *lon_number = [NSNumber numberWithDouble:lon];
+    /// example call: posts/index_by_location?latitude=12.1&longitude=-13.3
+    NSMutableString *url = [NSMutableString stringWithFormat:@"%@latitude=%@&longitude=%@", NEARBY_POSTS_URL, lat_number, lon_number];
+    NSLog(@"nearby posts URL: %@", url);
+    
+    NSMutableURLRequest *request = [self createJSONMutableURLRequest:url method:@"GET" userData:nil];
+    NSURLSession *session = [self createDefaultNSURLSession];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *auth_token = [defaults objectForKey:@"auth_token"];
+    NSString *authen_str = [NSString stringWithFormat:@"Token token=%@", auth_token];
+    [request addValue:authen_str forHTTPHeaderField:@"Authorization"];
+    
+    NSURLSessionDataTask *getDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        //NSLog(@"Sent GET Request from getTenMostRecentPosts");
+        if (!error)
+        {
+            NSLog(@"no error in getNearbyPosts in jsonhandler");
+            NSDictionary *in_json = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     [NSJSONSerialization JSONObjectWithData:data options:0 error:nil], @"posts", nil];
+            NSLog(@"data in_json dictionary for nearyPosts: %@", in_json);
+            
+            NSArray *nearbyPosts = [in_json objectForKey:@"posts"];
+            //NSLog(@"tenMostRecentPosts Array: %@", tenMostRecentPosts);
+            
+            [self.delegate getNearbyPostsCallback:nearbyPosts];
+        }
+        else
+        {
+            NSLog(@"ERROR with getNearbyPosts in jsonhandler");
         }
     }];
     [getDataTask resume];

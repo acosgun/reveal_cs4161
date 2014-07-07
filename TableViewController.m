@@ -134,6 +134,7 @@ DataHandler *data_handler;
         self.displayedFeed = self.popularFeed;
     } else if (self.feedSelector.selectedSegmentIndex == 2) {
         NSLog(@"nearby feed was selected");
+        self.displayedFeed = self.nearbyFeed;
     } else if (self.feedSelector.selectedSegmentIndex == 3) {
         NSLog(@"followed feed was selected");
     }
@@ -173,7 +174,22 @@ DataHandler *data_handler;
         [self.refreshControl endRefreshing];
         [self reloadDataInTableView];
     }
-} 
+}
+
+- (void) nearbyFeedUpdatedCallback:(DataHandler *)dataHandlerClass {
+    self.nearbyFeed = data_handler.nearby_feed;
+    
+    if (self.feedSelector.selectedSegmentIndex == 2) {
+        self.displayedFeed = self.nearbyFeed;
+    }
+    
+    if( ([self.refreshControl isRefreshing]) & (self.feedSelector.selectedSegmentIndex == 2))
+    {
+        NSLog(@"Refreshing (nearby feed updated callback)");
+        [self.refreshControl endRefreshing];
+        [self reloadDataInTableView];
+    }
+}
 
 - (void) reloadDataInTableView {
     [self.tableView reloadData];

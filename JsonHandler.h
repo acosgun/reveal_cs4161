@@ -31,6 +31,7 @@
 
 -(void) getUserPostsCallBack:(NSArray *)userPosts;
 -(void) getPopularPostsCallback:(NSArray *)posts;
+-(void) getNearbyPostsCallback:(NSArray *)posts;
 
 -(void) createSharePostCallback:(BOOL)success;
 -(void) revealStatusCallback:(BOOL)success action:(NSInteger)action_id;
@@ -55,8 +56,10 @@
 - (void) makeLoginRequest:(NSString*)username pass:(NSString*)password;
 - (void) makeSignupRequest:(NSString*)username pass:(NSString*)password;
 - (void) createPostRequestWithContent:(NSString *)body isRevealed:(BOOL)isRevealed locationEnabled:(BOOL)location_enabled lat:(CLLocationDegrees)lat lon:(CLLocationDegrees)lon;
+
 - (void) getTenMostRecentPosts;
 - (void) getPopularPosts;
+- (void) getNearbyPosts:(CLLocationDegrees)lat lon:(CLLocationDegrees)lon;
 
 - (void) getUserPosts:(RevealPost *)revealPost;
 - (void) createSharePost:(RevealPost *)revealPost;

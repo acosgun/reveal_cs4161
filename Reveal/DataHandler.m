@@ -33,8 +33,36 @@ static DataHandler *sharedDataSource = nil;
     if ([identifier  isEqualToString:@"TableViewController"]) {
         [self.json_handler getTenMostRecentPosts];
         [self.json_handler getPopularPosts];
+        [self getNearbyPosts];
+        
         //[self.json_handler getNearbyPosts];
         //[self.json_handler getFollowedPosts];
+    }
+}
+
+- (void) getNearbyPosts {
+    [self initLocationManager];
+    CLAuthorizationStatus authStatus = [CLLocationManager authorizationStatus];
+    
+    
+    BOOL location_enabled = FALSE;
+    if (authStatus == kCLAuthorizationStatusAuthorized)
+    {
+        NSLog(@"Location authorized");
+        location_enabled = TRUE;
+        CLLocation *location = [self.locationManager location];
+        CLLocationCoordinate2D coordinate = [location coordinate];
+        
+        CLLocationDegrees lat = coordinate.latitude;
+        CLLocationDegrees lon = coordinate.longitude;
+        NSLog(@"latitude: %f    longitute: %f", lat, lon);
+        //[self.json_handler createPostRequestWithContent:body isRevealed:isRevealed locationEnabled: location_enabled lat:lat lon:lon];
+        [self.json_handler getNearbyPosts:lat lon:lon];
+    }
+    else
+    {
+        NSLog(@"Location not authorized");
+        //[self.json_handler createPostRequestWithContent:body isRevealed:isRevealed locationEnabled: location_enabled lat:0.0 lon:0.0];
     }
 }
 
@@ -111,6 +139,11 @@ static DataHandler *sharedDataSource = nil;
     self.popularFeed = [self createPostArrayFromJSONResponse:posts];
 }
 
+- (void) fillFeedWithNearbyPosts:(NSArray *)posts {
+    self.nearby_feed = [[NSMutableArray alloc] init];
+    self.nearby_feed = [self createPostArrayFromJSONResponse:posts];
+}
+
 - (NSMutableArray *)createPostArrayFromJSONResponse:(NSArray *)posts {
     
     NSMutableArray *postsArray = [[NSMutableArray alloc] init];
@@ -185,15 +218,16 @@ static DataHandler *sharedDataSource = nil;
          
          CLLocationDegrees lat = coordinate.latitude;
          CLLocationDegrees lon = coordinate.longitude;
+         NSLog(@"latitude: %f    longitute: %f", lat, lon);
          [self.json_handler createPostRequestWithContent:body isRevealed:isRevealed locationEnabled: location_enabled lat:lat lon:lon];
          return;
      }
     else
     {
         NSLog(@"Location not authorized");
+        [self.json_handler createPostRequestWithContent:body isRevealed:isRevealed locationEnabled: location_enabled lat:0.0 lon:0.0];
     }
     
-    [self.json_handler createPostRequestWithContent:body isRevealed:isRevealed locationEnabled: location_enabled lat:0.0 lon:0.0];
 }
 
 #pragma mark - Location
@@ -278,6 +312,12 @@ SLComposeViewController *twitterController = [SLComposeViewController composeVie
     [self fillFeedWithPopularPosts:posts];
     [self.delegate popularFeedUpdatedCallback:self];
     NSLog(@"Popular Posts were updated");
+}
+
+- (void) getNearbyPostsCallback:(NSArray *)posts {
+    [self fillFeedWithNearbyPosts:posts];
+    [self.delegate nearbyFeedUpdatedCallback:self];
+    NSLog(@"Nearby posts were updated");
 }
 
 -(void) getUserPostsCallBack:(NSArray *)userPosts {

@@ -28,9 +28,10 @@
     [super viewDidLoad];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSLog(@"user ID: %@", [defaults objectForKey:@"userID"]);
-    NSLog(@"user name: %@", [defaults objectForKey:@"userName"]);
+    NSLog(@"user ID: %@", [defaults objectForKey:@"user_id"]);
+    NSLog(@"user name: %@", [defaults objectForKey:@"username"]);
     NSLog(@"title of table view controller: %@", self.title);
+    NSLog(@"location radius: %@", [defaults objectForKey:@"location_radius"]);
 
 }
 

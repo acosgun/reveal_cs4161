@@ -361,16 +361,17 @@
 
 - (void) getNearbyPosts:(CLLocationDegrees)lat lon:(CLLocationDegrees)lon {
     
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
     NSNumber *lat_number = [NSNumber numberWithDouble:lat];
     NSNumber *lon_number = [NSNumber numberWithDouble:lon];
     /// example call: posts/index_by_location?latitude=12.1&longitude=-13.3
-    NSMutableString *url = [NSMutableString stringWithFormat:@"%@latitude=%@&longitude=%@", NEARBY_POSTS_URL, lat_number, lon_number];
+    NSMutableString *url = [NSMutableString stringWithFormat:@"%@latitude=%@&longitude=%@&radius=%@", NEARBY_POSTS_URL, lat_number, lon_number, [defaults objectForKey:@"location_radius"]];
     NSLog(@"nearby posts URL: %@", url);
     
     NSMutableURLRequest *request = [self createJSONMutableURLRequest:url method:@"GET" userData:nil];
     NSURLSession *session = [self createDefaultNSURLSession];
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *auth_token = [defaults objectForKey:@"auth_token"];
     NSString *authen_str = [NSString stringWithFormat:@"Token token=%@", auth_token];
     [request addValue:authen_str forHTTPHeaderField:@"Authorization"];
@@ -703,6 +704,7 @@
     [defaults setObject:auth_token forKey:@"auth_token"];
     [defaults setObject:user_id forKey:@"user_id"];
     [defaults setObject:username forKey:@"username"];
+    [defaults setObject:@0.1 forKey:@"location_radius"];
     
     NSLog(@"(setDefaults) username: %@", [defaults objectForKey:@"username"]);
     NSLog(@"(setDefaults) user_id: %@", [defaults objectForKey:@"user_id"]);

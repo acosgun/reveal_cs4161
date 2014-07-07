@@ -30,6 +30,7 @@
 		D80A09D4195F85C500257782 /* DetailedPostSubView.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A09D3195F85C500257782 /* DetailedPostSubView.m */; };
 		D822C172195FF1680001E482 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D822C171195FF1680001E482 /* Images.xcassets */; };
 		D822C17619637D830001E482 /* UserProfileTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D822C17519637D830001E482 /* UserProfileTableViewController.m */; };
+		D8F02A1F196AFAD9005E17FA /* UpdateLocationRadiusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F02A1E196AFAD9005E17FA /* UpdateLocationRadiusViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +89,8 @@
 		D822C171195FF1680001E482 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Reveal/Images.xcassets; sourceTree = "<group>"; };
 		D822C17419637D830001E482 /* UserProfileTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserProfileTableViewController.h; sourceTree = "<group>"; };
 		D822C17519637D830001E482 /* UserProfileTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserProfileTableViewController.m; sourceTree = "<group>"; };
+		D8F02A1D196AFAD9005E17FA /* UpdateLocationRadiusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpdateLocationRadiusViewController.h; sourceTree = "<group>"; };
+		D8F02A1E196AFAD9005E17FA /* UpdateLocationRadiusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpdateLocationRadiusViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +143,8 @@
 				D801DA8F194EDC1A00CB9B00 /* MeFeedTableViewController.m */,
 				D801DA94194F0B3000CB9B00 /* MeDetailedPostViewController.h */,
 				D801DA95194F0B3000CB9B00 /* MeDetailedPostViewController.m */,
+				D8F02A1D196AFAD9005E17FA /* UpdateLocationRadiusViewController.h */,
+				D8F02A1E196AFAD9005E17FA /* UpdateLocationRadiusViewController.m */,
 			);
 			name = "My Profile VC";
 			sourceTree = "<group>";
@@ -382,6 +387,7 @@
 				7A71EB09194FE1A200C39B0A /* InboxTableViewController.m in Sources */,
 				D80A09D4195F85C500257782 /* DetailedPostSubView.m in Sources */,
 				7A71EB02194FDF9000C39B0A /* NotificationsTableViewController.m in Sources */,
+				D8F02A1F196AFAD9005E17FA /* UpdateLocationRadiusViewController.m in Sources */,
 				D801DA81194D891200CB9B00 /* RevealPost.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "JsonHandler.h"
+#import <CoreLocation/CoreLocation.h>
 
 @class JsonHandler;
 
@@ -28,11 +29,12 @@
 @end
 
 
-@interface DataHandler : NSObject <JsonHandlerDelegate>
+@interface DataHandler : NSObject <JsonHandlerDelegate, CLLocationManagerDelegate>
 
 @property (nonatomic, assign) id  delegate;
 @property (nonatomic, strong) NSMutableArray *nearby_feed;
 @property (nonatomic, strong) JsonHandler *json_handler;
+@property (strong, nonatomic) CLLocationManager *locationManager;
 
 + (DataHandler *) sharedInstance;
 - (void) updateFeedsWithIdentifier:(NSString *)identifier;
@@ -45,5 +47,5 @@
 - (void) getUserInfo:(NSInteger *)user_id includeAuthToken:(BOOL)include_token;
 - (void) followUser:(NSInteger *)user_id followedUserID:(NSInteger *) followed_user_id;
 - (void) unfollowUser:(NSInteger *)user_id followedUserID:(NSInteger *) followed_user_id;
-
+- (void) createPostRequestWithContent:(NSString *)body isRevealed:(BOOL)isRevealed;
 @end

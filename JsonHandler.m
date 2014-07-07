@@ -193,38 +193,65 @@
     [postDataTask resume];
 }
 
-- (void) createPostRequestWithContent:(NSString *)body isRevealed:(BOOL)isRevealed {
-    //{"post":{"user_id":1,"revealed":true, "content":"add some cuel votes", "latitude":12.13, "longitude": 123.41}}
+- (void) createPostRequestWithContent:(NSString *)body isRevealed:(BOOL)isRevealed locationEnabled:(BOOL)location_enabled lat:(CLLocationDegrees)lat lon:(CLLocationDegrees)lon {
     NSLog(@"createPostRequestWithContent");
-    NSLog(@"body: %@",body);
     NSNumber *isRevealedBOOL = [NSNumber numberWithBool:isRevealed];
+    
+    
+    CLLocationDegrees latitute = 0.0;
+    CLLocationDegrees longitude = 0.0;
+    if(location_enabled)
+    {
+        latitute = lat;
+        longitude = lon;
+    }
+    
     //NSNumber *latitude = [NSNumber numberWithFloat:5.2f];
     //NSNumber *longitude = [NSNumber numberWithFloat:10.11f];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *auth_token =[defaults stringForKey:@"auth_token"];
     NSString *user_id = [defaults objectForKey:@"user_id"];
-    /*
-    NSDictionary *user_data = [NSDictionary dictionaryWithObjectsAndKeys:
-                               [NSDictionary dictionaryWithObjectsAndKeys:
-                                username, @"username",
-                                password, @"password",
-                                nil],
-                               @"user", nil];
-     */
-    //NSLog(@"contents of defaults in createPostRequestWithContent");
-    NSLog(@"username: %@ | user_id: %@", [defaults objectForKey:@"username"], [defaults objectForKey:@"user_id"]);
+    
+    //NSLog(@"username: %@ | user_id: %@", [defaults objectForKey:@"username"], [defaults objectForKey:@"user_id"]);
+
+    NSMutableURLRequest *request;
+    
+    if(location_enabled)
+    {
+        
+        NSNumber *lat_number = [NSNumber numberWithDouble:lat];
+        NSNumber *lon_number = [NSNumber numberWithDouble:lon];
+        
+        //NSLog(@"sending location_enabled");
+        NSLog(@"latitude: %4.2f, longitude: %4.2f",[lat_number doubleValue],[lon_number doubleValue]);
     NSDictionary *post_data = [NSDictionary dictionaryWithObjectsAndKeys:
                                [NSDictionary dictionaryWithObjectsAndKeys:
                                 user_id, @"user_id",
                                 isRevealedBOOL, @"revealed",
                                 body, @"content",
+                                lat_number, @"latitude",
+                                lon_number, @"longitude",
                                 nil],
                                @"post",
                                nil];
-    NSLog(@"post_data dictionary: %@", post_data);
-    
-    NSMutableURLRequest *request = [self createJSONMutableURLRequest:POSTS_URL method:@"POST" userData:post_data];
+    request = [self createJSONMutableURLRequest:POSTS_URL method:@"POST" userData:post_data];
+        
+    }
+    else
+    {
+        NSLog(@"sending NOT location_enabled");
+        NSDictionary *post_data = [NSDictionary dictionaryWithObjectsAndKeys:
+                                   [NSDictionary dictionaryWithObjectsAndKeys:
+                                    user_id, @"user_id",
+                                    isRevealedBOOL, @"revealed",
+                                    body, @"content",
+                                    nil],
+                                   @"post",
+                                   nil];
+        
+        request = [self createJSONMutableURLRequest:POSTS_URL method:@"POST" userData:post_data];
+    }
     
     NSString *authen_str = [NSString stringWithFormat:@"Token token=%@", auth_token];
     [request addValue:authen_str forHTTPHeaderField:@"Authorization"];
@@ -242,11 +269,12 @@
             NSLog(@"success: %@",success);
             if([success boolValue] == YES)
             {
+                NSLog(@"create post data in_json dictionary: %@", in_json);
                 [self.delegate createPostRequestCallback:true];
             }
             else
             {
-                NSLog(@"data in_json dictionary: %@", in_json);
+                //NSLog(@"data in_json dictionary: %@", in_json);
                 [self.delegate createPostRequestCallback:false];
             }
         }
@@ -280,7 +308,7 @@
             //Must create dictionary of posts containing dictionary of JSON data so that it can be easily converted to an array
             NSDictionary *in_json = [NSDictionary dictionaryWithObjectsAndKeys:
                                      [NSJSONSerialization JSONObjectWithData:data options:0 error:nil], @"posts", nil];
-            NSLog(@"data in_json dictionary: %@", in_json);
+            //NSLog(@"data in_json dictionary: %@", in_json);
             
             NSArray *tenMostRecentPosts = [in_json objectForKey:@"posts"];
             //NSLog(@"tenMostRecentPosts Array: %@", tenMostRecentPosts);

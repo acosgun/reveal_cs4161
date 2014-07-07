@@ -59,10 +59,39 @@ static DataHandler *sharedDataSource = nil;
 - (id)init {
     if ( (self = [super init]) ) {
         // your custom initialization
-        self.nearby_feed = [NSMutableArray array];
+        [self initialize];
     }
     return self;
 }
+
+- (void) initialize
+{
+    self.nearby_feed = [NSMutableArray array];
+    [self initLocationManager];
+}
+
+- (void) initLocationManager
+{
+    NSLog(@"initLocationManager");
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    self.locationManager.delegate = self;
+    [self.locationManager startUpdatingLocation];
+    
+    BOOL locationAllowed = [CLLocationManager locationServicesEnabled];
+    if (locationAllowed==NO)
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Location Service Disabled"
+                                                        message:@"To re-enable, please go to Settings and turn on Location Service for this app."
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
+    
+    
+}
+
 
 - (void) fillFeedWithTenMostRecentPosts:(NSArray *)posts {
 
@@ -126,6 +155,48 @@ static DataHandler *sharedDataSource = nil;
 {
     [self.json_handler followUnfollowUser:FALSE userID:user_id followedUserID:followed_user_id];
 }
+- (void) createPostRequestWithContent:(NSString *)body isRevealed:(BOOL)isRevealed
+{
+    CLAuthorizationStatus authStatus = [CLLocationManager authorizationStatus];
+
+    
+    BOOL location_enabled = FALSE;
+     if (authStatus == kCLAuthorizationStatusAuthorized)
+     {
+        NSLog(@"Location authorized");
+         location_enabled = TRUE;
+         CLLocation *location = [self.locationManager location];
+         CLLocationCoordinate2D coordinate = [location coordinate];
+         
+         CLLocationDegrees lat = coordinate.latitude;
+         CLLocationDegrees lon = coordinate.longitude;
+         [self.json_handler createPostRequestWithContent:body isRevealed:isRevealed locationEnabled: location_enabled lat:lat lon:lon];
+         return;
+     }
+    else
+    {
+        NSLog(@"Location not authorized");
+    }
+    
+    [self.json_handler createPostRequestWithContent:body isRevealed:isRevealed locationEnabled: location_enabled lat:0.0 lon:0.0];
+}
+
+#pragma mark - Location
+-(void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
+    //NSLog(@"didChangeAuthStatus");
+    if (status == kCLAuthorizationStatusDenied)
+    {
+        // permission denied
+        NSLog(@"Location Permission Denied");
+        
+    }
+    else if (status == kCLAuthorizationStatusAuthorized)
+    {
+        // permission granted
+        NSLog(@"Location Permission Granted");
+    }
+}
+
 
 #pragma mark - JSON Callbacks
 -(void) getTenMostRecentPostsCallback:tenMostRecentPosts {
@@ -165,6 +236,13 @@ static DataHandler *sharedDataSource = nil;
     NSLog(@"followUnfollowConfirmCallback in DataHandler.m");
     [self.delegate followUnfollowConfirmCallback:follow success:success];
 }
+
+- (void) createPostRequestCallback:(BOOL)success
+{
+    NSLog(@"createPostRequestCallback in DataHandler");
+    [self.delegate createPostRequestCallback:success];
+}
+
 
 
 

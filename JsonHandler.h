@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
 
 @class RevealPost;
 
@@ -50,7 +51,7 @@
 -(void)sendJsonRequest:(NSDictionary*) user_data user_url:(NSURL*)url user_urlrequest:(NSMutableURLRequest*)request;
 - (void) makeLoginRequest:(NSString*)username pass:(NSString*)password;
 - (void) makeSignupRequest:(NSString*)username pass:(NSString*)password;
-- (void) createPostRequestWithContent:(NSString *)body isRevealed:(BOOL)isRevealed;
+- (void) createPostRequestWithContent:(NSString *)body isRevealed:(BOOL)isRevealed locationEnabled:(BOOL)location_enabled lat:(CLLocationDegrees)lat lon:(CLLocationDegrees)lon;
 -(void) getTenMostRecentPosts;
 - (void) getUserPosts:(RevealPost *)revealPost;
 - (void) createSharePost:(RevealPost *)revealPost;

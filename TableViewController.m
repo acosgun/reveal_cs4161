@@ -180,7 +180,7 @@ DataHandler *data_handler;
         [self.tableView reloadData];
     });
     
-    NSLog(@"toto");
+    //NSLog(@"toto");
     //[self tableView:self.tableView cellForRowAtIndexPath:<#(NSIndexPath *)#>];
 }
 

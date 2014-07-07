@@ -84,7 +84,8 @@
 
 - (void) updateUserProfileImage {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [self.json_handler getUserInformation:[[defaults objectForKey:@"user_id"] stringValue]];
+    NSInteger cur_user_id = [[defaults objectForKey:@"user_id"] integerValue];
+    [self.json_handler getUserInformation:&cur_user_id includeAuthToken:TRUE];
 }
 
 

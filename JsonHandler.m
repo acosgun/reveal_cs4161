@@ -432,11 +432,14 @@
     [task resume];
 }
 
-- (void) getUserInformation:(NSString *)userIDNumber {
+- (void) getUserInformation:(NSInteger *)userIDNumber includeAuthToken:(BOOL)include_token{
     NSLog(@"entered getUserInformation");
     
     NSMutableString *urlString = [NSMutableString stringWithString:USERS_URL];
-    [urlString appendString:userIDNumber];
+    
+    NSString *str_userID = [NSString stringWithFormat:@"%d",*userIDNumber];
+    
+    [urlString appendString:str_userID];
     NSLog(@"urlString: %@", urlString);
     
     NSMutableURLRequest *request = [self createJSONMutableURLRequest:urlString method:@"GET" userData:nil];
@@ -449,7 +452,7 @@
         {
             NSLog(@"success in getUserInformation request");
             NSDictionary *in_json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            NSLog(@"data in_json dictionary: %@", in_json);
+            //NSLog(@"data in_json dictionary: %@", in_json);
             
             [self.delegate getUserInformationCallback:in_json];
         } else {

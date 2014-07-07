@@ -18,6 +18,8 @@
 @protocol DataHandlerDelegate
 
 // define protocol functions that can be used in any class using this delegate
+
+@optional
 -(void)feedUpdatedCallback:(DataHandler *)dataHandlerClass;
 -(void)revealStatusCallback:(BOOL)success action:(NSInteger)action_id;
 -(void)watchPostCallback:(BOOL)success;
@@ -40,5 +42,6 @@
 - (void) deletePost:(NSInteger *) post_id;
 - (void) watchPost:(NSInteger *)post_id HTTMethod:(NSString *)method;
 - (void) ignorePost:(NSInteger *)post_id HTTMethod:(NSString *)method;
+- (void) getUserInfo:(NSInteger *) user_id includeAuthToken:(BOOL)include_token;
 
 @end

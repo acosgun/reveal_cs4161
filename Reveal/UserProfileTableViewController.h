@@ -16,7 +16,11 @@
 
 @property (nonatomic, strong) NSMutableArray *feed;
 @property (nonatomic, strong) RevealPost *revealPost;
-
+@property (nonatomic, assign) BOOL current_user_follows;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
+@property (weak, nonatomic) IBOutlet UIButton *followers_button;
+@property (weak, nonatomic) IBOutlet UIButton *following_button;
+@property (weak, nonatomic) IBOutlet UIButton *follow_button;
+- (IBAction)followButtonPressed:(id)sender;
 
 @end

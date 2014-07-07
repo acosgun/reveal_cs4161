@@ -64,8 +64,8 @@ DataHandler *data_handler;
     //self.postName.text = self.post.userName;
     [self.postName setTitle:self.post.userName forState:UIControlStateNormal];
     self.postBody.text = self.post.body;
-    NSLog(@"post_id (detailedPostVC): %@", self.post.IDNumber);
-    NSLog(@"user_id (detailedPostVC): %@", self.post.userID);
+    //NSLog(@"post_id (detailedPostVC): %@", self.post.IDNumber);
+    //NSLog(@"user_id (detailedPostVC): %@", self.post.userID);
     
     [self setWatchButtonBackgroundColor];
 }
@@ -151,15 +151,22 @@ DataHandler *data_handler;
     // Pass the selected object to the new view controller.
 }
 */
+#pragma mark - Segue to User VC
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     
     if ([segue.identifier isEqualToString:@"FeedToUserProfile"]) {
+        NSLog(@"Inside prepareForSegue: DetailedPostVC");
+        //call info on the user
+        
         
         UserProfileTableViewController *vc = [segue destinationViewController];
         vc.revealPost = self.post;
         }
 }
+
+
+
 
 #pragma mark - IB Actions
 - (IBAction)pressedShareButton:(id)sender {
@@ -258,5 +265,7 @@ DataHandler *data_handler;
         
     }
 }
+
+
 
 @end

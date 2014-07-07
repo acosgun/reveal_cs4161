@@ -66,7 +66,7 @@
     UIImage *image = [UIImage imageWithData:imageData];
     self.mainImageLabel.image = image;
    
-    NSLog(@"end of configureCellForPost");
+    //NSLog(@"end of configureCellForPost");
 }
 
 @end

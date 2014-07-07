@@ -101,7 +101,8 @@
 
 - (void) updateUserProfileImage {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [self.json_handler getUserInformation:[[defaults objectForKey:@"user_id"] stringValue]];
+    NSInteger user_id = [[defaults objectForKey:@"user_id"] integerValue];
+    [self.json_handler getUserInformation:&user_id includeAuthToken:FALSE];
 }
 
 #pragma mark - Callbacks

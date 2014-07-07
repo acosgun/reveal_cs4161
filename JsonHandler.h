@@ -17,6 +17,10 @@
 @protocol JsonHandlerDelegate
 
 // define protocol functions that can be used in any class using this delegate
+
+@required
+
+@optional
 -(void)jsonResponseCallback:(JsonHandler *)jsonClass;
 
 -(void) makeLoginRequestCallback:(BOOL)success;
@@ -48,7 +52,7 @@
 -(void) getTenMostRecentPosts;
 - (void) getUserPosts:(RevealPost *)revealPost;
 - (void) createSharePost:(RevealPost *)revealPost;
-- (void) getUserInformation:(NSString *)userIDNumber;
+- (void) getUserInformation:(NSInteger *)userIDNumber includeAuthToken:(BOOL)include_token;
 - (void) updateUserProfileImage:(NSDictionary *)userInformation;
 - (void) changeWatchStatus:(NSInteger *)post_id action:(NSString *)action HTTPMethod:(NSString *)method;
 

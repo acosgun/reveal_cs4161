@@ -33,6 +33,7 @@ DataHandler *data_handler;
 
 - (void)viewDidLoad
 {
+    NSLog(@"viewDidLoad: UserProfileVC");
     [super viewDidLoad];
     
     self.feed = [[NSMutableArray alloc] init];
@@ -42,17 +43,72 @@ DataHandler *data_handler;
     
     data_handler = [DataHandler sharedInstance];
     data_handler.delegate = self;
+ 
+    [self setupFollowButtons];
+}
+
+-(void) setupFollowButtons
+{
+    self.followers_button.titleLabel.numberOfLines = 2;
+    //self.followers_button.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+
+    self.following_button.titleLabel.numberOfLines = 2;
+    //self.followers_button.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    //self.followers_button.layer.borderWidth =
+    
+}
+
+-(void) updateFollowButtons:(BOOL)current_user_follows follower_stat:(NSInteger)follower_stat followed_stat:(NSInteger)followed_stat
+{
+    NSLog(@"updateFollowButtons");
+    NSString *str_follow;
+    if(current_user_follows) {
+        str_follow = @"UNFOLLOW";
+    }
+    else {
+        str_follow = @"FOLLOW";
+    }
+    
+    NSString *str_followers = [NSString stringWithFormat:@"%ld \nFollowers",(long)follower_stat];
+    NSString *str_following = [NSString stringWithFormat:@"%ld \nFollowing",(long)followed_stat];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+       
+    
+    self.follow_button.enabled = FALSE;
+    [self.follow_button setTitle:str_follow forState:UIControlStateNormal];
+    [self.follow_button setTitle:str_follow forState:UIControlStateHighlighted];
+    [self.follow_button setTitle:str_follow forState:UIControlStateDisabled];
+    [self.follow_button setTitle:str_follow forState:UIControlStateSelected];
+    self.follow_button.enabled = TRUE;
+
+    self.followers_button.enabled = FALSE;
+    [self.followers_button setTitle:str_followers forState:UIControlStateNormal];
+    [self.followers_button setTitle:str_followers forState:UIControlStateHighlighted];
+    [self.followers_button setTitle:str_followers forState:UIControlStateDisabled];
+    [self.followers_button setTitle:str_followers forState:UIControlStateSelected];
+    self.followers_button.enabled = TRUE;
+    
+    
+    
+    [self.following_button setTitle:str_following forState:UIControlStateNormal];
+    });
+   
 }
 
 -(void) viewWillAppear:(BOOL)animated
 {
     //[self.feed removeAllObjects];
     [DataHandler sharedInstance].delegate = self;
+    
+    
     [self updateFeeds];
+    
+    [self getUserInfo];
+    
     
     self.nameLabel.text = self.revealPost.userName;
     self.profileImage.image = [self.revealPost imageForThumbnail:self.revealPost.thumbnail];
-    
     NSLog(@"reveal post passed in: %@    %@", self.revealPost.userID, self.revealPost.userName);
 }
 
@@ -97,59 +153,10 @@ DataHandler *data_handler;
     return [EntryCell heightForPost:revealPost];
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 
 #pragma mark - Callbacks
 - (void) feedUpdatedCallback:(DataHandler *)dataHandlerClass {
-    NSLog(@"!!!feedUpdatedCallback in UserProfileTVC.m");
+    //NSLog(@"feedUpdatedCallback UserProfileTVC.m");
     
     if ([self.revealPost.userID isEqual:[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"]]) {
 
@@ -162,7 +169,7 @@ DataHandler *data_handler;
         self.feed = dataHandlerClass.nearby_feed;
     }
     
-    NSLog(@"feed is : %@", self.feed);
+    //NSLog(@"feed is : %@", self.feed);
     
     //[self viewDidAppear:YES];
     
@@ -172,12 +179,11 @@ DataHandler *data_handler;
         [self.refreshControl endRefreshing];
     }
     
-    //[self.tableView reloadData];
+    
     [self.tableView reloadData];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
     });
-    NSLog(@"callback complete!!!");
 }
 
 
@@ -189,4 +195,39 @@ DataHandler *data_handler;
     [[DataHandler sharedInstance] updateFeedsWithIdentifier:@"UserProfileTableViewController" postClass:self.revealPost];
 }
 
+-(void) getUserInformationCallback:(NSDictionary *)userInformation {
+    //NSLog(@"userInformation: %@",userInformation);
+    
+    NSNumber *c_u_follows = [userInformation objectForKey:@"success"];
+    self.current_user_follows = [c_u_follows boolValue];
+    NSNumber *followed_stat = [userInformation objectForKey:@"followed_stat"];
+    NSNumber *follower_stat = [userInformation objectForKey:@"follower_stat"];
+    NSInteger int_followed_stat = [followed_stat integerValue];
+    NSInteger int_follower_stat = [follower_stat integerValue];
+    
+    [self updateFollowButtons:self.current_user_follows follower_stat:int_follower_stat followed_stat:int_followed_stat];
+}
+
+- (void) getUserInfo
+{
+    NSInteger user_id = [self.revealPost.userID integerValue];
+    data_handler.delegate = self;
+    [[DataHandler sharedInstance] getUserInfo:&user_id includeAuthToken:TRUE];
+}
+
+
+- (IBAction)followButtonPressed:(id)sender {
+    
+    NSLog(@"followButtonPressed");
+    
+    if(self.current_user_follows)
+    {
+        //Unfollow
+    }
+    else
+    {
+        //Follow
+    }
+    
+}
 @end

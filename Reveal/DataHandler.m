@@ -117,6 +117,15 @@ static DataHandler *sharedDataSource = nil;
     [self.json_handler getUserInformation:user_id includeAuthToken:include_token];
 }
 
+- (void) followUser:(NSInteger *)user_id followedUserID:(NSInteger *) followed_user_id
+{
+    [self.json_handler followUnfollowUser:TRUE userID:user_id followedUserID:followed_user_id];
+}
+
+- (void) unfollowUser:(NSInteger *)user_id followedUserID:(NSInteger *) followed_user_id
+{
+    [self.json_handler followUnfollowUser:FALSE userID:user_id followedUserID:followed_user_id];
+}
 
 #pragma mark - JSON Callbacks
 -(void) getTenMostRecentPostsCallback:tenMostRecentPosts {
@@ -148,9 +157,15 @@ static DataHandler *sharedDataSource = nil;
 }
 
 -(void) getUserInformationCallback:(NSDictionary *)userInformation {
-    //NSLog(
     [self.delegate getUserInformationCallback:userInformation];
 }
+
+-(void) followUnfollowConfirmCallback:(BOOL)follow success:(BOOL)success
+{
+    NSLog(@"followUnfollowConfirmCallback in DataHandler.m");
+    [self.delegate followUnfollowConfirmCallback:follow success:success];
+}
+
 
 
 

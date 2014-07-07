@@ -15,6 +15,7 @@
 #define REVEAL_URL           @"http://reveal-api.herokuapp.com/posts/reveal"
 #define HIDE_URL             @"http://reveal-api.herokuapp.com/posts/hide"
 #define WATCH_URL            @"http://reveal-api.herokuapp.com/votes/"
+#define FOLLOWER_URL         @"http://reveal-api.herokuapp.com/followers/"
 
 #import "JsonHandler.h"
 #import "RevealPost.h"
@@ -226,7 +227,6 @@
     NSMutableURLRequest *request = [self createJSONMutableURLRequest:POSTS_URL method:@"POST" userData:post_data];
     
     NSString *authen_str = [NSString stringWithFormat:@"Token token=%@", auth_token];
-    NSLog(@"authen_str: %@",authen_str);
     [request addValue:authen_str forHTTPHeaderField:@"Authorization"];
     
     
@@ -443,6 +443,13 @@
     NSLog(@"urlString: %@", urlString);
     
     NSMutableURLRequest *request = [self createJSONMutableURLRequest:urlString method:@"GET" userData:nil];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *auth_token = [defaults stringForKey:@"auth_token"];
+    NSString *authen_str = [NSString stringWithFormat:@"Token token=%@", auth_token];
+    [request addValue:authen_str forHTTPHeaderField:@"Authorization"];
+
+    
+    
     NSURLSession *session = [self createDefaultNSURLSession];
     
     NSLog(@"Just before getDataTask");
@@ -525,6 +532,65 @@
     }];
     [watchDataTask resume];
 }
+
+- (void) followUnfollowUser:(BOOL)follow userID:(NSInteger*)user_id followedUserID:(NSInteger*)followed_user_id
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *auth_token = [defaults stringForKey:@"auth_token"];
+
+    NSNumber *userID_num = [NSNumber numberWithInt:*user_id];
+    NSNumber *followedUserID_num = [NSNumber numberWithInt:*followed_user_id];
+    
+    NSDictionary *user_data = [NSDictionary dictionaryWithObjectsAndKeys:
+                               [NSDictionary dictionaryWithObjectsAndKeys:
+                                userID_num, @"user_id",
+                                followedUserID_num, @"followed_user_id",
+                                nil],
+                               @"follower", nil];
+
+    NSMutableURLRequest *request;
+    if(follow)
+    {
+        request =  [self createJSONMutableURLRequest:FOLLOWER_URL method:@"POST" userData:user_data];
+    }
+    else
+    {
+        request =  [self createJSONMutableURLRequest:FOLLOWER_URL method:@"DELETE" userData:user_data];
+    }
+    
+    NSString *authen_str = [NSString stringWithFormat:@"Token token=%@", auth_token];
+    [request addValue:authen_str forHTTPHeaderField:@"Authorization"];
+    
+    NSURLSession *session = [self createDefaultNSURLSession];
+    
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (!error)
+        {
+            NSLog(@"there was no error");
+            NSDictionary *in_json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            NSNumber *success = [in_json objectForKey:@"success"];
+            if([success boolValue] == YES)
+            {
+                NSLog(@"data in_json (success=true): %@", in_json);
+                [self.delegate followUnfollowConfirmCallback:follow success:TRUE];
+            }
+            else
+            {
+                NSLog(@"data in_json (success=false): %@", in_json);
+                [self.delegate followUnfollowConfirmCallback:follow success:FALSE];
+            }
+        }
+        else
+        {
+            [self.delegate followUnfollowConfirmCallback:follow success:FALSE];
+            NSLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
+    [task resume];
+    
+    
+}
+
 
 
 

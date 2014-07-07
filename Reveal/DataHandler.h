@@ -42,6 +42,8 @@
 - (void) deletePost:(NSInteger *) post_id;
 - (void) watchPost:(NSInteger *)post_id HTTMethod:(NSString *)method;
 - (void) ignorePost:(NSInteger *)post_id HTTMethod:(NSString *)method;
-- (void) getUserInfo:(NSInteger *) user_id includeAuthToken:(BOOL)include_token;
+- (void) getUserInfo:(NSInteger *)user_id includeAuthToken:(BOOL)include_token;
+- (void) followUser:(NSInteger *)user_id followedUserID:(NSInteger *) followed_user_id;
+- (void) unfollowUser:(NSInteger *)user_id followedUserID:(NSInteger *) followed_user_id;
 
 @end

@@ -24,7 +24,7 @@
 @optional
 -(void)feedUpdatedCallback:(DataHandler *)dataHandlerClass addingPosts:(BOOL)addingPosts;
 -(void)popularFeedUpdatedCallback:(DataHandler *)dataHandlerClass addingPosts:(BOOL)addingPosts;
--(void)nearbyFeedUpdatedCallback:(DataHandler *)dataHandlerClass;
+-(void)nearbyFeedUpdatedCallback:(DataHandler *)dataHandlerClass addingPosts:(BOOL)addingPosts;
 
 -(void)revealStatusCallback:(BOOL)success action:(NSInteger)action_id;
 -(void)watchPostCallback:(BOOL)success;
@@ -47,6 +47,7 @@
 - (void) updateFeedsWithIdentifier:(NSString *)identifier postClass:(RevealPost *)revealPost;
 - (void) getRecentPosts:(NSNumber *)lastPostID;
 - (void) getPopularPosts:(NSInteger)pageNumber;
+- (void) getNearbyPosts:(NSNumber *)lastPostID;
 
 - (void) revealPost:(NSInteger *) post_id;
 - (void) hidePost:(NSInteger *) post_id;

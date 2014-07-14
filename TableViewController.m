@@ -209,8 +209,13 @@ DataHandler *data_handler;
     });
 }
 
-- (void) nearbyFeedUpdatedCallback:(DataHandler *)dataHandlerClass {
-    self.nearbyFeed = data_handler.nearby_feed;
+- (void) nearbyFeedUpdatedCallback:(DataHandler *)dataHandlerClass addingPosts:(BOOL)addingPosts {
+    
+    if (addingPosts == false) {
+        self.nearbyFeed = data_handler.nearby_feed;
+    } else {
+        [self.nearbyFeed addObjectsFromArray:dataHandlerClass.nearby_feed];
+    }
     
     if (self.feedSelector.selectedSegmentIndex == 2) {
         self.displayedFeed = self.nearbyFeed;
@@ -222,6 +227,10 @@ DataHandler *data_handler;
         [self.refreshControl endRefreshing];
         [self reloadDataInTableView];
     }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView.infiniteScrollingView stopAnimating];
+    });
 }
 
 - (void) reloadDataInTableView {
@@ -264,6 +273,11 @@ DataHandler *data_handler;
         self.popularFeedPageNumber = self.popularFeedPageNumber + 1;
         NSLog(@"popular feed page number: int value: %d", self.popularFeedPageNumber);
         [[DataHandler sharedInstance] getPopularPosts:self.popularFeedPageNumber];
+    } else if (self.feedSelector.selectedSegmentIndex == 2) {
+        RevealPost *lastPost = [self.nearbyFeed lastObject];
+        NSNumber *lastPostID = lastPost.IDNumber;
+        [[DataHandler sharedInstance] getNearbyPosts:lastPostID];
+        NSLog(@"adding nearby posts: sending request to datahandler");
     }
 }
 

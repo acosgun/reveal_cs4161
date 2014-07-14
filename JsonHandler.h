@@ -31,7 +31,7 @@
 -(void) getTenMostRecentPostsCallback:(NSArray *)tenMostRecentPosts addingPosts:(BOOL)addingPosts;
 -(void) getUserPostsCallBack:(NSArray *)userPosts;
 -(void) getPopularPostsCallback:(NSArray *)posts addingPosts:(BOOL)addingPosts;
--(void) getNearbyPostsCallback:(NSArray *)posts;
+-(void) getNearbyPostsCallback:(NSArray *)posts addingPosts:(BOOL)addingPosts;
 
 -(void) createSharePostCallback:(BOOL)success;
 -(void) revealStatusCallback:(BOOL)success action:(NSInteger)action_id;
@@ -59,7 +59,7 @@
 
 - (void) getTenMostRecentPosts:(NSNumber *)lastPostID;
 - (void) getPopularPosts:(NSInteger)pageNumber;
-- (void) getNearbyPosts:(CLLocationDegrees)lat lon:(CLLocationDegrees)lon;
+- (void) getNearbyPosts:(CLLocationDegrees)lat lon:(CLLocationDegrees)lon lastPostID:(NSNumber *)lastPostID;
 
 - (void) getUserPosts:(RevealPost *)revealPost;
 - (void) createSharePost:(RevealPost *)revealPost;

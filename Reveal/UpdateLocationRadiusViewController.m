@@ -34,6 +34,7 @@
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self.textField setKeyboardType:UIKeyboardTypeNumberPad];
     [self.textField becomeFirstResponder];
     
 }
@@ -55,21 +56,20 @@
 - (IBAction)doneWasPressed:(id)sender {
     NSLog(@"Done Was Pressed");
     [self.textField resignFirstResponder];
-    NSString *newRadius = [self.textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    //NSString *newRadius = [self.textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSNumberFormatter *numberFormat = [[NSNumberFormatter alloc] init];
+    [numberFormat setNumberStyle:NSNumberFormatterNoStyle];
+    NSNumber *newRadius = [numberFormat numberFromString:self.textField.text];
+    
 
-    if (newRadius.length > 0 & newRadius.length <= 200) {
-        //[self.json_handler createPostRequestWithContent:body isRevealed:isRevealed];
+    if ([newRadius intValue] > 0 & [newRadius intValue] <= 1000) {
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        
-        
-        
         [defaults setObject:newRadius forKey:@"location_radius"];
-
         
     } else {
-        NSLog(@"ERROR: Post length is not within 1 and 200 characters");
+        NSLog(@"ERROR: New radius is not between 0 and 1000 miles");
     }
-    //[self dismissSelf];
+    [self dismissSelf];
 }
 
 

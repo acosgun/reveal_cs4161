@@ -33,7 +33,7 @@ static DataHandler *sharedDataSource = nil;
     if ([identifier  isEqualToString:@"TableViewController"]) {
         [self getRecentPosts:nil];
         [self getPopularPosts:0];
-        [self getNearbyPosts];
+        [self getNearbyPosts:nil];
         
         //[self.json_handler getNearbyPosts];
         //[self.json_handler getFollowedPosts];
@@ -49,7 +49,7 @@ static DataHandler *sharedDataSource = nil;
     [self.json_handler getPopularPosts:pageNumber];
 }
 
-- (void) getNearbyPosts {
+- (void) getNearbyPosts:(NSNumber *)lastPostID {
     [self initLocationManager];
     CLAuthorizationStatus authStatus = [CLLocationManager authorizationStatus];
     
@@ -66,7 +66,7 @@ static DataHandler *sharedDataSource = nil;
         CLLocationDegrees lon = coordinate.longitude;
         NSLog(@"latitude: %f    longitute: %f", lat, lon);
         //[self.json_handler createPostRequestWithContent:body isRevealed:isRevealed locationEnabled: location_enabled lat:lat lon:lon];
-        [self.json_handler getNearbyPosts:lat lon:lon];
+        [self.json_handler getNearbyPosts:lat lon:lon lastPostID:lastPostID];
     }
     else
     {
@@ -323,9 +323,9 @@ SLComposeViewController *twitterController = [SLComposeViewController composeVie
     NSLog(@"Popular Posts were updated");
 }
 
-- (void) getNearbyPostsCallback:(NSArray *)posts {
+- (void) getNearbyPostsCallback:(NSArray *)posts addingPosts:(BOOL)addingPosts {
     [self fillFeedWithNearbyPosts:posts];
-    [self.delegate nearbyFeedUpdatedCallback:self];
+    [self.delegate nearbyFeedUpdatedCallback:self addingPosts:addingPosts];
     NSLog(@"Nearby posts were updated");
 }
 

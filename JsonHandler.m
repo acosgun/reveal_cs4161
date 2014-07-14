@@ -271,7 +271,7 @@
             NSLog(@"success: %@",success);
             if([success boolValue] == YES)
             {
-                NSLog(@"create post data in_json dictionary: %@", in_json);
+                //NSLog(@"create post data in_json dictionary: %@", in_json);
                 [self.delegate createPostRequestCallback:true];
             }
             else
@@ -363,7 +363,7 @@
             //Must create dictionary of posts containing dictionary of JSON data so that it can be easily converted to an array
             NSDictionary *in_json = [NSDictionary dictionaryWithObjectsAndKeys:
                                      [NSJSONSerialization JSONObjectWithData:data options:0 error:nil], @"posts", nil];
-            NSLog(@"data in_json dictionary: %@", in_json);
+            //NSLog(@"data in_json dictionary: %@", in_json);
             
             NSArray *popularPosts = [in_json objectForKey:@"posts"];
             //NSLog(@"tenMostRecentPosts Array: %@", tenMostRecentPosts);
@@ -387,17 +387,25 @@
     [getDataTask resume];
 }
 
-- (void) getNearbyPosts:(CLLocationDegrees)lat lon:(CLLocationDegrees)lon {
+- (void) getNearbyPosts:(CLLocationDegrees)lat lon:(CLLocationDegrees)lon lastPostID:(NSNumber *)lastPostID {
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
     NSNumber *lat_number = [NSNumber numberWithDouble:lat];
     NSNumber *lon_number = [NSNumber numberWithDouble:lon];
-    /// example call: posts/index_by_location?latitude=12.1&longitude=-13.3
-    NSMutableString *url = [NSMutableString stringWithFormat:@"%@latitude=%@&longitude=%@&radius=%@", NEARBY_POSTS_URL, lat_number, lon_number, [defaults objectForKey:@"location_radius"]];
-    NSLog(@"nearby posts URL: %@", url);
     
-    NSMutableURLRequest *request = [self createJSONMutableURLRequest:url method:@"GET" userData:nil];
+    /// example call: posts/index_by_location?latitude=12.1&longitude=-13.3
+    // example call2: ‘/posts/index_by_location?last_post_id=12&latitude=12.1&longitude=-13.3’
+    // example call3: ‘/posts/index_by_location?last_post_id=12&latitude=12.1&longitude=-13.3&radius=4’
+    NSString *urlString = [[NSMutableString alloc] init];
+    if (lastPostID == nil) {
+        urlString = [urlString stringByAppendingFormat:@"%@latitude=%@&longitude=%@&radius=%@", NEARBY_POSTS_URL, lat_number, lon_number, [defaults objectForKey:@"location_radius"]];
+    } else {
+        urlString = [urlString stringByAppendingFormat:@"%@last_post_id=%@&latitude=%@&longitude=%@&radius=%@", NEARBY_POSTS_URL, lastPostID, lat_number, lon_number, [defaults objectForKey:@"location_radius"]];
+    }
+    NSLog(@"nearby posts URL: %@", urlString);
+    
+    NSMutableURLRequest *request = [self createJSONMutableURLRequest:urlString method:@"GET" userData:nil];
     NSURLSession *session = [self createDefaultNSURLSession];
     
     NSString *auth_token = [defaults objectForKey:@"auth_token"];
@@ -416,7 +424,11 @@
             NSArray *nearbyPosts = [in_json objectForKey:@"posts"];
             //NSLog(@"tenMostRecentPosts Array: %@", tenMostRecentPosts);
             
-            [self.delegate getNearbyPostsCallback:nearbyPosts];
+            if (lastPostID == nil) {
+                [self.delegate getNearbyPostsCallback:nearbyPosts addingPosts:false];
+            } else {
+                [self.delegate getNearbyPostsCallback:nearbyPosts addingPosts:true];
+            }
         }
         else
         {
@@ -497,7 +509,7 @@
             //NSLog(@"there was no error");
             
             NSDictionary *in_json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            NSLog(@"data in_json dictionary: %@", in_json);
+            //NSLog(@"data in_json dictionary: %@", in_json);
             
             NSNumber *success = [in_json objectForKey:@"success"];
             NSLog(@"success?: %@", success);
@@ -547,7 +559,7 @@
         if (!error)
         {
             NSDictionary *in_json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            NSLog(@"data in_json dictionary: %@", in_json);
+            //NSLog(@"data in_json dictionary: %@", in_json);
             NSNumber *success = [in_json objectForKey:@"success"];
             [self.delegate revealStatusCallback:[success boolValue] action:intActionId];
         }

@@ -214,18 +214,20 @@ DataHandler *data_handler;
 }
 
 - (void) setWatchButtonBackgroundColor {
-    if ([self.post.current_user_vote isEqualToString:@"watch"]) {
-        self.watchButton.backgroundColor = [UIColor greenColor];
-        //self.watchButton.imageView.image = nil;
-        [self.watchButton setImage:nil forState:UIControlStateNormal];
-        self.watchButton.titleLabel.text = @"W";
-    } else if ([self.post.current_user_vote isEqualToString:@"ignore"]) {
-        self.watchButton.backgroundColor = [UIColor grayColor];
-        //self.watchButton.imageView.image = nil;
-        [self.watchButton setImage:nil forState:UIControlStateNormal];
-        self.watchButton.titleLabel.text = @"I";
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([self.post.current_user_vote isEqualToString:@"watch"]) {
+            self.watchButton.backgroundColor = [UIColor greenColor];
+            //self.watchButton.imageView.image = nil;
+            [self.watchButton setImage:nil forState:UIControlStateNormal];
+            self.watchButton.titleLabel.text = @"W";
+        } else if ([self.post.current_user_vote isEqualToString:@"ignore"]) {
+            self.watchButton.backgroundColor = [UIColor grayColor];
+            //self.watchButton.imageView.image = nil;
+            [self.watchButton setImage:nil forState:UIControlStateNormal];
+            self.watchButton.titleLabel.text = @"I";
 
-    }
+        }
+    });
 }
 
 - (IBAction)deleteButtonPressed:(id)sender

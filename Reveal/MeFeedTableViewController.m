@@ -127,7 +127,7 @@ DataHandler *data_handler;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    RevealPost *revealPost = [self.feed objectAtIndex:indexPath.row];
+    RevealPost *revealPost = [self.displayedData objectAtIndex:indexPath.row];
     return [EntryCell heightForPost:revealPost];
 }
 
@@ -227,7 +227,7 @@ DataHandler *data_handler;
 }
 
 #pragma mark - Callbacks
-- (void) feedUpdatedCallback:(DataHandler *)dataHandlerClass {
+- (void) feedUpdatedCallback:(DataHandler *)dataHandlerClass addingPosts:(BOOL)addingPosts {
     NSLog(@"feedUpdatedCallback in MeFeedTableController.m");
     self.feed = dataHandlerClass.feed;
     self.publicFeed = [[NSMutableArray alloc] init];

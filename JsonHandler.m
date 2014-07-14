@@ -9,7 +9,7 @@
 #define LOGIN_URL            @"http://reveal-api.herokuapp.com/users/login"
 #define USERS_URL            @"http://reveal-api.herokuapp.com/users/"
 #define POSTS_URL            @"http://reveal-api.herokuapp.com/posts"
-#define TEN_RECENT_POSTS_URL @"http://reveal-api.herokuapp.com/posts/index"
+#define TEN_RECENT_POSTS_URL @"http://reveal-api.herokuapp.com/posts/index/"
 #define POPULAR_POSTS_URL    @"http://reveal-api.herokuapp.com/posts/index_popular"
 #define NEARBY_POSTS_URL     @"http://reveal-api.herokuapp.com/posts/index_by_location?"
 #define USER_POSTS           @"http://reveal-api.herokuapp.com/posts/index_for_user/"
@@ -290,9 +290,15 @@
 }
 
 
--(void) getTenMostRecentPosts {
+- (void) getTenMostRecentPosts:(NSNumber *)lastPostID {
+    
+    NSMutableString *urlString = [NSMutableString stringWithString:TEN_RECENT_POSTS_URL];
+    if (lastPostID) {
+        [urlString appendString:[NSString stringWithFormat:@"%@", lastPostID]];
+    }
+    NSLog(@"urlString: %@", urlString);
 
-    NSMutableURLRequest *request = [self createJSONMutableURLRequest:TEN_RECENT_POSTS_URL method:@"GET" userData:nil];
+    NSMutableURLRequest *request = [self createJSONMutableURLRequest:urlString method:@"GET" userData:nil];
     NSURLSession *session = [self createDefaultNSURLSession];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -303,7 +309,7 @@
     
     
     NSURLSessionDataTask *getDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        //NSLog(@"Sent GET Request from getTenMostRecentPosts");
+        NSLog(@"Sent GET Request from getTenMostRecentPosts");
         if (!error)
         {
             //NSLog(@"there was no error");
@@ -315,23 +321,36 @@
             NSArray *tenMostRecentPosts = [in_json objectForKey:@"posts"];
             //NSLog(@"tenMostRecentPosts Array: %@", tenMostRecentPosts);
             
-            [self.delegate getTenMostRecentPostsCallback:tenMostRecentPosts];
+            if (lastPostID == nil) {
+                [self.delegate getTenMostRecentPostsCallback:tenMostRecentPosts addingPosts:false];
+            } else {
+                [self.delegate getTenMostRecentPostsCallback:tenMostRecentPosts addingPosts:true];
+            }
+            
         }
         else
         {
-            NSArray *tenMostRecentPosts = [[NSArray alloc] init];
-            [self.delegate getTenMostRecentPostsCallback:tenMostRecentPosts];
+            NSLog(@"ERROR: getTenMostRecentPosts:lastPostID failed in JsonHandler");
         }
     }];
     [getDataTask resume];
     
 }
 
-- (void) getPopularPosts {
-    NSMutableURLRequest *request = [self createJSONMutableURLRequest:POPULAR_POSTS_URL method:@"GET" userData:nil];
-    NSURLSession *session = [self createDefaultNSURLSession];
+- (void) getPopularPosts:(NSInteger)pageNumber {
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+    NSMutableString *urlString = [NSMutableString stringWithString:POPULAR_POSTS_URL];
+    if (pageNumber > 0) {
+        //‘/posts/index_popularpage=1&orig_request_time=2014-07-04T22:33:25+00:00’
+        [urlString appendString:[NSString stringWithFormat:@"?page=%d&orig_request_time=%@", pageNumber, [defaults objectForKey:@"orig_request_time"]]];
+    }
+    NSLog(@"popular posts urlString: %@", urlString);
+    
+    NSMutableURLRequest *request = [self createJSONMutableURLRequest:urlString method:@"GET" userData:nil];
+    NSURLSession *session = [self createDefaultNSURLSession];
+    
     NSString *auth_token = [defaults objectForKey:@"auth_token"];
     NSString *authen_str = [NSString stringWithFormat:@"Token token=%@", auth_token];
     [request addValue:authen_str forHTTPHeaderField:@"Authorization"];
@@ -344,16 +363,25 @@
             //Must create dictionary of posts containing dictionary of JSON data so that it can be easily converted to an array
             NSDictionary *in_json = [NSDictionary dictionaryWithObjectsAndKeys:
                                      [NSJSONSerialization JSONObjectWithData:data options:0 error:nil], @"posts", nil];
-            //NSLog(@"data in_json dictionary: %@", in_json);
+            NSLog(@"data in_json dictionary: %@", in_json);
             
             NSArray *popularPosts = [in_json objectForKey:@"posts"];
             //NSLog(@"tenMostRecentPosts Array: %@", tenMostRecentPosts);
             
-            [self.delegate getPopularPostsCallback:popularPosts];
+            // store orig_request_time in defaults for future calls
+            if (pageNumber == 0) {
+                NSString *orig_request_time = [[popularPosts firstObject] objectForKey:@"orig_request_time"];
+                [defaults setObject:orig_request_time forKey:@"orig_request_time"];
+                NSLog(@"original request time: %@", [defaults objectForKey:@"orig_request_time"]);
+                
+                [self.delegate getPopularPostsCallback:popularPosts addingPosts:false];
+            } else {
+                [self.delegate getPopularPostsCallback:popularPosts addingPosts:true];
+            }
         }
         else
         {
-            NSLog(@"ERROR with getPopularPosts");
+            NSLog(@"ERROR with getPopularPosts:addingPosts");
         }
     }];
     [getDataTask resume];
@@ -383,7 +411,7 @@
             NSLog(@"no error in getNearbyPosts in jsonhandler");
             NSDictionary *in_json = [NSDictionary dictionaryWithObjectsAndKeys:
                                      [NSJSONSerialization JSONObjectWithData:data options:0 error:nil], @"posts", nil];
-            NSLog(@"data in_json dictionary for nearyPosts: %@", in_json);
+            //NSLog(@"data in_json dictionary for nearyPosts: %@", in_json);
             
             NSArray *nearbyPosts = [in_json objectForKey:@"posts"];
             //NSLog(@"tenMostRecentPosts Array: %@", tenMostRecentPosts);

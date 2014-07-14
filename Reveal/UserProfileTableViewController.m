@@ -114,7 +114,7 @@ DataHandler *data_handler;
 
 -(void) viewWillDisappear:(BOOL)animated {
     //NSLog(@"ViewWillDissappear UserProfileTVC");
-    [self.feed removeAllObjects];
+    //[self.feed removeAllObjects];
 }
 
 
@@ -155,13 +155,14 @@ DataHandler *data_handler;
 
 
 #pragma mark - Callbacks
-- (void) feedUpdatedCallback:(DataHandler *)dataHandlerClass {
+- (void) feedUpdatedCallback:(DataHandler *)dataHandlerClass addingPosts:(BOOL)addingPosts {
     //NSLog(@"feedUpdatedCallback UserProfileTVC.m");
     
     if ([self.revealPost.userID isEqual:[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"]]) {
 
         for (RevealPost *post in dataHandlerClass.feed) {
             if (post.revealed == true) {
+                [self.feed removeAllObjects];
                 [self.feed addObject:post];
             }
         }

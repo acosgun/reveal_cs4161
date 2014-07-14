@@ -31,13 +31,22 @@ static DataHandler *sharedDataSource = nil;
     self.json_handler.delegate = self;
     
     if ([identifier  isEqualToString:@"TableViewController"]) {
-        [self.json_handler getTenMostRecentPosts];
-        [self.json_handler getPopularPosts];
+        [self getRecentPosts:nil];
+        [self getPopularPosts:0];
         [self getNearbyPosts];
         
         //[self.json_handler getNearbyPosts];
         //[self.json_handler getFollowedPosts];
     }
+}
+
+- (void) getRecentPosts:(NSNumber *)lastPostID {
+    [self.json_handler getTenMostRecentPosts:(NSNumber *)lastPostID];
+    NSLog(@"sent HTTP request for more recent posts from datahandler");
+}
+
+- (void) getPopularPosts:(NSInteger)pageNumber {
+    [self.json_handler getPopularPosts:pageNumber];
 }
 
 - (void) getNearbyPosts {
@@ -77,7 +86,7 @@ static DataHandler *sharedDataSource = nil;
         NSLog(@"!!!JsonHandler call (from UserProfileTVC) in datahandler class, reveal post info: %@     %@", revealPost.userID, revealPost.userName);
         [self.json_handler getUserPosts:revealPost];
     }
-        [self.delegate feedUpdatedCallback:self];
+        [self.delegate feedUpdatedCallback:self addingPosts:false];
 }
 
 - (void) createSharePost:(RevealPost *)revealPost {
@@ -301,16 +310,16 @@ SLComposeViewController *twitterController = [SLComposeViewController composeVie
 
 
 #pragma mark - JSON Callbacks
--(void) getTenMostRecentPostsCallback:tenMostRecentPosts {
+-(void) getTenMostRecentPostsCallback:(NSArray *)tenMostRecentPosts addingPosts:(BOOL)addingPosts {
     //self.feed = tenMostRecentPosts;
     [self fillFeedWithTenMostRecentPosts:tenMostRecentPosts];
     //NSLog(@"Ten most recent posts sent back to DataHandler.m");
-    [self.delegate feedUpdatedCallback:self];
+    [self.delegate feedUpdatedCallback:self addingPosts:addingPosts];
 }
 
-- (void) getPopularPostsCallback:(NSArray *)posts {
+- (void) getPopularPostsCallback:(NSArray *)posts addingPosts:(BOOL)addingPosts {
     [self fillFeedWithPopularPosts:posts];
-    [self.delegate popularFeedUpdatedCallback:self];
+    [self.delegate popularFeedUpdatedCallback:self addingPosts:addingPosts];
     NSLog(@"Popular Posts were updated");
 }
 
@@ -323,7 +332,7 @@ SLComposeViewController *twitterController = [SLComposeViewController composeVie
 -(void) getUserPostsCallBack:(NSArray *)userPosts {
     [self fillFeedWithTenMostRecentPosts:userPosts];
     //NSLog(@"User posts sent back to DataHandler.m");
-    [self.delegate feedUpdatedCallback:self];
+    [self.delegate feedUpdatedCallback:self addingPosts:false];
 }
 
 -(void)revealStatusCallback:(BOOL)success action:(NSInteger)action_id

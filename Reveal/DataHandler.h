@@ -22,8 +22,8 @@
 // define protocol functions that can be used in any class using this delegate
 
 @optional
--(void)feedUpdatedCallback:(DataHandler *)dataHandlerClass;
--(void)popularFeedUpdatedCallback:(DataHandler *)dataHandlerClass;
+-(void)feedUpdatedCallback:(DataHandler *)dataHandlerClass addingPosts:(BOOL)addingPosts;
+-(void)popularFeedUpdatedCallback:(DataHandler *)dataHandlerClass addingPosts:(BOOL)addingPosts;
 -(void)nearbyFeedUpdatedCallback:(DataHandler *)dataHandlerClass;
 
 -(void)revealStatusCallback:(BOOL)success action:(NSInteger)action_id;
@@ -45,6 +45,9 @@
 + (DataHandler *) sharedInstance;
 - (void) updateFeedsWithIdentifier:(NSString *)identifier;
 - (void) updateFeedsWithIdentifier:(NSString *)identifier postClass:(RevealPost *)revealPost;
+- (void) getRecentPosts:(NSNumber *)lastPostID;
+- (void) getPopularPosts:(NSInteger)pageNumber;
+
 - (void) revealPost:(NSInteger *) post_id;
 - (void) hidePost:(NSInteger *) post_id;
 - (void) deletePost:(NSInteger *) post_id;

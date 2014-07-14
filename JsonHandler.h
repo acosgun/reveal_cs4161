@@ -27,10 +27,10 @@
 -(void) makeLoginRequestCallback:(BOOL)success;
 -(void) makeSignupRequestCallback:(BOOL)success;
 -(void) createPostRequestCallback:(BOOL)success;
--(void) getTenMostRecentPostsCallback:(NSArray *)tenMostRecentPosts;
 
+-(void) getTenMostRecentPostsCallback:(NSArray *)tenMostRecentPosts addingPosts:(BOOL)addingPosts;
 -(void) getUserPostsCallBack:(NSArray *)userPosts;
--(void) getPopularPostsCallback:(NSArray *)posts;
+-(void) getPopularPostsCallback:(NSArray *)posts addingPosts:(BOOL)addingPosts;
 -(void) getNearbyPostsCallback:(NSArray *)posts;
 
 -(void) createSharePostCallback:(BOOL)success;
@@ -57,8 +57,8 @@
 - (void) makeSignupRequest:(NSString*)username pass:(NSString*)password;
 - (void) createPostRequestWithContent:(NSString *)body isRevealed:(BOOL)isRevealed locationEnabled:(BOOL)location_enabled lat:(CLLocationDegrees)lat lon:(CLLocationDegrees)lon;
 
-- (void) getTenMostRecentPosts;
-- (void) getPopularPosts;
+- (void) getTenMostRecentPosts:(NSNumber *)lastPostID;
+- (void) getPopularPosts:(NSInteger)pageNumber;
 - (void) getNearbyPosts:(CLLocationDegrees)lat lon:(CLLocationDegrees)lon;
 
 - (void) getUserPosts:(RevealPost *)revealPost;

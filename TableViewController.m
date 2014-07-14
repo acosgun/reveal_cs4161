@@ -12,6 +12,9 @@
 #import "EntryCell.h"
 #import "DataHandler.h"
 
+#import "UIScrollView+SVPullToRefresh.h"
+#import "UIScrollView+SVInfiniteScrolling.h"
+
 @interface TableViewController ()
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *feedSelector;
@@ -35,6 +38,7 @@ DataHandler *data_handler;
 {
     NSLog(@"ViewDidLoad is called");
     [super viewDidLoad];
+    self.popularFeedPageNumber = 0;
     
     self.feed = [[NSMutableArray alloc] init];
     self.refreshControl = [[UIRefreshControl alloc] init];
@@ -44,14 +48,22 @@ DataHandler *data_handler;
     [self updateFeeds];
     
     self.feedSelector.selectedSegmentIndex = 0;
+    
+    __weak typeof(self) weakSelf = self;
+    [self.tableView addInfiniteScrollingWithActionHandler:^{
+        NSLog(@"infinite scroll is on");
+        [weakSelf addPostsToDisplayedFeed];
+    }];
 }
 
 -(void) viewWillAppear:(BOOL)animated
 {
+    self.tableView.showsInfiniteScrolling = YES;
     NSLog(@"ViewWillAppear is called: presenting view controller: %@", self.navigationController.presentingViewController);
     data_handler.delegate = self;
     
-    [self updateFeeds];
+    //[self updateFeeds];
+    [self reloadDataInTableView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -90,7 +102,7 @@ DataHandler *data_handler;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    RevealPost *revealPost = [self.feed objectAtIndex:indexPath.row];
+    RevealPost *revealPost = [self.displayedFeed objectAtIndex:indexPath.row];
     return [EntryCell heightForPost:revealPost];
 }
 
@@ -102,6 +114,7 @@ DataHandler *data_handler;
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    self.tableView.showsInfiniteScrolling = NO;
     NSLog(@"Preparing for segue: %@", segue.identifier);
     if( [segue.identifier isEqualToString:@"FeedPostToDetailedView"])
     {
@@ -144,9 +157,14 @@ DataHandler *data_handler;
 
 
 #pragma mark - Data portal
-- (void)feedUpdatedCallback:(DataHandler *)dataHandlerClass {
+- (void) feedUpdatedCallback:(DataHandler *)dataHandlerClass addingPosts:(BOOL)addingPosts {
     NSLog(@"feedUpdatedCallback in TableController.m");
-    self.feed = dataHandlerClass.feed;
+    
+    if (addingPosts == false) {
+        self.feed = dataHandlerClass.feed;
+    } else {
+        [self.feed addObjectsFromArray:dataHandlerClass.feed];
+    }
     
     if (self.feedSelector.selectedSegmentIndex == 0) {
         self.displayedFeed = self.feed;
@@ -156,13 +174,24 @@ DataHandler *data_handler;
     {
         NSLog(@"Refreshing (feed updated callback)");
         [self.refreshControl endRefreshing];
+        //[self.tableView.infiniteScrollingView stopAnimating];
         [self reloadDataInTableView];
+        // call [tableView.infiniteScrollingView stopAnimating] when done
     }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView.infiniteScrollingView stopAnimating];
+    });
     
 }
 
-- (void) popularFeedUpdatedCallback:(DataHandler *)dataHandlerClass {
-    self.popularFeed = dataHandlerClass.popularFeed;
+- (void) popularFeedUpdatedCallback:(DataHandler *)dataHandlerClass addingPosts:(BOOL)addingPosts {
+    
+    if (addingPosts == false) {
+        self.popularFeed = dataHandlerClass.popularFeed;
+    } else {
+        [self.popularFeed addObjectsFromArray:dataHandlerClass.popularFeed];
+    }
     
     if (self.feedSelector.selectedSegmentIndex == 1) {
         self.displayedFeed = self.popularFeed;
@@ -174,6 +203,10 @@ DataHandler *data_handler;
         [self.refreshControl endRefreshing];
         [self reloadDataInTableView];
     }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView.infiniteScrollingView stopAnimating];
+    });
 }
 
 - (void) nearbyFeedUpdatedCallback:(DataHandler *)dataHandlerClass {
@@ -200,7 +233,7 @@ DataHandler *data_handler;
     NSLog(@"second reload of tableview (after dispatch)");
 }
 
-#pragma mark - Pull to Refresh Data
+#pragma mark - Get Feed Posts
 
 - (void) updateFeeds
 {
@@ -213,7 +246,25 @@ DataHandler *data_handler;
     [self reloadDataInTableView];
      */
     //NSLog(@"updateFeeds");
+    
+    self.popularFeedPageNumber = 0;
+    
     [[DataHandler sharedInstance] updateFeedsWithIdentifier:@"TableViewController"];
+}
+
+- (void) addPostsToDisplayedFeed {
+    [self.refreshControl beginRefreshing];
+    
+    if (self.feedSelector.selectedSegmentIndex == 0) {
+        RevealPost *lastPost = [self.feed lastObject];
+        NSNumber *lastPostID = lastPost.IDNumber;
+        [[DataHandler sharedInstance] getRecentPosts:lastPostID];
+        NSLog(@"sent request to datahandler");
+    } else if (self.feedSelector.selectedSegmentIndex == 1) {
+        self.popularFeedPageNumber = self.popularFeedPageNumber + 1;
+        NSLog(@"popular feed page number: int value: %d", self.popularFeedPageNumber);
+        [[DataHandler sharedInstance] getPopularPosts:self.popularFeedPageNumber];
+    }
 }
 
 /*

@@ -18,5 +18,7 @@
 @property (nonatomic, strong) NSMutableArray *nearbyFeed;
 @property (nonatomic, strong) NSMutableArray *displayedFeed;
 
+@property (nonatomic, assign) NSInteger popularFeedPageNumber;
+
 @property (nonatomic,strong) UIRefreshControl *refreshControl;
 @end

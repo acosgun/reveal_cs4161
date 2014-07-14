@@ -29,7 +29,7 @@
     
     UIFont *font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
     
-    CGRect boundingBox = [revealPost.body boundingRectWithSize:CGSizeMake(211, CGFLOAT_MAX) options:NSStringDrawingUsesFontLeading|NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: font} context:nil];
+    CGRect boundingBox = [revealPost.body boundingRectWithSize:CGSizeMake(200, CGFLOAT_MAX) options:NSStringDrawingUsesFontLeading|NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: font} context:nil];
     
     return MAX(minHeight, CGRectGetHeight(boundingBox) + topMargin + bottomMargin);
 }

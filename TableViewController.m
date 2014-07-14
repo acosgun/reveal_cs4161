@@ -54,6 +54,19 @@ DataHandler *data_handler;
         NSLog(@"infinite scroll is on");
         [weakSelf addPostsToDisplayedFeed];
     }];
+    /*
+    
+    self.tabBarController.tabBar.tintColor = [[UIColor alloc] initWithRed:0.90
+                                                                    green:0.02
+                                                                     blue:0.13
+                                                                    alpha:1.0];
+    
+    self.tabBarController.tabBar.backgroundColor = [[UIColor alloc] initWithRed:0.0
+                                                                          green:0.92
+                                                                           blue:0.1
+                                                                          alpha:1.0];
+     
+     */
 }
 
 -(void) viewWillAppear:(BOOL)animated

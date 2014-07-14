@@ -599,7 +599,7 @@
         {
             NSLog(@"success in getUserInformation request");
             NSDictionary *in_json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            //NSLog(@"data in_json dictionary: %@", in_json);
+            NSLog(@"user information in_json dictionary: %@", in_json);
             
             [self.delegate getUserInformationCallback:in_json];
         } else {

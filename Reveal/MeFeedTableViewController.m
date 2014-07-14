@@ -20,6 +20,9 @@
 @property (strong, nonatomic) IBOutlet UIImageView *profileImage;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 
+@property (weak, nonatomic) IBOutlet UIButton *followersButton;
+@property (weak, nonatomic) IBOutlet UIButton *followingButton;
+
 
 @end
 
@@ -64,12 +67,24 @@ DataHandler *data_handler;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     self.profileImage.image = [UIImage imageWithData:[defaults objectForKey:@"avatar_data"]];
     self.nameLabel.text = [defaults objectForKey:@"username"];
+    
+    [self setupFollowButtons];
+}
+
+-(void) setupFollowButtons
+{
+    self.followersButton.titleLabel.numberOfLines = 2;
+    //self.followers_button.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    
+    self.followingButton.titleLabel.numberOfLines = 2;
+    //self.followers_button.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
 }
 
 -(void) viewWillAppear:(BOOL)animated
 {
     data_handler.delegate = self;
     [self updateFeeds];
+    [self getUserInfo];
 }
 
 - (void)didReceiveMemoryWarning
@@ -226,6 +241,8 @@ DataHandler *data_handler;
     [self.tableView reloadData];
 }
 
+
+
 #pragma mark - Callbacks
 - (void) feedUpdatedCallback:(DataHandler *)dataHandlerClass addingPosts:(BOOL)addingPosts {
     NSLog(@"feedUpdatedCallback in MeFeedTableController.m");
@@ -288,5 +305,65 @@ DataHandler *data_handler;
     //NSLog(@"updateFeeds");
     [[DataHandler sharedInstance] updateFeedsWithIdentifier:@"MeFeedTableViewController" postClass:self.revealPost];
 }
+
+#pragma mark - methods for follow buttons
+
+-(void) getUserInformationCallback:(NSDictionary *)userInformation {
+    //NSLog(@"userInformation: %@",userInformation);
+    
+    NSNumber *c_u_follows = [userInformation objectForKey:@"current_user_follows"];
+    self.current_user_follows = [c_u_follows boolValue];
+    NSNumber *followed_stat = [userInformation objectForKey:@"followed_stat"];
+    NSNumber *follower_stat = [userInformation objectForKey:@"follower_stat"];
+    NSInteger int_followed_stat = [followed_stat integerValue];
+    NSInteger int_follower_stat = [follower_stat integerValue];
+    
+    [self updateFollowButtons:self.current_user_follows follower_stat:int_follower_stat followed_stat:int_followed_stat];
+}
+
+- (void) getUserInfo
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSInteger user_id = [[defaults objectForKey:@"user_id"] integerValue];
+    data_handler.delegate = self;
+    [[DataHandler sharedInstance] getUserInfo:&user_id includeAuthToken:TRUE];
+}
+
+-(void) updateFollowButtons:(BOOL)current_user_follows follower_stat:(NSInteger)follower_stat followed_stat:(NSInteger)followed_stat
+{
+    NSLog(@"updateFollowButtons");
+    NSString *str_follow;
+    if(current_user_follows) {
+        str_follow = @"UNFOLLOW";
+    }
+    else {
+        str_follow = @"FOLLOW";
+    }
+    
+    NSString *str_followers = [NSString stringWithFormat:@"%ld \nFollowers",(long)follower_stat];
+    NSString *str_following = [NSString stringWithFormat:@"%ld \nFollowing",(long)followed_stat];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        self.followersButton.enabled = FALSE;
+        [self.followersButton setTitle:str_followers forState:UIControlStateNormal];
+        [self.followersButton setTitle:str_followers forState:UIControlStateHighlighted];
+        [self.followersButton setTitle:str_followers forState:UIControlStateDisabled];
+        [self.followersButton setTitle:str_followers forState:UIControlStateSelected];
+        self.followersButton.enabled = TRUE;
+        
+        
+        self.followingButton.enabled = FALSE;
+        [self.followingButton setTitle:str_following forState:UIControlStateNormal];
+        [self.followingButton setTitle:str_following forState:UIControlStateHighlighted];
+        [self.followingButton setTitle:str_following forState:UIControlStateDisabled];
+        [self.followingButton setTitle:str_following forState:UIControlStateSelected];
+        self.followingButton.enabled = TRUE;
+    });
+    
+    [self.tableView reloadData];
+    
+}
+
 
 @end

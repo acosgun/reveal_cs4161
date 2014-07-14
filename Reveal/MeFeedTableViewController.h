@@ -20,6 +20,8 @@
 @property (nonatomic, strong) NSMutableArray *titles; //default, will delete later
 @property (nonatomic, strong) RevealPost *revealPost;
 
+@property (nonatomic, assign) BOOL current_user_follows;
+
 @property (weak, nonatomic) IBOutlet UISegmentedControl *hiddenRevealedSelector;
 
 @property (strong, nonatomic) UIRefreshControl *refreshControl;

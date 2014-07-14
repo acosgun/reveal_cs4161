@@ -168,6 +168,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="followersButton" destination="fbb-Qs-W34" id="AQ6-db-Y6l"/>
+                        <outlet property="followingButton" destination="VoN-LD-goc" id="0qb-wF-Eji"/>
                         <outlet property="hiddenRevealedSelector" destination="yFK-SX-h67" id="OyA-PS-4vk"/>
                         <outlet property="nameLabel" destination="9c4-Xt-Guo" id="A3N-hy-ry9"/>
                         <outlet property="profileImage" destination="5dN-6z-lIs" id="Ke2-iW-h63"/>

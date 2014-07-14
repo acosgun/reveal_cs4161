@@ -93,7 +93,7 @@ DataHandler *data_handler;
     [self.following_button setTitle:str_following forState:UIControlStateSelected];
     self.following_button.enabled = TRUE;
     });
-   
+    NSLog(@"completed updateFollowButtons method");
 }
 
 -(void) viewWillAppear:(BOOL)animated

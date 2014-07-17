@@ -114,9 +114,9 @@ static DataHandler *sharedDataSource = nil;
 }
 
 
-- (void) updateProfileImage {
+- (void) updateProfileImage:(NSData *)imageData {
     
-        [self.json_handler updateProfileImageRequest];
+    [self.json_handler updateProfileImageRequest:imageData];
 }
 
 
@@ -149,6 +149,9 @@ static DataHandler *sharedDataSource = nil;
     }
 }
 
+-(void) updateProfileImageRequestCallback:(BOOL)success {
+    [self.delegate updateProfileImageCallback:success];
+}
 
 
 @end

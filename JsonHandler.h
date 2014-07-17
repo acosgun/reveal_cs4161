@@ -28,6 +28,7 @@
 -(void) revealStatusCallback:(BOOL)success action:(NSInteger)action_id;
 -(void) getUserInformationCallback:(NSDictionary *)userInformation;
 -(void) changeWatchStatusCallback:(BOOL)success action:(NSString *)action;
+-(void) updateProfileImageRequestCallback:(BOOL)success;
 
 @end
 
@@ -51,6 +52,6 @@
 - (void) getUserInformation:(NSString *)userIDNumber;
 - (void) updateUserProfileImage:(NSDictionary *)userInformation;
 - (void) changeWatchStatus:(NSInteger *)post_id action:(NSString *)action HTTPMethod:(NSString *)method;
-- (void) updateProfileImageRequest;
+- (void) updateProfileImageRequest:(NSData *)imageData;
 
 @end

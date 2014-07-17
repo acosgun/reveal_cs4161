@@ -15,6 +15,7 @@
 #define REVEAL_URL           @"http://reveal-api.herokuapp.com/posts/reveal"
 #define HIDE_URL             @"http://reveal-api.herokuapp.com/posts/hide"
 #define WATCH_URL            @"http://reveal-api.herokuapp.com/votes/"
+#define PROFILE_IMAGE        @"http://reveal-api.herokuapp.com/users/setting/update_avatar"
 
 #import "JsonHandler.h"
 #import "RevealPost.h"
@@ -523,7 +524,69 @@
     [watchDataTask resume];
 }
 
-- (void) updateProfileImageRequest {
+- (void) updateProfileImageRequest:(NSData *)imageData {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *auth_token = [defaults stringForKey:@"auth_token"];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+	[request setURL:[NSURL URLWithString:PROFILE_IMAGE]];
+	[request setHTTPMethod:@"POST"];
+    
+    //NSString *boundary = @"------WebKitFormBoundaryX2FecTOiRltXHK2k"; // from Ben's front end
+    NSString *boundary = @"---------------------------14737809831466499882746641449";
+    NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary];
+    [request setValue:contentType forHTTPHeaderField:@"Content-Type"];
+    //[request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request addValue:@"keep-alive" forHTTPHeaderField:@"Connection"];
+    
+    NSMutableData *body = [NSMutableData data];
+    [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding: NSUTF8StringEncoding]];
+    //[body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"imageToAttach\"; filename=\"%@\"\r\n",fileName]dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"avatar\"; filename=\".jpg\"\r\n"]dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithFormat:@"Content-Type: image/jpeg\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:imageData];
+    [body appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    [request setHTTPBody:body];
+	
+    NSString *authen_str = [NSString stringWithFormat:@"Token token=%@", auth_token];
+    NSLog(@"authen_str: %@",authen_str);
+    [request addValue:authen_str forHTTPHeaderField:@"Authorization"];
+    
+    NSURLSession *session = [self createDefaultNSURLSession];
+	
+	//NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+    NSURLSessionDataTask *uploadAvatarTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        
+        NSLog(@"Sent POST Request from updateProfileImage:imageData");
+        if (!error)
+        {
+            NSLog(@"there was no error");
+            NSDictionary *in_json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            NSLog(@"data in json response: %@", in_json);
+            NSLog(@"data in response: %@", response);
+            NSLog(@"error: %@", error);
+            NSNumber *success = [in_json objectForKey:@"success"];
+            NSString *avatarURLString = [in_json objectForKey:@"avatar_medium"];
+            NSLog(@"success: %@",success);
+            NSLog(@"new avatar URL: %@", avatarURLString);
+            
+            if([success boolValue] == YES)
+            {
+                //NSLog(@"data in_json (success=true): %@", in_json);
+                [self updateUserProfileImage:in_json];
+                [self.delegate updateProfileImageRequestCallback:true];
+            }
+            else
+            {
+                NSLog(@"Update of profile image was unsuccessful");
+            }
+        }
+        else
+        {
+            NSLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
+    [uploadAvatarTask resume];
     
 }
 
@@ -552,11 +615,12 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
     NSURL *imageURL = [NSURL URLWithString:[userInformation objectForKey:@"avatar_medium"]];
-    NSData *image_data = [NSData dataWithContentsOfURL:imageURL];
+    NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
     
-    [defaults setObject:image_data forKey:@"avatar_data"];
+    [defaults setObject:imageData forKey:@"avatar_data"];
 }
 
+/*
 -(void) getUserInformationCallback:(NSDictionary *)userInformation {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSLog(@"userDataFromServer: %@", userInformation);///////
@@ -567,5 +631,6 @@
     [defaults setObject:image forKey:@"avatar"];
     NSLog(@"updateUserProfileImage: avatar is: %@", [defaults objectForKey:@"avatar_medium"]);
 }
+ */
 
 @end

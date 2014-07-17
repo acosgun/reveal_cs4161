@@ -22,6 +22,7 @@
 -(void)revealStatusCallback:(BOOL)success action:(NSInteger)action_id;
 -(void)watchPostCallback:(BOOL)success;
 -(void)ignorePostCallbackL:(BOOL)success;
+-(void) updateProfileImageCallback:(BOOL)success;
 
 @end
 
@@ -40,6 +41,6 @@
 - (void) deletePost:(NSInteger *) post_id;
 - (void) watchPost:(NSInteger *)post_id HTTMethod:(NSString *)method;
 - (void) ignorePost:(NSInteger *)post_id HTTMethod:(NSString *)method;
-- (void) updateProfileImage;
+- (void) updateProfileImage:(NSData *)imageData;
 
 @end

@@ -168,18 +168,14 @@ DataHandler *data_handler;
     self.pickedImage = image;
     
     //maybe add code for setting image data here
-    [self.revealPost setThumbnailDataFromImage:self.pickedImage];
-    [self updateProfileImage];
+    NSData *imageData = UIImageJPEGRepresentation(image, 0.75);
+    [[DataHandler sharedInstance] updateProfileImage:imageData];
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void) imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void) updateProfileImage {
-    [data_handler updateProfileImage];
 }
 
 
@@ -240,7 +236,11 @@ DataHandler *data_handler;
 }
 
 - (IBAction)imageButtonWasPressed:(id)sender {
-    
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        [self promptForSource];
+    } else {
+        [self promptForPhotoRoll];
+    }
 }
 
 
@@ -297,6 +297,11 @@ DataHandler *data_handler;
      [self.refreshControl endRefreshing];
      }
      */
+}
+
+- (void) updateProfileImageCallback:(BOOL)success {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [self.imageButton setImage:[UIImage imageWithData:[defaults objectForKey:@"avatar_data"]] forState:UIControlStateNormal];
 }
 
 #pragma mark - Pull to Refresh Data

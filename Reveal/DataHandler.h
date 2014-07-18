@@ -25,6 +25,7 @@
 -(void)feedUpdatedCallback:(DataHandler *)dataHandlerClass addingPosts:(BOOL)addingPosts;
 -(void)popularFeedUpdatedCallback:(DataHandler *)dataHandlerClass addingPosts:(BOOL)addingPosts;
 -(void)nearbyFeedUpdatedCallback:(DataHandler *)dataHandlerClass addingPosts:(BOOL)addingPosts;
+-(void)followedFeedUpdatedCallback:(DataHandler *)dataHandlerClass addingPosts:(BOOL)addingPosts;
 
 -(void)revealStatusCallback:(BOOL)success action:(NSInteger)action_id;
 -(void)watchPostCallback:(BOOL)success;
@@ -40,6 +41,7 @@
 @property (nonatomic, strong) NSMutableArray *feed;
 @property (nonatomic, strong) NSMutableArray *popularFeed;
 @property (nonatomic, strong) NSMutableArray *nearby_feed;
+@property (nonatomic, strong) NSMutableArray *followedFeed;
 @property (nonatomic, strong) JsonHandler *json_handler;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 
@@ -49,6 +51,7 @@
 - (void) getRecentPosts:(NSNumber *)lastPostID;
 - (void) getPopularPosts:(NSInteger)pageNumber;
 - (void) getNearbyPosts:(NSNumber *)lastPostID;
+- (void) getFollowedPosts:(RevealPost *)post;
 
 - (void) revealPost:(NSInteger *) post_id;
 - (void) hidePost:(NSInteger *) post_id;

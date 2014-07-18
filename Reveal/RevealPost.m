@@ -26,6 +26,8 @@
         self.revealed = false;
         self.current_user_vote = nil;
         self.thumbnailData = nil;
+        self.follower_item_type = nil;
+        self.vote_id = nil;
     }
     return self;
 }

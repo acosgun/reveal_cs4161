@@ -25,15 +25,15 @@ static DataHandler *sharedDataSource = nil;
 
 - (void) updateFeedsWithIdentifier:(NSString *)identifier {
     //NSLog(@"updateFeeds");
-    //TODO: Make RESTful call to server
     
     self.json_handler = [[JsonHandler alloc] init];
     self.json_handler.delegate = self;
     
     if ([identifier  isEqualToString:@"TableViewController"]) {
-        [self getRecentPosts:nil];
+        // [self getRecentPosts:nil];
         [self getPopularPosts:0];
         [self getNearbyPosts:nil];
+        [self getFollowedPosts:nil];
         
         //[self.json_handler getNearbyPosts];
         //[self.json_handler getFollowedPosts];
@@ -47,6 +47,10 @@ static DataHandler *sharedDataSource = nil;
 
 - (void) getPopularPosts:(NSInteger)pageNumber {
     [self.json_handler getPopularPosts:pageNumber];
+}
+
+- (void) getFollowedPosts:(RevealPost *)post {
+    [self.json_handler getFollowedPosts:post];
 }
 
 - (void) getNearbyPosts:(NSNumber *)lastPostID {
@@ -153,6 +157,11 @@ static DataHandler *sharedDataSource = nil;
     self.nearby_feed = [self createPostArrayFromJSONResponse:posts];
 }
 
+- (void) fillFeedWithFollowedPosts:(NSArray *)posts {
+    self.followedFeed = [[NSMutableArray alloc] init];
+    self.followedFeed = [self createPostArrayFromJSONResponse:posts];
+}
+
 - (NSMutableArray *)createPostArrayFromJSONResponse:(NSArray *)posts {
     
     NSMutableArray *postsArray = [[NSMutableArray alloc] init];
@@ -171,6 +180,8 @@ static DataHandler *sharedDataSource = nil;
         revealPost.revealed = [[post objectForKey:@"revealed"]boolValue];
         revealPost.userID = [post objectForKey:@"user_id"];
         revealPost.current_user_vote = [post objectForKey:@"current_user_vote"];
+        revealPost.follower_item_type = [post objectForKey:@"item_type"];
+        revealPost.vote_id = [post objectForKey:@"vote_id"];
         
         /*
         if (i == 0) {
@@ -342,6 +353,11 @@ SLComposeViewController *twitterController = [SLComposeViewController composeVie
     [self fillFeedWithNearbyPosts:posts];
     [self.delegate nearbyFeedUpdatedCallback:self addingPosts:addingPosts];
     NSLog(@"Nearby posts were updated");
+}
+
+- (void) getFollowedPostsCallback:(NSArray *)followedPosts addingPosts:(BOOL)addingPosts {
+    [self fillFeedWithFollowedPosts:followedPosts];
+    [self.delegate followedFeedUpdatedCallback:self addingPosts:addingPosts];
 }
 
 -(void) getUserPostsCallBack:(NSArray *)userPosts {

@@ -7,15 +7,25 @@
 //
 
 #import "MeDetailedPostViewController.h"
+#import "DetailedPostSubView.h"
 #import "RevealPost.h"
 #import "JsonHandler.h"
 
 @interface MeDetailedPostViewController ()
 
+@property (weak, nonatomic) IBOutlet DetailedPostSubView *postSubView;
+@property (weak, nonatomic) IBOutlet UIView *revealSubview;
+
 @property (weak, nonatomic) IBOutlet UIImageView *meDetailPostImage;
 @property (weak, nonatomic) IBOutlet UILabel *bodyLabel;
+@property (weak, nonatomic) IBOutlet UIButton *nameLabel;
 
 @property (weak, nonatomic) IBOutlet UISwitch *revealSwitch;
+@property (weak, nonatomic) IBOutlet UIButton *watchIcon;
+@property (weak, nonatomic) IBOutlet UILabel *watchVotesLabel;
+@property (weak, nonatomic) IBOutlet UIButton *ignoreIcon;
+@property (weak, nonatomic) IBOutlet UILabel *ignoreLabel;
+
 
 - (IBAction)revealToggleAction:(id)sender;
 
@@ -50,17 +60,34 @@ NSInteger post_action_id;
      */
     self.bodyLabel.text = self.revealPost.body;
     self.revealSwitch.on = self.revealPost.isRevealed;
+    //self.nameLabel.titleLabel.text = self.revealPost.userName;
+    [self.nameLabel setTitle:self.revealPost.userName forState:UIControlStateNormal];
     
     
     data_handler = [DataHandler sharedInstance];
     self.json_handler = [[JsonHandler alloc] init];
     self.json_handler.delegate = self;
+    self.ignoreIcon.titleLabel.text = [self.revealPost.downVotes stringValue];
+    self.watchIcon.titleLabel.text = [self.revealPost.votes stringValue];
     
 }
 
 -(void) viewWillAppear:(BOOL)animated
 {
     data_handler.delegate = self;
+    
+    [self.postSubView setFrameHeight:self.revealPost];
+    [self setRevealSubviewFrameOrigin];
+}
+
+- (void) setRevealSubviewFrameOrigin {
+    CGRect middleSubviewFrame = self.revealSubview.frame;
+    const CGRect topSubviewFrame = self.postSubView.frame;
+    
+    CGFloat newYOrigin = middleSubviewFrame.origin.y + topSubviewFrame.size.height - 135.0;
+    middleSubviewFrame.origin.y = newYOrigin;
+    self.revealSubview.frame = middleSubviewFrame;
+    
 }
 
 - (void)didReceiveMemoryWarning

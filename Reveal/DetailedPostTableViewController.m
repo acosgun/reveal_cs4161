@@ -57,6 +57,8 @@ DataHandler *data_handler;
     if([self.post.userID integerValue] != user_id)
     {
         self.deleteButton.hidden = TRUE;
+    } else {
+        self.deleteButton.hidden = false;
     }
     
     self.watchLabel.text = [self.post.votes stringValue];

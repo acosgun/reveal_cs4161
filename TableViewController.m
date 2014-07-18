@@ -41,6 +41,11 @@ DataHandler *data_handler;
     self.popularFeedPageNumber = 0;
     
     self.feed = [[NSMutableArray alloc] init];
+    self.popularFeed = [[NSMutableArray alloc] init];
+    self.nearbyFeed = [[NSMutableArray alloc] init];
+    self.followedFeed = [[NSMutableArray alloc] init];
+    self.displayedFeed = [[NSMutableArray alloc] init];
+    
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(updateFeeds) forControlEvents:UIControlEventValueChanged];
     
@@ -153,17 +158,23 @@ DataHandler *data_handler;
     
     //[self.displayedFeed removeAllObjects];
     
+    /*  removed Recent Feed
     if (self.feedSelector.selectedSegmentIndex == 0) {
         NSLog(@"feed was selected. Feed: %@", self.feed);
         self.displayedFeed = self.feed;
-    } else if (self.feedSelector.selectedSegmentIndex == 1) {
+     */
+        
+    if (self.feedSelector.selectedSegmentIndex == 0) {
         NSLog(@"popular feed was selected. Pop Feed: %@", self.popularFeed);
         self.displayedFeed = self.popularFeed;
-    } else if (self.feedSelector.selectedSegmentIndex == 2) {
+        
+    } else if (self.feedSelector.selectedSegmentIndex == 1) {
         NSLog(@"nearby feed was selected");
         self.displayedFeed = self.nearbyFeed;
-    } else if (self.feedSelector.selectedSegmentIndex == 3) {
+        
+    } else if (self.feedSelector.selectedSegmentIndex == 2) {
         NSLog(@"followed feed was selected");
+        self.displayedFeed = self.followedFeed;
     }
     
     [self reloadDataInTableView];
@@ -171,6 +182,8 @@ DataHandler *data_handler;
 
 
 #pragma mark - Data portal
+
+/*  Removed Recent Feed
 - (void) feedUpdatedCallback:(DataHandler *)dataHandlerClass addingPosts:(BOOL)addingPosts {
     NSLog(@"feedUpdatedCallback in TableController.m");
     
@@ -184,7 +197,7 @@ DataHandler *data_handler;
         self.displayedFeed = self.feed;
     }
     
-    if( ([self.refreshControl isRefreshing]) & (self.feedSelector.selectedSegmentIndex == 0) )
+    if( ([self.refreshControl isRefreshing]) && (self.feedSelector.selectedSegmentIndex == 0) )
     {
         NSLog(@"Refreshing (feed updated callback)");
         [self.refreshControl endRefreshing];
@@ -198,6 +211,7 @@ DataHandler *data_handler;
     });
     
 }
+ */
 
 - (void) popularFeedUpdatedCallback:(DataHandler *)dataHandlerClass addingPosts:(BOOL)addingPosts {
     
@@ -207,11 +221,11 @@ DataHandler *data_handler;
         [self.popularFeed addObjectsFromArray:dataHandlerClass.popularFeed];
     }
     
-    if (self.feedSelector.selectedSegmentIndex == 1) {
+    if (self.feedSelector.selectedSegmentIndex == 0) {
         self.displayedFeed = self.popularFeed;
     }
     
-    if( ([self.refreshControl isRefreshing]) & (self.feedSelector.selectedSegmentIndex == 1))
+    if( ([self.refreshControl isRefreshing]) && (self.feedSelector.selectedSegmentIndex == 0))
     {
         NSLog(@"Refreshing (pop feed updated callback)");
         [self.refreshControl endRefreshing];
@@ -231,13 +245,37 @@ DataHandler *data_handler;
         [self.nearbyFeed addObjectsFromArray:dataHandlerClass.nearby_feed];
     }
     
-    if (self.feedSelector.selectedSegmentIndex == 2) {
+    if (self.feedSelector.selectedSegmentIndex == 1) {
         self.displayedFeed = self.nearbyFeed;
     }
     
-    if( ([self.refreshControl isRefreshing]) & (self.feedSelector.selectedSegmentIndex == 2))
+    if( ([self.refreshControl isRefreshing]) && (self.feedSelector.selectedSegmentIndex == 1))
     {
         NSLog(@"Refreshing (nearby feed updated callback)");
+        [self.refreshControl endRefreshing];
+        [self reloadDataInTableView];
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView.infiniteScrollingView stopAnimating];
+    });
+}
+
+- (void) followedFeedUpdatedCallback:(DataHandler *)dataHandlerClass addingPosts:(BOOL)addingPosts {
+    
+    if (addingPosts == false) {
+        self.followedFeed = dataHandlerClass.followedFeed;
+    } else {
+        [self.followedFeed addObjectsFromArray:dataHandlerClass.followedFeed];
+    }
+    
+    if (self.feedSelector.selectedSegmentIndex == 2) {
+        self.displayedFeed = self.followedFeed;
+    }
+    
+    if( ([self.refreshControl isRefreshing]) && (self.feedSelector.selectedSegmentIndex == 2))
+    {
+        NSLog(@"Refreshing (popular feed updated callback)");
         [self.refreshControl endRefreshing];
         [self reloadDataInTableView];
     }
@@ -278,60 +316,31 @@ DataHandler *data_handler;
 - (void) addPostsToDisplayedFeed {
     [self.refreshControl beginRefreshing];
     
+    /*  Removed Recent Feed
     if (self.feedSelector.selectedSegmentIndex == 0) {
         RevealPost *lastPost = [self.feed lastObject];
         NSNumber *lastPostID = lastPost.IDNumber;
         [[DataHandler sharedInstance] getRecentPosts:lastPostID];
         NSLog(@"sent request to datahandler");
-    } else if (self.feedSelector.selectedSegmentIndex == 1) {
+     */
+        
+    if (self.feedSelector.selectedSegmentIndex == 0) {
         self.popularFeedPageNumber = self.popularFeedPageNumber + 1;
         NSLog(@"popular feed page number: int value: %d", self.popularFeedPageNumber);
         [[DataHandler sharedInstance] getPopularPosts:self.popularFeedPageNumber];
-    } else if (self.feedSelector.selectedSegmentIndex == 2) {
+        
+    } else if (self.feedSelector.selectedSegmentIndex == 1) {
         RevealPost *lastPost = [self.nearbyFeed lastObject];
         NSNumber *lastPostID = lastPost.IDNumber;
         [[DataHandler sharedInstance] getNearbyPosts:lastPostID];
         NSLog(@"adding nearby posts: sending request to datahandler");
+        
+    } else if (self.feedSelector.selectedSegmentIndex == 2) {
+        RevealPost *lastPost = [self.followedFeed lastObject];
+        [[DataHandler sharedInstance] getFollowedPosts:lastPost];
+        NSLog(@"adding followed posts: sending request to datahandler");
     }
 }
-
-/*
- // Override to support conditional editing of the table view.
- - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the specified item to be editable.
- return YES;
- }
- */
-
-/*
- // Override to support editing the table view.
- - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
- {
- if (editingStyle == UITableViewCellEditingStyleDelete) {
- // Delete the row from the data source
- [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
- } else if (editingStyle == UITableViewCellEditingStyleInsert) {
- // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
- }
- }
- */
-
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
- {
- }
- */
-
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
 
 
 @end

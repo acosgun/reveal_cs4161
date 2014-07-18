@@ -23,6 +23,8 @@
 @property (strong, nonatomic) NSString *thumbnail;
 @property (strong, nonatomic) NSData *thumbnailData;
 @property (strong, nonatomic) NSString *current_user_vote;
+@property (strong, nonatomic) NSString *follower_item_type;
+@property (strong, nonatomic) NSNumber *vote_id;
 //@property (strong, nonatomic) NSTimeInterval *elapsedTime;
 
 

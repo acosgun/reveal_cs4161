@@ -13,6 +13,7 @@
 #define POPULAR_POSTS_URL    @"http://reveal-api.herokuapp.com/posts/index_popular"
 #define NEARBY_POSTS_URL     @"http://reveal-api.herokuapp.com/posts/index_by_location?"
 #define USER_POSTS           @"http://reveal-api.herokuapp.com/posts/index_for_user/"
+#define FOLLOWED_POSTS       @"http://reveal-api.herokuapp.com/posts/index_followed_posts"
 #define SHARES_URL           @"http://reveal-api.herokuapp.com/shares"
 #define REVEAL_URL           @"http://reveal-api.herokuapp.com/posts/reveal"
 #define HIDE_URL             @"http://reveal-api.herokuapp.com/posts/hide"
@@ -434,6 +435,55 @@
         else
         {
             NSLog(@"ERROR with getNearbyPosts in jsonhandler");
+        }
+    }];
+    [getDataTask resume];
+}
+
+- (void) getFollowedPosts:(RevealPost *)post {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    NSMutableString *urlString = [NSMutableString stringWithString:FOLLOWED_POSTS];
+    
+    if (post != nil) {
+        if ( [post.follower_item_type isEqualToString:@"watch"] ) {
+            // URL: /posts/index_followed_posts?last_vote_id=2
+            [urlString appendFormat:@"?last_vote_id=%@", post.vote_id];
+            
+        } else if ( [post.follower_item_type isEqualToString:@"post"] ) {
+            // URL: /posts/index_followed_posts?last_post_id=4
+            [urlString appendFormat:@"?last_post_id=%@", post.IDNumber];
+        }
+    }
+    
+    NSMutableURLRequest *request = [self createJSONMutableURLRequest:urlString method:@"GET" userData:nil];
+    NSURLSession *session = [self createDefaultNSURLSession];
+    
+    NSString *auth_token = [defaults objectForKey:@"auth_token"];
+    NSString *authen_str = [NSString stringWithFormat:@"Token token=%@", auth_token];
+    [request addValue:authen_str forHTTPHeaderField:@"Authorization"];
+    
+    NSURLSessionDataTask *getDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        //NSLog(@"Sent GET Request from getTenMostRecentPosts");
+        if (!error)
+        {
+            NSLog(@"no error in getFollowedPosts in jsonhandler");
+            NSDictionary *in_json = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     [NSJSONSerialization JSONObjectWithData:data options:0 error:nil], @"posts", nil];
+            //NSLog(@"data in_json dictionary for nearyPosts: %@", in_json);
+            
+            NSArray *followedPosts = [in_json objectForKey:@"posts"];
+            //NSLog(@"followedPosts Array: %@", followedPosts);
+            
+            if (post == nil) {
+                [self.delegate getFollowedPostsCallback:followedPosts addingPosts:false];
+            } else {
+                [self.delegate getFollowedPostsCallback:followedPosts addingPosts:true];
+            }
+        }
+        else
+        {
+            NSLog(@"ERROR with getFollowedPosts in jsonhandler");
         }
     }];
     [getDataTask resume];

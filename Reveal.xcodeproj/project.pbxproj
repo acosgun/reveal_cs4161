@@ -250,10 +250,10 @@
 				D801DA8C194E528100CB9B00 /* EntryCell.m */,
 				D801DA7F194D891200CB9B00 /* RevealPost.h */,
 				D801DA80194D891200CB9B00 /* RevealPost.m */,
-				7AF74B801951723A005A73B7 /* JsonHandler.h */,
-				7AF74B811951723A005A73B7 /* JsonHandler.m */,
 				7AE84249195C0D3E0036E223 /* DataHandler.h */,
 				7AE8424A195C0D3E0036E223 /* DataHandler.m */,
+				7AF74B801951723A005A73B7 /* JsonHandler.h */,
+				7AF74B811951723A005A73B7 /* JsonHandler.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";

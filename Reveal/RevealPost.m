@@ -25,6 +25,7 @@
         self.userName = nil;
         self.revealed = false;
         self.current_user_vote = nil;
+        self.thumbnailData = nil;
     }
     return self;
 }
@@ -43,6 +44,11 @@
     UIImage *image = [UIImage imageWithData:imageData];
     
     return image;
+}
+
+- (void) setThumbnailDataFromImage:(UIImage *)image {
+    // example: entry.imageData = UIImageJPEGRepresentation(self.pickedImage, 0.75);
+    self.thumbnailData = UIImageJPEGRepresentation(image, 0.75);
 }
 
 

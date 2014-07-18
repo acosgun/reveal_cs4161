@@ -758,11 +758,12 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
     NSURL *imageURL = [NSURL URLWithString:[userInformation objectForKey:@"avatar_medium"]];
-    NSData *image_data = [NSData dataWithContentsOfURL:imageURL];
+    NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
     
-    [defaults setObject:image_data forKey:@"avatar_data"];
+    [defaults setObject:imageData forKey:@"avatar_data"];
 }
 
+/*
 -(void) getUserInformationCallback:(NSDictionary *)userInformation {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSLog(@"userDataFromServer: %@", userInformation);///////
@@ -773,5 +774,6 @@
     [defaults setObject:image forKey:@"avatar"];
     NSLog(@"updateUserProfileImage: avatar is: %@", [defaults objectForKey:@"avatar_medium"]);
 }
+ */
 
 @end

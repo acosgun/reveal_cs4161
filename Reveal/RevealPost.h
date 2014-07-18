@@ -21,6 +21,7 @@
 @property (strong, nonatomic) NSDate *date;
 @property (strong, nonatomic) NSString *dateString;
 @property (strong, nonatomic) NSString *thumbnail;
+@property (strong, nonatomic) NSData *thumbnailData;
 @property (strong, nonatomic) NSString *current_user_vote;
 //@property (strong, nonatomic) NSTimeInterval *elapsedTime;
 
@@ -29,5 +30,6 @@
 + (id) postWithIDNumber:(NSNumber *)IDNumber;
 - (NSURL *) thumbnailURL;
 - (UIImage *)imageForThumbnail:(NSString *)thumbnail;
+- (void) setThumbnailDataFromImage:(UIImage *)image;
 
 @end

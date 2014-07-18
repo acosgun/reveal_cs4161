@@ -29,6 +29,7 @@
 -(void)revealStatusCallback:(BOOL)success action:(NSInteger)action_id;
 -(void)watchPostCallback:(BOOL)success;
 -(void)ignorePostCallbackL:(BOOL)success;
+-(void) updateProfileImageCallback:(BOOL)success;
 
 @end
 

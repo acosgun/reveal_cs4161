@@ -26,10 +26,13 @@
 @implementation EntryCell
 
 + (CGFloat)heightForPost:(RevealPost *)revealPost {
-    const CGFloat topMargin = 21.0f;
-    const CGFloat bottomMargin = 21.0f;
+    const CGFloat topMargin = 30.0f;
+    const CGFloat bottomMargin = 35.0f;
     const CGFloat minHeight = 85.0f;
     
+    // [[self titleLabel] setFont:[UIFont systemFontOfSize:36]];
+    // UIFont *font = [UIFont systemFontOfSize:15.0];
+    // UIFont *font = [UIFont fontWithName:@"System" size:12.0];
     UIFont *font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
     
     CGRect boundingBox = [revealPost.body boundingRectWithSize:CGSizeMake(200, CGFLOAT_MAX) options:NSStringDrawingUsesFontLeading|NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: font} context:nil];

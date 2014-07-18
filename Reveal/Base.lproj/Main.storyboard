@@ -96,6 +96,16 @@
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ZPI-bK-UUa">
+                                    <rect key="frame" x="7" y="5" width="75" height="75"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <state key="normal" title="Image">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="imageButtonWasPressed:" destination="Aoe-3o-UX1" eventType="touchUpInside" id="XKQ-Cc-bT4"/>
+                                    </connections>
+                                </button>
                             </subviews>
                             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         </view>
@@ -196,7 +206,7 @@
                         <outlet property="followersButton" destination="fbb-Qs-W34" id="AQ6-db-Y6l"/>
                         <outlet property="followingButton" destination="VoN-LD-goc" id="0qb-wF-Eji"/>
                         <outlet property="hiddenRevealedSelector" destination="yFK-SX-h67" id="OyA-PS-4vk"/>
-                        <outlet property="imageButton" destination="Pe3-fh-7qL" id="uzX-i1-Jii"/>
+                        <outlet property="imageButton" destination="ZPI-bK-UUa" id="wAy-yO-lVc"/>
                         <outlet property="nameLabel" destination="9c4-Xt-Guo" id="A3N-hy-ry9"/>
                         <segue destination="TDl-MH-SKR" kind="modal" identifier="me_login" id="dgm-MH-Yit"/>
                     </connections>

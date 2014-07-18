@@ -18,6 +18,7 @@
 @property (strong, nonatomic) UIImage *pickedImage;
 
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
+@property (weak, nonatomic) IBOutlet UIButton *imageButton;
 
 @property (weak, nonatomic) IBOutlet UIButton *followersButton;
 @property (weak, nonatomic) IBOutlet UIButton *followingButton;
@@ -60,7 +61,6 @@ DataHandler *data_handler;
     data_handler.delegate = self;
     //[data_handler updateFeedsWithIdentifier:@"MeFeedTableViewController" postClass:self.revealPost];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    self.profileImage.image = [UIImage imageWithData:[defaults objectForKey:@"avatar_data"]];
     self.nameLabel.text = [defaults objectForKey:@"username"];
     
     [self setupFollowButtons];
@@ -249,6 +249,13 @@ DataHandler *data_handler;
     [self.tableView reloadData];
 }
 
+- (IBAction)imageButtonWasPressed:(id)sender {
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        [self promptForSource];
+    } else {
+        [self promptForPhotoRoll];
+    }
+}
 
 
 #pragma mark - Callbacks
@@ -308,7 +315,10 @@ DataHandler *data_handler;
 
 - (void) updateProfileImageCallback:(BOOL)success {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [self.imageButton setImage:[UIImage imageWithData:[defaults objectForKey:@"avatar_data"]] forState:UIControlStateNormal];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.imageButton setImage:[UIImage imageWithData:[defaults objectForKey:@"avatar_data"]] forState:UIControlStateNormal];
+    });
 }
 
 #pragma mark - Pull to Refresh Data

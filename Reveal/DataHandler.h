@@ -61,4 +61,6 @@
 - (void) createPostRequestWithContent:(NSString *)body isRevealed:(BOOL)isRevealed;
 - (void) postToFacebook:(NSString*)content viewController:(UIViewController*)view_controller;
 - (void) postToTwitter:(NSString*)content viewController:(UIViewController*)view_controller;
+- (void) updateProfileImage:(NSData *)imageData;
+
 @end

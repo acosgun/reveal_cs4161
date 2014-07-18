@@ -11,7 +11,7 @@
 
 @class RevealPost;
 
-@interface MeFeedTableViewController : UITableViewController
+@interface MeFeedTableViewController : UITableViewController <DataHandlerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *feed;
 @property (nonatomic, strong) NSMutableArray *hiddenFeed;
@@ -27,6 +27,7 @@
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
 
 
+- (NSURL *) thumbnailURL;
 - (IBAction)logoutButtonPressed:(id)sender;
 
 @end

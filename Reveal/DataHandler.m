@@ -249,6 +249,11 @@ static DataHandler *sharedDataSource = nil;
     
 }
 
+- (void) updateProfileImage:(NSData *)imageData {
+    
+    [self.json_handler updateProfileImageRequest:imageData];
+}
+
 #pragma mark - Location
 -(void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
     //NSLog(@"didChangeAuthStatus");
@@ -362,6 +367,10 @@ SLComposeViewController *twitterController = [SLComposeViewController composeVie
 
 -(void) getUserInformationCallback:(NSDictionary *)userInformation {
     [self.delegate getUserInformationCallback:userInformation];
+}
+
+-(void) updateProfileImageRequestCallback:(BOOL)success {
+    [self.delegate updateProfileImageCallback:true];
 }
 
 -(void) followUnfollowConfirmCallback:(BOOL)follow success:(BOOL)success

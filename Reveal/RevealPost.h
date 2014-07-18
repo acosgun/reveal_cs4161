@@ -16,6 +16,7 @@
 @property (strong, nonatomic) NSNumber *userID;
 @property (strong, nonatomic) NSString *body;
 @property (strong, nonatomic) NSNumber *votes;
+@property (strong, nonatomic) NSNumber *downVotes;
 @property (nonatomic, assign, getter=isRevealed) BOOL revealed;
 @property (strong, nonatomic) NSDate *date;
 @property (strong, nonatomic) NSString *dateString;

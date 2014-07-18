@@ -16,12 +16,16 @@
 @interface DetailedPostTableViewController ()
 
 @property (weak, nonatomic) IBOutlet DetailedPostSubView *postSubView;
-@property (weak, nonatomic) IBOutlet UIButton *watchButton;
-
 
 @property (weak, nonatomic) IBOutlet UIImageView *postImage;
 @property (weak, nonatomic) IBOutlet UILabel *postBody;
 @property (weak, nonatomic) IBOutlet UIButton *postName;
+
+@property (weak, nonatomic) IBOutlet UIButton *watchIcon;
+@property (weak, nonatomic) IBOutlet UILabel *watchLabel;
+@property (weak, nonatomic) IBOutlet UIButton *ignoreIcon;
+@property (weak, nonatomic) IBOutlet UILabel *ignoreLabel;
+
 
 @end
 
@@ -54,10 +58,13 @@ DataHandler *data_handler;
     {
         self.deleteButton.hidden = TRUE;
     }
-    else
-    {
-        self.watchButton.hidden = TRUE;
-    }
+    
+    self.watchLabel.text = [self.post.votes stringValue];
+    self.ignoreLabel.text = [self.post.downVotes stringValue];
+    
+    self.watchIcon.imageView.highlightedImage = [UIImage imageNamed:@"watch_blue"];
+    self.ignoreIcon.imageView.highlightedImage = [UIImage imageNamed:@"thumb_blue"];
+    [self setWatchButtonBackgroundColor];
     
     
     
@@ -97,77 +104,17 @@ DataHandler *data_handler;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
     return 0;
 }
 
-/*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
-    
-    // Configure the cell...
-    
-    return cell;
-}
-*/
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 #pragma mark - Segue to User VC
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -186,46 +133,42 @@ DataHandler *data_handler;
 
 
 #pragma mark - IB Actions
-- (IBAction)pressedShareButton:(id)sender {
-    NSLog(@"share button was pressed");
-    
-    self.json_handler = [[JsonHandler alloc] init];
-    self.json_handler.delegate = self;
-    
-    [self.json_handler createSharePost:self.post];
-}
 
 - (IBAction)pressedPostName:(id)sender {
     NSLog(@"Post name button was pressed");
 }
 
-- (IBAction)pressedWatchButton:(id)sender {
-    NSLog(@"watch button was pressed");
-    NSLog(@"current_user_vote = %@", self.post.current_user_vote);
+- (IBAction)pressedWatchIcon:(id)sender {
+    NSInteger post_id =[self.post.IDNumber intValue];
+
+    if ([self.post.current_user_vote isEqualToString:@""]) {
+        [data_handler watchPost:&post_id HTTMethod:@"POST"];
+    } else {
+        [data_handler watchPost:&post_id HTTMethod:@"PUT"];
+    }
+}
+
+- (IBAction)pressedIgnoreIcon:(id)sender {
     NSInteger post_id =[self.post.IDNumber intValue];
     
     if ([self.post.current_user_vote isEqualToString:@""]) {
-        [self promptForWatch];
-    } else if ([self.post.current_user_vote isEqualToString:@"watch"]) {
+        [data_handler ignorePost:&post_id HTTMethod:@"POST"];
+    } else {
         [data_handler ignorePost:&post_id HTTMethod:@"PUT"];
-    } else if ([self.post.current_user_vote isEqualToString:@"ignore"]) {
-        [data_handler watchPost:&post_id HTTMethod:@"PUT"];
     }
 }
 
 - (void) setWatchButtonBackgroundColor {
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([self.post.current_user_vote isEqualToString:@"watch"]) {
-            self.watchButton.backgroundColor = [UIColor greenColor];
-            //self.watchButton.imageView.image = nil;
-            [self.watchButton setImage:nil forState:UIControlStateNormal];
-            self.watchButton.titleLabel.text = @"W";
+            self.watchIcon.imageView.highlighted = YES;
+            self.ignoreIcon.imageView.highlighted = NO;
         } else if ([self.post.current_user_vote isEqualToString:@"ignore"]) {
-            self.watchButton.backgroundColor = [UIColor grayColor];
-            //self.watchButton.imageView.image = nil;
-            [self.watchButton setImage:nil forState:UIControlStateNormal];
-            self.watchButton.titleLabel.text = @"I";
-
+            self.watchIcon.imageView.highlighted = NO;
+            self.ignoreIcon.imageView.highlighted = YES;
+        } else {
+            self.watchIcon.imageView.highlighted = NO;
+            self.ignoreIcon.imageView.highlighted = NO;
         }
     });
 }
@@ -278,7 +221,19 @@ DataHandler *data_handler;
     }
 }
 
-
+- (NSNumber *) addVote:(BOOL)addVote number:(NSNumber *)votes {
+    int votes_int = [votes intValue];
+    
+    if (addVote == true) {
+        votes_int = votes_int + 1;
+    } else {
+        votes_int = votes_int - 1;
+    }
+    
+    NSNumber *newNumber = [NSNumber numberWithInt:votes_int];
+    
+    return newNumber;
+}
 
 
 #pragma mark - Callbacks
@@ -294,6 +249,17 @@ DataHandler *data_handler;
     if (success) {
         NSLog(@"I am watching post");
         //[self.watchButton adjustsImageWhenHighlighted];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.post.votes= [self addVote:true number:self.post.votes];
+            self.watchLabel.text = [self.post.votes stringValue];
+            
+            if ([self.post.current_user_vote isEqualToString:@""] == false) {
+                self.post.downVotes = [self addVote:false number:self.post.downVotes];
+                self.ignoreLabel.text = [self.post.downVotes stringValue];
+            }
+        });
+        
         self.post.current_user_vote = @"watch";
         [self setWatchButtonBackgroundColor];
     }
@@ -303,14 +269,21 @@ DataHandler *data_handler;
     if (success) {
         NSLog(@"I am ignoring post");
         //[self.watchButton adjustsImageWhenDisabled];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.post.downVotes = [self addVote:true number:self.post.downVotes];
+            self.ignoreLabel.text = [self.post.downVotes stringValue];
+            
+            if ([self.post.current_user_vote isEqualToString:@""] == false) {
+                self.post.votes = [self addVote:false number:self.post.votes];
+                self.watchLabel.text = [self.post.votes stringValue];
+            }
+        });
+        
+        
         self.post.current_user_vote = @"ignore";
         //[self setWatchButtonBackgroundColor];
         [self setWatchButtonBackgroundColor];
-        [self.tableView setNeedsDisplay];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView setNeedsDisplay];
-        });
-        
     }
 }
 

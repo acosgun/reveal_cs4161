@@ -111,6 +111,7 @@ DataHandler *data_handler;
     
     [cell configureCellForPost:revealPost];
     //NSLog(@"text label: %@", cell.textLabel.text);
+    NSLog(@"post body: %@", revealPost.body);
     return cell;
 }
 
@@ -225,7 +226,7 @@ DataHandler *data_handler;
 - (void) nearbyFeedUpdatedCallback:(DataHandler *)dataHandlerClass addingPosts:(BOOL)addingPosts {
     
     if (addingPosts == false) {
-        self.nearbyFeed = data_handler.nearby_feed;
+        self.nearbyFeed = dataHandlerClass.nearby_feed;
     } else {
         [self.nearbyFeed addObjectsFromArray:dataHandlerClass.nearby_feed];
     }

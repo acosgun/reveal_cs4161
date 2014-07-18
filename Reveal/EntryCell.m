@@ -14,7 +14,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *bodyLabel;
 @property (weak, nonatomic) IBOutlet UILabel *votesLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *ignoreLabel;
 
+@property (weak, nonatomic) IBOutlet UIButton *watchIcon;
+@property (weak, nonatomic) IBOutlet UIButton *ignoreIcon;
 
 @property (weak, nonatomic) IBOutlet UIImageView *mainImageLabel;
 
@@ -46,15 +49,10 @@
     {
         voteText = [revealPost.votes stringValue];
     }
-    self.votesLabel.text = voteText;
+    self.votesLabel.text = [revealPost.votes stringValue];
+    self.ignoreLabel.text = [revealPost.downVotes stringValue];
     
     //revealPost.date
-    
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"mm"];
-    NSTimeInterval elapsedTime = [revealPost.date timeIntervalSinceNow];
-    
-    int intElapsedTime = (int)elapsedTime/60 * -1;
     
     //NSLog(@"intElapsedTime: %d",intElapsedTime);
     
@@ -62,11 +60,35 @@
     self.dateLabel.text = revealPost.dateString;
     self.nameLabel.text = revealPost.userName;
     
+    /*
     NSData *imageData = [NSData dataWithContentsOfURL:revealPost.thumbnailURL];
     UIImage *image = [UIImage imageWithData:imageData];
     self.mainImageLabel.image = image;
+     */
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+        NSData *imageData = [NSData dataWithContentsOfURL:revealPost.thumbnailURL];
+        UIImage *image = [UIImage imageWithData:imageData];
+        
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            self.mainImageLabel.image = image;
+        });
+    });
    
-    //NSLog(@"end of configureCellForPost");
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSLog(@"my username: %@    post username: %@", [defaults objectForKey:@"username"], revealPost.userName);
+    
+    if ([revealPost.current_user_vote isEqualToString:@"watch"]) {
+        self.watchIcon.imageView.highlightedImage = [UIImage imageNamed:@"watch_blue"];
+        self.watchIcon.imageView.highlighted = YES;
+        self.ignoreIcon.imageView.highlighted = NO;
+    } else if ([revealPost.current_user_vote isEqualToString:@"ignore"]) {
+        self.ignoreIcon.imageView.highlightedImage = [UIImage imageNamed:@"thumb_blue"];
+        self.ignoreIcon.imageView.highlighted = YES;
+        self.watchIcon.imageView.highlighted = NO;
+    } else {
+        self.watchIcon.imageView.highlighted = NO;
+        self.ignoreIcon.imageView.highlighted = NO;
+    }
 }
 
 @end

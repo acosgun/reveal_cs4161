@@ -157,11 +157,13 @@ static DataHandler *sharedDataSource = nil;
     
     NSMutableArray *postsArray = [[NSMutableArray alloc] init];
     
+    int i = 0;
     for (NSDictionary *post in posts)
     {
         RevealPost *revealPost = [RevealPost postWithIDNumber:[post objectForKey:@"id"]];
         revealPost.userName = [post objectForKey:@"username"];
         revealPost.votes = [post objectForKey:@"watch_stat"];
+        revealPost.downVotes = [post objectForKey:@"ignore_stat"];
         revealPost.thumbnail = [post objectForKey:@"avatar_thumb"];
         revealPost.date = [NSDate dateWithTimeIntervalSinceNow:-60*2];
         revealPost.dateString = [post objectForKey:@"created_at"];
@@ -170,7 +172,15 @@ static DataHandler *sharedDataSource = nil;
         revealPost.userID = [post objectForKey:@"user_id"];
         revealPost.current_user_vote = [post objectForKey:@"current_user_vote"];
         
+        /*
+        if (i == 0) {
+            revealPost.votes = @67;
+        }
+         */
+        
         [postsArray addObject:revealPost];
+        i = i+1;
+        NSLog(@" i = %d", i);
     }
     return postsArray;
 }

@@ -20,6 +20,7 @@
 #define WATCH_URL            @"http://reveal-api.herokuapp.com/votes/"
 #define FOLLOWER_URL         @"http://reveal-api.herokuapp.com/followers/"
 #define PROFILE_IMAGE        @"http://reveal-api.herokuapp.com/users/setting/update_avatar"
+#define NOTIFICATIONS_URL    @"http://reveal-api.herokuapp.com/reveal_notifications/"
 
 #import "JsonHandler.h"
 #import "RevealPost.h"
@@ -847,7 +848,93 @@
     
 }
 
+- (void) getNotifications {
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *auth_token = [defaults stringForKey:@"auth_token"];
+    NSString *authen_str = [NSString stringWithFormat:@"Token token=%@", auth_token];
 
+    NSMutableURLRequest *request = [self createJSONMutableURLRequest:NOTIFICATIONS_URL method:@"GET" userData:nil];
+    [request addValue:authen_str forHTTPHeaderField:@"Authorization"];
+    
+    NSURLSession *session = [self createDefaultNSURLSession];
+    
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (!error)
+        {
+            NSLog(@"there was no error");
+            NSDictionary *in_json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            NSLog(@"notifications data in json: %@", in_json);
+            
+            NSArray *new = [in_json objectForKey:@"new_notifications"];
+            NSArray *old = [in_json objectForKey:@"old_notifications"];
+            
+            NSArray *oldNotificationsArray = [self createNotificationsArray:old key:@"old_notification"];
+            NSArray *newNotificationsArray = [self createNotificationsArray:new key:@"new_notification"];
+            
+            //NSArray *allNotificationsArray = @[newNotificationsArray, oldNotificationsArray];
+            NSMutableArray *allNotificationsArray = [[NSMutableArray alloc] init];
+            [allNotificationsArray addObjectsFromArray:newNotificationsArray];
+            [allNotificationsArray addObjectsFromArray:oldNotificationsArray];
+            
+            [self.delegate getNotificationsCallback:allNotificationsArray];
+        }
+        else
+        {
+            NSLog(@"Failed to get new notifications");
+            NSLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
+    [task resume];
+
+}
+
+- (NSArray *)createNotificationsArray:(NSArray *)array key:keyString {
+    
+    NSMutableArray *notificationsArray = [[NSMutableArray alloc] init];
+    
+    for (NSDictionary *dict in array) {
+        NSDictionary *notification = [dict objectForKey:keyString];
+        [notificationsArray addObject:notification];
+        NSLog(@"dict added to notifications array: %@", notification);
+    }
+    
+    return notificationsArray;
+}
+
+- (void) viewedNewNotifications {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *auth_token = [defaults stringForKey:@"auth_token"];
+    NSString *authen_str = [NSString stringWithFormat:@"Token token=%@", auth_token];
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@viewed_new_notifications", NOTIFICATIONS_URL];
+    
+    NSMutableURLRequest *request = [self createJSONMutableURLRequest:urlString method:@"PUT" userData:nil];
+    [request addValue:authen_str forHTTPHeaderField:@"Authorization"];
+    
+    NSURLSession *session = [self createDefaultNSURLSession];
+    
+    
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (!error)
+        {
+            NSLog(@"there was no error");
+            NSDictionary *in_json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            NSNumber *success = [in_json objectForKey:@"success"];
+            if([success boolValue] == YES)
+            {
+                NSLog(@"successfully updated view status for notifications: %@", success);
+                [self.delegate viewedNewPostsCallback:(BOOL)success];
+            }
+        }
+        else
+        {
+            NSLog(@"failed to change view status of notifications");
+            NSLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
+    [task resume];
+}
 
 
 # pragma mark - Private Methods

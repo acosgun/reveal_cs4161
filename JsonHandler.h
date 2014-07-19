@@ -41,6 +41,9 @@
 -(void) followUnfollowConfirmCallback:(BOOL)follow success:(BOOL)success;
 -(void) updateProfileImageRequestCallback:(BOOL)success;
 
+-(void) getNotificationsCallback:(NSArray *)allNotificationsArray;
+-(void) viewedNewPostsCallback:(BOOL)success;
+
 @end
 
 
@@ -70,5 +73,8 @@
 - (void) changeWatchStatus:(NSInteger *)post_id action:(NSString *)action HTTPMethod:(NSString *)method;
 - (void) followUnfollowUser:(BOOL)follow userID:(NSInteger*)user_id followedUserID:(NSInteger*)followed_user_id;
 - (void) updateProfileImageRequest:(NSData *)imageData;
+
+- (void) getNotifications;
+- (void) viewedNewNotifications;
 
 @end

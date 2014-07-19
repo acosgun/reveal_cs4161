@@ -8,7 +8,7 @@
 
 #import "CustomUITabBarController.h"
 
-@interface CustomUITabBarController ()
+@interface CustomUITabBarController () <UITabBarControllerDelegate>
 
 @end
 

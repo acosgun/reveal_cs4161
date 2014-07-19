@@ -25,6 +25,7 @@
 @property (strong, nonatomic) NSString *current_user_vote;
 @property (strong, nonatomic) NSString *follower_item_type;
 @property (strong, nonatomic) NSNumber *vote_id;
+@property (nonatomic, assign, getter=wasViewed) BOOL viewed;
 //@property (strong, nonatomic) NSTimeInterval *elapsedTime;
 
 

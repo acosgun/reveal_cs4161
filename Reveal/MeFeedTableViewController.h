@@ -27,7 +27,6 @@
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
 
 
-- (NSURL *) thumbnailURL;
 - (IBAction)logoutButtonPressed:(id)sender;
 
 @end

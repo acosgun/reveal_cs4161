@@ -32,6 +32,7 @@
 		D80A09D4195F85C500257782 /* DetailedPostSubView.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A09D3195F85C500257782 /* DetailedPostSubView.m */; };
 		D822C172195FF1680001E482 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D822C171195FF1680001E482 /* Images.xcassets */; };
 		D822C17619637D830001E482 /* UserProfileTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D822C17519637D830001E482 /* UserProfileTableViewController.m */; };
+		D8D9128E1979FF2E00D3FEA1 /* NotificationsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D9128D1979FF2E00D3FEA1 /* NotificationsCell.m */; };
 		D8F02A1F196AFAD9005E17FA /* UpdateLocationRadiusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F02A1E196AFAD9005E17FA /* UpdateLocationRadiusViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -95,6 +96,8 @@
 		D822C171195FF1680001E482 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Reveal/Images.xcassets; sourceTree = "<group>"; };
 		D822C17419637D830001E482 /* UserProfileTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserProfileTableViewController.h; sourceTree = "<group>"; };
 		D822C17519637D830001E482 /* UserProfileTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserProfileTableViewController.m; sourceTree = "<group>"; };
+		D8D9128C1979FF2E00D3FEA1 /* NotificationsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsCell.h; sourceTree = "<group>"; };
+		D8D9128D1979FF2E00D3FEA1 /* NotificationsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsCell.m; sourceTree = "<group>"; };
 		D8F02A1D196AFAD9005E17FA /* UpdateLocationRadiusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpdateLocationRadiusViewController.h; sourceTree = "<group>"; };
 		D8F02A1E196AFAD9005E17FA /* UpdateLocationRadiusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpdateLocationRadiusViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -124,6 +127,8 @@
 			children = (
 				7A71EB00194FDF9000C39B0A /* NotificationsTableViewController.h */,
 				7A71EB01194FDF9000C39B0A /* NotificationsTableViewController.m */,
+				D8D9128C1979FF2E00D3FEA1 /* NotificationsCell.h */,
+				D8D9128D1979FF2E00D3FEA1 /* NotificationsCell.m */,
 			);
 			name = "Notifications VC";
 			sourceTree = "<group>";
@@ -433,6 +438,7 @@
 				D801DA8D194E528100CB9B00 /* EntryCell.m in Sources */,
 				7AB512B61973C80000E9E86E /* CustomUITabBarController.m in Sources */,
 				D80A09CF195F624900257782 /* DetailedPostTableViewController.m in Sources */,
+				D8D9128E1979FF2E00D3FEA1 /* NotificationsCell.m in Sources */,
 				7A71EB0D19501C5900C39B0A /* LoginViewController.m in Sources */,
 				D801DA87194E0B0400CB9B00 /* DummyPosts.m in Sources */,
 				D801DA96194F0B3000CB9B00 /* MeDetailedPostViewController.m in Sources */,

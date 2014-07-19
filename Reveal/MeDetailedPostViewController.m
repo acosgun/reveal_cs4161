@@ -21,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *nameLabel;
 
 @property (weak, nonatomic) IBOutlet UISwitch *revealSwitch;
+@property (weak, nonatomic) IBOutlet UILabel *revealLabel;
 @property (weak, nonatomic) IBOutlet UIButton *watchIcon;
 @property (weak, nonatomic) IBOutlet UILabel *watchVotesLabel;
 @property (weak, nonatomic) IBOutlet UIButton *ignoreIcon;
@@ -60,15 +61,27 @@ NSInteger post_action_id;
      */
     self.bodyLabel.text = self.revealPost.body;
     self.revealSwitch.on = self.revealPost.isRevealed;
-    //self.nameLabel.titleLabel.text = self.revealPost.userName;
-    [self.nameLabel setTitle:self.revealPost.userName forState:UIControlStateNormal];
+    
+    if (self.revealSwitch.on) {
+        self.revealLabel.text = @"Public";
+    } else {
+        self.revealLabel.text = @"Hidden";
+    }
+
+    if ( [self.revealPost.userName isEqualToString:@"Anonymous"]) {
+        NSString *anonymousName = [NSString stringWithFormat:@"%@ (Me)", self.revealPost.userName];
+        [self.nameLabel setTitle:anonymousName forState:UIControlStateNormal];
+    } else {
+        [self.nameLabel setTitle:self.revealPost.userName forState:UIControlStateNormal];
+    }
     
     
     data_handler = [DataHandler sharedInstance];
     self.json_handler = [[JsonHandler alloc] init];
     self.json_handler.delegate = self;
-    self.ignoreIcon.titleLabel.text = [self.revealPost.downVotes stringValue];
-    self.watchIcon.titleLabel.text = [self.revealPost.votes stringValue];
+    
+    self.watchVotesLabel.text = [self.revealPost.votes stringValue];
+    self.ignoreLabel.text = [self.revealPost.downVotes stringValue];
     
 }
 
@@ -111,8 +124,12 @@ NSInteger post_action_id;
 }
 - (void) dismissSelf
 {
-    [self dismissViewControllerAnimated:NO completion:nil];
+    //[self dismissViewControllerAnimated:NO completion:nil];
     //[self.navigationController popViewControllerAnimated:YES];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    });
 }
 
 #pragma mark - Reveal post methods
@@ -183,10 +200,18 @@ NSInteger post_action_id;
      if(action_id == 0)
      {
          NSLog(@"Post Successfully Revealed");
+         
+         dispatch_async(dispatch_get_main_queue(), ^{
+             self.revealLabel.text = @"Public";
+         });
      }
      else if(action_id == 1)
      {
          NSLog(@"Post Successfully Hidden");
+         
+         dispatch_async(dispatch_get_main_queue(), ^{
+             self.revealLabel.text = @"Hidden";
+         });
      }
      else if(action_id == 2)
      {

@@ -7,8 +7,14 @@
 //
 
 #import "NotificationsTableViewController.h"
+#import "DataHandler.h"
+#import "NotificationsCell.h"
+#import "RevealPost.h"
 
-@interface NotificationsTableViewController ()
+@interface NotificationsTableViewController () <DataHandlerDelegate>
+
+
+
 
 @end
 
@@ -26,12 +32,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+    [self getNotifications];
 }
 
 - (void)didReceiveMemoryWarning
@@ -44,28 +48,38 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
-    return 0;
+    return self.notifications.count;
 }
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+    NotificationsCell *cell = [tableView dequeueReusableCellWithIdentifier:@"notificationsCell" forIndexPath:indexPath];
     
-    // Configure the cell...
+    RevealPost *post = [self.notifications objectAtIndex:indexPath.row];
+    
+    [cell configureCellForPost:post];
     
     return cell;
 }
-*/
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(NotificationsCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (cell.postWasViewed == false) {
+        //[cell setBackgroundColor:[UIColor grayColor]];
+        cell.backgroundColor = [UIColor colorWithRed:0.027 green:0.471 blue:0.373 alpha:0.2];
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    RevealPost *post = [self.notifications objectAtIndex:indexPath.row];
+    return [NotificationsCell heightForPost:post];
+}
+
 
 /*
 // Override to support conditional editing of the table view.
@@ -115,5 +129,41 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+#pragma mark - Get Data
+- (void) getNotifications {
+    DataHandler *data_handler = [DataHandler sharedInstance];
+    data_handler.delegate = self;
+    [data_handler getNotifications];
+}
+
+- (void) viewedNewNotifications {
+    DataHandler *data_handler = [DataHandler sharedInstance];
+    data_handler.delegate = self;
+    [data_handler viewedNewNotifications];
+}
+
+#pragma mark - Callbacks
+- (void) getNotificationsCallback:(NSArray *)notifications {
+    self.notifications = [[NSMutableArray alloc] init];
+    [self.notifications addObjectsFromArray:notifications];
+    
+    [self reloadTableViewData];
+    
+    //[self viewedNewNotifications];
+}
+
+- (void) viewedNewPostsCallback:(BOOL)success {
+    NSLog(@"Hooray!!!");
+}
+
+- (void) reloadTableViewData {
+    
+    [self.tableView reloadData];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self reloadTableViewData];
+    });
+}
 
 @end

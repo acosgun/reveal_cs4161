@@ -182,6 +182,7 @@ static DataHandler *sharedDataSource = nil;
         revealPost.current_user_vote = [post objectForKey:@"current_user_vote"];
         revealPost.follower_item_type = [post objectForKey:@"item_type"];
         revealPost.vote_id = [post objectForKey:@"vote_id"];
+        revealPost.viewed = [[post objectForKey:@"viewed"]boolValue];
         
         /*
         if (i == 0) {
@@ -194,6 +195,26 @@ static DataHandler *sharedDataSource = nil;
         NSLog(@" i = %d", i);
     }
     return postsArray;
+}
+
+- (NSMutableArray *) createNotificationsArrayFromJSONResponse:(NSArray *)notifications {
+    
+    NSMutableArray *notificationsArray = [[NSMutableArray alloc] init];
+    
+    for (NSDictionary *not in notifications) {
+        
+        RevealPost *obj = [RevealPost postWithIDNumber:[not objectForKey:@"post_id"]];;
+        obj.userName = [not objectForKey:@"post_username"];
+        obj.userID = [not objectForKey:@"post_user_id"];
+        obj.body = [not objectForKey:@"post_content"];
+        obj.viewed = [[not objectForKey:@"viewed"]boolValue];
+        obj.thumbnail = [not objectForKey:@"post_avatar"];
+        obj.dateString = [not objectForKey:@"created_at"];
+        
+        [notificationsArray addObject:obj];
+    }
+    
+    return notificationsArray;
 }
 
 - (void) revealPost:(NSInteger *) post_id
@@ -263,6 +284,20 @@ static DataHandler *sharedDataSource = nil;
 - (void) updateProfileImage:(NSData *)imageData {
     
     [self.json_handler updateProfileImageRequest:imageData];
+}
+
+- (void) getNotifications {
+    self.json_handler = [[JsonHandler alloc] init];
+    self.json_handler.delegate = self;
+    
+    [self.json_handler getNotifications];
+}
+
+- (void) viewedNewNotifications {
+    self.json_handler = [[JsonHandler alloc] init];
+    self.json_handler.delegate = self;
+    
+    [self.json_handler viewedNewNotifications];
 }
 
 #pragma mark - Location
@@ -401,7 +436,16 @@ SLComposeViewController *twitterController = [SLComposeViewController composeVie
     [self.delegate createPostRequestCallback:success];
 }
 
+- (void) getNotificationsCallback:(NSArray *)allNotificationsArray {
+    
+    NSMutableArray *formattedArray = [self createNotificationsArrayFromJSONResponse:allNotificationsArray];
+    
+    [self.delegate getNotificationsCallback:formattedArray];
+}
 
+- (void) viewedNewPostsCallback:(BOOL)success {
+    [self.delegate viewedNewPostsCallback:success];
+}
 
 
 

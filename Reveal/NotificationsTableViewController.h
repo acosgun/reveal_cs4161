@@ -10,4 +10,6 @@
 
 @interface NotificationsTableViewController : UITableViewController
 
+@property(strong, nonatomic) NSMutableArray *notifications;
+
 @end

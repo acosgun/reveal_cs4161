@@ -32,6 +32,9 @@
 -(void)ignorePostCallbackL:(BOOL)success;
 -(void) updateProfileImageCallback:(BOOL)success;
 
+- (void) getNotificationsCallback:(NSArray *)notifications;
+- (void) viewedNewPostsCallback:(BOOL)success;
+
 @end
 
 
@@ -65,5 +68,8 @@
 - (void) postToFacebook:(NSString*)content viewController:(UIViewController*)view_controller;
 - (void) postToTwitter:(NSString*)content viewController:(UIViewController*)view_controller;
 - (void) updateProfileImage:(NSData *)imageData;
+
+- (void) getNotifications;
+- (void) viewedNewNotifications;
 
 @end

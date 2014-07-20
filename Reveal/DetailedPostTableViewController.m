@@ -68,7 +68,8 @@ DataHandler *data_handler;
     self.ignoreIcon.imageView.highlightedImage = [UIImage imageNamed:@"thumb_blue"];
     [self setWatchButtonBackgroundColor];
     
-    
+    self.facebookButton.hidden = YES;
+    self.twitterButton.hidden = YES;
     
     //self.postSubView.frame.size.height = [self.postSubView setFrameHeight:self.post];
     
@@ -252,11 +253,14 @@ DataHandler *data_handler;
         NSLog(@"I am watching post");
         //[self.watchButton adjustsImageWhenHighlighted];
         
+        NSLog(@"current_user_vote (watch callback): %@", self.post.current_user_vote);
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             self.post.votes= [self addVote:true number:self.post.votes];
             self.watchLabel.text = [self.post.votes stringValue];
             
-            if ([self.post.current_user_vote isEqualToString:@""] == false) {
+            if ([self.post.current_user_vote isEqualToString:@"ignore"] == true) {
+                NSLog(@"ignore is equal to ignore");
                 self.post.downVotes = [self addVote:false number:self.post.downVotes];
                 self.ignoreLabel.text = [self.post.downVotes stringValue];
             }
@@ -267,16 +271,19 @@ DataHandler *data_handler;
     }
 }
 
-- (void) ignorePostCallbackL:(BOOL)success {
+- (void) ignorePostCallback:(BOOL)success {
     if (success) {
         NSLog(@"I am ignoring post");
         //[self.watchButton adjustsImageWhenDisabled];
+        
+        NSLog(@"current_user_vote (ignore callback): %@", self.post.current_user_vote);
         
         dispatch_async(dispatch_get_main_queue(), ^{
             self.post.downVotes = [self addVote:true number:self.post.downVotes];
             self.ignoreLabel.text = [self.post.downVotes stringValue];
             
-            if ([self.post.current_user_vote isEqualToString:@""] == false) {
+            if ([self.post.current_user_vote isEqualToString:@"watch"] == true) {
+                NSLog(@"watch is equal to watch");
                 self.post.votes = [self addVote:false number:self.post.votes];
                 self.watchLabel.text = [self.post.votes stringValue];
             }

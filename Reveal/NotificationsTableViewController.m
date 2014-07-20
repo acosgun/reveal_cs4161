@@ -71,7 +71,7 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(NotificationsCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (cell.postWasViewed == false) {
         //[cell setBackgroundColor:[UIColor grayColor]];
-        cell.backgroundColor = [UIColor colorWithRed:0.027 green:0.471 blue:0.373 alpha:0.2];
+        //cell.backgroundColor = [UIColor colorWithRed:0.027 green:0.471 blue:0.373 alpha:0.2];
     }
 }
 

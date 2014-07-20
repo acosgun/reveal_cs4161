@@ -52,8 +52,10 @@
     {
         voteText = [revealPost.votes stringValue];
     }
+    
     self.votesLabel.text = [revealPost.votes stringValue];
     self.ignoreLabel.text = [revealPost.downVotes stringValue];
+    
     
     //revealPost.date
     

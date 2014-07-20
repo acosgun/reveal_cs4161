@@ -287,15 +287,15 @@ static DataHandler *sharedDataSource = nil;
 }
 
 - (void) getNotifications {
-    self.json_handler = [[JsonHandler alloc] init];
-    self.json_handler.delegate = self;
+    //self.json_handler = [[JsonHandler alloc] init];
+    //self.json_handler.delegate = self;
     
     [self.json_handler getNotifications];
 }
 
 - (void) viewedNewNotifications {
-    self.json_handler = [[JsonHandler alloc] init];
-    self.json_handler.delegate = self;
+    //self.json_handler = [[JsonHandler alloc] init];
+    //self.json_handler.delegate = self;
     
     [self.json_handler viewedNewNotifications];
 }
@@ -412,7 +412,7 @@ SLComposeViewController *twitterController = [SLComposeViewController composeVie
     if ([action isEqualToString:@"watch"]) {
         [self.delegate watchPostCallback:success];
     } else if ([action isEqualToString:@"ignore"]) {
-        [self.delegate ignorePostCallbackL:success];
+        [self.delegate ignorePostCallback:success];
     }
 }
 
@@ -438,7 +438,7 @@ SLComposeViewController *twitterController = [SLComposeViewController composeVie
 
 - (void) getNotificationsCallback:(NSArray *)allNotificationsArray {
     
-    NSMutableArray *formattedArray = [self createNotificationsArrayFromJSONResponse:allNotificationsArray];
+    NSArray *formattedArray = [self createNotificationsArrayFromJSONResponse:allNotificationsArray];
     
     [self.delegate getNotificationsCallback:formattedArray];
 }

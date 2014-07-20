@@ -83,6 +83,7 @@ NSInteger post_action_id;
     self.watchVotesLabel.text = [self.revealPost.votes stringValue];
     self.ignoreLabel.text = [self.revealPost.downVotes stringValue];
     
+    
 }
 
 -(void) viewWillAppear:(BOOL)animated

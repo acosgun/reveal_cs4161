@@ -366,7 +366,7 @@
             //Must create dictionary of posts containing dictionary of JSON data so that it can be easily converted to an array
             NSDictionary *in_json = [NSDictionary dictionaryWithObjectsAndKeys:
                                      [NSJSONSerialization JSONObjectWithData:data options:0 error:nil], @"posts", nil];
-            //NSLog(@"data in_json dictionary: %@", in_json);
+            NSLog(@"data in_json dictionary: %@", in_json);
             
             NSArray *popularPosts = [in_json objectForKey:@"posts"];
             //NSLog(@"tenMostRecentPosts Array: %@", tenMostRecentPosts);
@@ -864,7 +864,7 @@
         {
             NSLog(@"there was no error");
             NSDictionary *in_json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            NSLog(@"notifications data in json: %@", in_json);
+            //NSLog(@"notifications data in json: %@", in_json);
             
             NSArray *new = [in_json objectForKey:@"new_notifications"];
             NSArray *old = [in_json objectForKey:@"old_notifications"];

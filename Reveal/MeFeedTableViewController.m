@@ -77,6 +77,7 @@ DataHandler *data_handler;
 
 -(void) viewWillAppear:(BOOL)animated
 {
+    self.hiddenRevealedSelector.selectedSegmentIndex = 1;
     data_handler.delegate = self;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [self.imageButton setImage:[UIImage imageWithData:[defaults objectForKey:@"avatar_data"]] forState:UIControlStateNormal];
@@ -121,20 +122,10 @@ DataHandler *data_handler;
     //UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     EntryCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     
-    /*
-    NSMutableArray *displayedPosts = [[NSMutableArray alloc] init];
-    if (self.hiddenRevealedSelector.selectedSegmentIndex == 0) {
-        displayedPosts = self.hiddenFeed;
-    } else if (self.hiddenRevealedSelector.selectedSegmentIndex == 1) {
-        displayedPosts = self.publicFeed;
-    } */
-    //cell.textLabel.text = [self.titles objectAtIndex:indexPath.row];
-    //RevealPost *revealPost = [displayedPosts objectAtIndex:indexPath.row];
     RevealPost *revealPost = [self.displayedData objectAtIndex:indexPath.row];
     
-    
-    //cell.textLabel.text = revealPost.body; replaced because of custom cell configuration method
     [cell configureCellForPost:revealPost];
+    
     //NSLog(@"text label: %@", revealPost.IDNumber);
     return cell;
 }
@@ -232,6 +223,14 @@ DataHandler *data_handler;
     // Pass the selected object to the new view controller.
 }
 
+- (void) reloadTableView {
+    [self.tableView reloadData];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+}
+
 
 #pragma mark - IB Actions
 - (IBAction)pubSelSwitch {
@@ -246,7 +245,7 @@ DataHandler *data_handler;
         self.displayedData = self.publicFeed;
 	}
     
-    [self.tableView reloadData];
+    [self reloadTableView];
 }
 
 - (IBAction)imageButtonWasPressed:(id)sender {
@@ -290,10 +289,7 @@ DataHandler *data_handler;
         [self.refreshControl endRefreshing];
     }
     
-    [self.tableView reloadData];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.tableView reloadData];
-    });
+    [self reloadTableView];
     
     NSLog(@"callback complete");
     
@@ -384,7 +380,7 @@ DataHandler *data_handler;
         self.followingButton.enabled = TRUE;
     });
     
-    [self.tableView reloadData];
+    [self reloadTableView];
     
 }
 

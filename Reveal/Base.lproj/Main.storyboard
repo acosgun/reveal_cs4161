@@ -268,38 +268,6 @@
                                     <view contentMode="scaleToFill" id="DHP-lZ-2sO">
                                         <rect key="frame" x="0.0" y="107" width="320" height="33"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="1sV-xw-v6R">
-                                                <rect key="frame" x="84" y="2" width="24" height="24"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <state key="normal" image="trash-2-24">
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="deleteButtonPressed:" destination="qJu-cT-U0k" eventType="touchUpInside" id="Rn1-37-hyf"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="FIU-nZ-Skh">
-                                                <rect key="frame" x="145" y="1" width="30" height="30"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <state key="normal" backgroundImage="40x40-twitter-bird-white-on">
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="twitterButtonPressed:" destination="qJu-cT-U0k" eventType="touchUpInside" id="3eV-kq-Grj"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="v5o-Er-lKY">
-                                                <rect key="frame" x="211" y="1" width="30" height="30"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <state key="normal" image="facebook_logo_icon_40x40">
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="facebookButtonPressed:" destination="qJu-cT-U0k" eventType="touchUpInside" id="Jvb-QZ-f21"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
                                     </view>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Body" lineBreakMode="tailTruncation" numberOfLines="20" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="pf6-qr-PWl">
                                         <rect key="frame" x="75" y="31" width="225" height="43"/>

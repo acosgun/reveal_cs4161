@@ -116,7 +116,7 @@ DataHandler *data_handler;
     
     [cell configureCellForPost:revealPost];
     //NSLog(@"text label: %@", cell.textLabel.text);
-    NSLog(@"post body: %@", revealPost.body);
+    //NSLog(@"post body: %@", revealPost.body);
     return cell;
 }
 

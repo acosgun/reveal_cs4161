@@ -29,7 +29,7 @@
 
 -(void)revealStatusCallback:(BOOL)success action:(NSInteger)action_id;
 -(void)watchPostCallback:(BOOL)success;
--(void)ignorePostCallbackL:(BOOL)success;
+-(void)ignorePostCallback:(BOOL)success;
 -(void) updateProfileImageCallback:(BOOL)success;
 
 - (void) getNotificationsCallback:(NSArray *)notifications;

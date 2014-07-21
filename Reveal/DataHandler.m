@@ -212,6 +212,7 @@ static DataHandler *sharedDataSource = nil;
         obj.dateString = [not objectForKey:@"created_at"];
         
         [notificationsArray addObject:obj];
+        NSLog(@"object added to notifications array in datahandler createNotificationsArray...");
     }
     
     return notificationsArray;
@@ -286,11 +287,11 @@ static DataHandler *sharedDataSource = nil;
     [self.json_handler updateProfileImageRequest:imageData];
 }
 
-- (void) getNotifications {
+- (void) getNotificationsDH {
     //self.json_handler = [[JsonHandler alloc] init];
     //self.json_handler.delegate = self;
     
-    [self.json_handler getNotifications];
+    [self.json_handler getNotificationsJH];
 }
 
 - (void) viewedNewNotifications {
@@ -436,11 +437,11 @@ SLComposeViewController *twitterController = [SLComposeViewController composeVie
     [self.delegate createPostRequestCallback:success];
 }
 
-- (void) getNotificationsCallback:(NSArray *)allNotificationsArray {
+- (void) getNotificationsCallbackJH:(NSArray *)allNotificationsArray {
     
     NSArray *formattedArray = [self createNotificationsArrayFromJSONResponse:allNotificationsArray];
     
-    [self.delegate getNotificationsCallback:formattedArray];
+    [self.delegate getNotificationsCallbackDH:formattedArray];
 }
 
 - (void) viewedNewPostsCallback:(BOOL)success {

@@ -10,6 +10,7 @@
 #import "DataHandler.h"
 #import "NotificationsCell.h"
 #import "RevealPost.h"
+#import "UserProfileTableViewController.h"
 
 @interface NotificationsTableViewController () <DataHandlerDelegate>
 
@@ -119,22 +120,26 @@
 }
 */
 
-/*
+
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    if ( [segue.identifier isEqualToString:@"NotificationToUserProfile"]) {
+        NSLog(@"seque to user profile VC from notifications VC");
+        
+        UserProfileTableViewController *vc = [segue destinationViewController];
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        RevealPost *post = [self.notifications objectAtIndex:indexPath.row];
+        vc.revealPost = post;
+    }
 }
-*/
 
 #pragma mark - Get Data
 - (void) getNotifications {
     DataHandler *data_handler = [DataHandler sharedInstance];
     data_handler.delegate = self;
-    [data_handler getNotifications];
+    [data_handler getNotificationsDH];
 }
 
 - (void) viewedNewNotifications {
@@ -144,7 +149,7 @@
 }
 
 #pragma mark - Callbacks
-- (void) getNotificationsCallback:(NSArray *)notifications {
+- (void) getNotificationsCallbackDH:(NSArray *)notifications {
     self.notifications = [[NSMutableArray alloc] init];
     [self.notifications addObjectsFromArray:notifications];
     
@@ -162,7 +167,7 @@
     [self.tableView reloadData];
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self reloadTableViewData];
+        [self.tableView reloadData];
     });
 }
 

@@ -41,7 +41,7 @@
 -(void) followUnfollowConfirmCallback:(BOOL)follow success:(BOOL)success;
 -(void) updateProfileImageRequestCallback:(BOOL)success;
 
--(void) getNotificationsCallback:(NSArray *)allNotificationsArray;
+-(void) getNotificationsCallbackJH:(NSArray *)allNotificationsArray;
 -(void) viewedNewPostsCallback:(BOOL)success;
 
 @end
@@ -74,7 +74,7 @@
 - (void) followUnfollowUser:(BOOL)follow userID:(NSInteger*)user_id followedUserID:(NSInteger*)followed_user_id;
 - (void) updateProfileImageRequest:(NSData *)imageData;
 
-- (void) getNotifications;
+- (void) getNotificationsJH;
 - (void) viewedNewNotifications;
 
 @end

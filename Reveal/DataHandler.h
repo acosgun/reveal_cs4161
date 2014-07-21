@@ -32,7 +32,7 @@
 -(void)ignorePostCallback:(BOOL)success;
 -(void) updateProfileImageCallback:(BOOL)success;
 
-- (void) getNotificationsCallback:(NSArray *)notifications;
+- (void) getNotificationsCallbackDH:(NSArray *)notifications;
 - (void) viewedNewPostsCallback:(BOOL)success;
 
 @end
@@ -69,7 +69,7 @@
 - (void) postToTwitter:(NSString*)content viewController:(UIViewController*)view_controller;
 - (void) updateProfileImage:(NSData *)imageData;
 
-- (void) getNotifications;
+- (void) getNotificationsDH;
 - (void) viewedNewNotifications;
 
 @end

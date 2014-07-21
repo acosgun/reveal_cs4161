@@ -848,7 +848,7 @@
     
 }
 
-- (void) getNotifications {
+- (void) getNotificationsJH {
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *auth_token = [defaults stringForKey:@"auth_token"];
@@ -877,7 +877,9 @@
             [allNotificationsArray addObjectsFromArray:newNotificationsArray];
             [allNotificationsArray addObjectsFromArray:oldNotificationsArray];
             
-            [self.delegate getNotificationsCallback:allNotificationsArray];
+            [self.delegate getNotificationsCallbackJH:allNotificationsArray];
+            NSLog(@"sent callback from jsonhandler notifications method");
+            
         }
         else
         {
